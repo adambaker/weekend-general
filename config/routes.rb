@@ -1,8 +1,11 @@
 WeekendGeneral::Application.routes.draw do
+  get "pages/home"
+  
   devise_for :users
 
   resources :users
-
+  
+  root to: 'pages#home'
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

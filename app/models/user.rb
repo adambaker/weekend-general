@@ -8,5 +8,6 @@ class User < ActiveRecord::Base
   attr_accessible :email, :password, :password_confirmation, :remember_me,
     :name
     
-  validates :name, {presence: true}
+  validates :name,  presence: true
+  validates :email, presence: true
 end

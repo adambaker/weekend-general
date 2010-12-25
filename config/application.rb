@@ -43,5 +43,8 @@ module WeekendGeneral
 
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password]
+    config.generators do |g|
+      g.template_engine :haml
+    end
   end
 end
