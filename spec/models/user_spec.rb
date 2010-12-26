@@ -21,9 +21,15 @@ describe User do
   end
   
   it "should require an email" do
-    no_name_user = User.new(@attr.merge(email: ""))
-    no_name_user.should_not be_valid
+    no_email_user = User.new(@attr.merge(email: ""))
+    no_email_user.should_not be_valid
   end
   
+  it 'should require a valid email' do
+    bad_email_user = User.new(@attr.merge(email: 'email@foo'))
+    bad_email_user.should_not be_valid
+    bad_email_user = User.new(@attr.merge(email: 'email.com'))
+    bad_email_user.should_not be_valid
+  end
   
 end
