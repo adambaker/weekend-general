@@ -1,9 +1,50 @@
-body { background-color: #fff; color: #333; }
+body { background-color: #7DC1CF; }
 
 body, p, ol, ul, td {
-  font-family: verdana, arial, helvetica, sans-serif;
+  font-family: palatino, times, serif;
   font-size:   13px;
   line-height: 18px;
+}
+
+h1, h2, h3, h4, h5, h6
+{
+  font-family: helvetica, arial, sans-serif;
+}
+
+#container{ width: 800px; margin: 10px auto; }
+
+#header{height: 40px; position: relative;}
+
+#session_links{ position: relative; float: right; text-align: right; }
+  #session_links a{ font-weight: bold; }
+
+#navi{ position: absolute; bottom: 0px; float: left; }
+  #navi ul
+  {
+    padding-left: 5px; margin: 0px;
+    list-style: none;
+  }
+  #navi li
+  {
+    display: inline-block; width: 125px;
+    font-size: 16px; font-family: helvetica, arial, sans-serif;
+    margin-left: 10px; padding: 0px;
+  }
+    #navi li a
+    {
+      width: 115px; display: block;
+      padding: 7px 5px 3px 5px;
+      border-top-left-radius: 5px; -moz-border-radius-topleft: 5px;
+      border-top-right-radius: 5px; -moz-border-radius-topright: 5px;
+      background-color: #C9E235; 
+      text-align: center; text-decoration: none;
+    }
+
+#content
+{
+  background-color: #fff; color: #333;
+  padding: 5px;
+  border-radius: 5px; -moz-border-radius: 5px;
 }
 
 pre {
@@ -12,9 +53,9 @@ pre {
   font-size: 11px;
 }
 
-a { color: #000; }
-a:visited { color: #666; }
-a:hover { color: #fff; background-color:#000; }
+a { color: #507901; }
+a:visited { color: #619012; }
+a:hover { color: #77a628; }
 
 div.field, div.actions {
   margin-bottom: 10px;

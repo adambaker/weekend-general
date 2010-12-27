@@ -26,7 +26,7 @@ describe PagesController do
       end
       
       it "should have the current user's name in the header" do
-        response.should have_selector(:div, content: @user.email)
+        response.should have_selector(:div, content: @user.name)
       end
     end
     
@@ -44,5 +44,16 @@ describe PagesController do
       end
     end
   end
-
+  
+  describe 'GET "about"' do
+    it "should be successful" do
+      get 'about'
+      response.should be_success
+    end
+    
+    it 'should have "What is" in the title' do
+      get 'about'
+      response.should have_selector(:title, content: 'What is')
+    end
+  end
 end

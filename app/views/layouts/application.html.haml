@@ -7,17 +7,24 @@
     = csrf_meta_tag 
 
   %body
-    #container  
+    #container 
       #header
-        - if user_signed_in? 
-          = "Signed in as #{current_user.email}. "
-          = link_to "Sign out", destroy_user_session_path
-        -else
-          = link_to "Sign in", new_user_session_path
-          = ' or '
-          = link_to 'Sign up', new_user_registration_path
-      #navi
-      
+        #session_links
+          - if user_signed_in? 
+            Signed in as
+            = link_to(current_user.name , current_user)
+            %br/
+            = link_to "Sign out", destroy_user_session_path
+          -else
+            = link_to "Sign in", new_user_session_path
+            = ' or '
+            = link_to 'Sign up', new_user_registration_path
+        #navi
+          %ul
+            %li= link_to 'Home', root_path
+            %li= link_to 'What is this?', about_path
+            %li= link_to 'People', users_path
+            %li= link_to 'Events', '#'
       #content
         = yield 
       

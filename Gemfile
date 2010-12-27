@@ -17,6 +17,8 @@ end
 gem 'autotest'
 gem 'haml'
 gem 'devise', '1.1.5'
+gem 'hpricot', '0.8.3'
+gem 'ruby_parser'
 
 # Use unicorn as the web server
 # gem 'unicorn'
