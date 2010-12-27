@@ -29,6 +29,20 @@ describe PagesController do
         response.should have_selector(:div, content: @user.email)
       end
     end
+    
+    describe 'when not signed in' do
+      before(:each) do
+        get 'home'
+      end
+      
+      it 'should have a sign in link.' do
+        response.should have_selector(:a, content: 'Sign in')
+      end
+      
+      it 'should have a sign up link.' do
+        response.should have_selector(:a, content: 'Sign up')
+      end
+    end
   end
 
 end
