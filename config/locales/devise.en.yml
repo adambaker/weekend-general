@@ -7,16 +7,16 @@ en:
 
   devise:
     failure:
-      unauthenticated: 'You need to sign in or sign up before continuing.'
+      unauthenticated: 'Are you sure you belong here? Sign in or sign up to go further'
       unconfirmed: 'You have to confirm your account before continuing.'
       locked: 'Your account is locked.'
-      invalid: 'Invalid email or password.'
+      invalid: "I don't have you on my roll. Sound off again! Email and password!"
       invalid_token: 'Invalid authentication token.'
-      timeout: 'Your session expired, please sign in again to continue.'
+      timeout: 'You were caught loitering and tossed out. Sign in again to get back.'
       inactive: 'Your account was not activated yet.'
     sessions:
-      signed_in: 'Signed in successfully.'
-      signed_out: 'Signed out successfully.'
+      signed_in: 'There you are. Now fall in.'
+      signed_out: 'Dismissed!'
     passwords:
       send_instructions: 'You will receive an email with instructions about how to reset your password in a few minutes.'
       updated: 'Your password was changed successfully. You are now signed in.'

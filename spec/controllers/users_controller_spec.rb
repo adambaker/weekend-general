@@ -9,19 +9,23 @@ describe UsersController do
   end
 
   describe "GET index" do
-    it "assigns all users as @users" do
-      User.stub(:all) { [mock_user] }
-      get :index
-      assigns(:users).should eq([mock_user])
-    end
+    it "should be successful"
+    it "should have the right title"
+    it "should have an element for each user"
+    it "should not have delete links"
+  end
+  
+  #just a reminder to go back and implement xml and json APIs
+  describe "GET index.xml" do 
+    it "should have an element for each user"
+  end
+  describe "GET index.json" do
+    it "should have an element for each user"
   end
 
   describe "GET show" do
-    it "assigns the requested user as @user" do
-      User.stub(:find).with("37") { mock_user }
-      get :show, :id => "37"
-      assigns(:user).should be(mock_user)
-    end
+    it "should be successful"
+    it "should have the user's name in the title"
   end
 
   describe "GET new" do
