@@ -12,7 +12,7 @@ en:
       locked: 'Your account is locked.'
       invalid: "I don't have you on my roll. Sound off again! Email and password!"
       invalid_token: 'Invalid authentication token.'
-      timeout: 'You were caught loitering and tossed out. Sign in again to get back.'
+      timeout: 'You were caught loitering and tossed out. Now what was your email and password?'
       inactive: 'Your account was not activated yet.'
     sessions:
       signed_in: 'There you are. Now fall in.'
