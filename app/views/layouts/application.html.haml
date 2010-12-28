@@ -26,6 +26,8 @@
             %li= link_to 'People', users_path
             %li= link_to 'Events', '#'
       #content
+        - flash.each do |key, value| 
+          = content_tag(:div, value, :class => "flash #{key}") 
         = yield 
       
       #footer
