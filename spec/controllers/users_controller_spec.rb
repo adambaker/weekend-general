@@ -29,18 +29,18 @@ describe UsersController do
   end
 
   describe "GET new" do
-    it "assigns a new user as @user" do
-      User.stub(:new) { mock_user }
-      get :new
-      assigns(:user).should be(mock_user)
-    end
+    it "should redirect to /users/sign_up."
+    it "should redirect to / when signed in."
   end
 
   describe "GET edit" do
-    it "assigns the requested user as @user" do
-      User.stub(:find).with("37") { mock_user }
-      get :edit, :id => "37"
-      assigns(:user).should be(mock_user)
+    describe "when not signed in" do
+      it "should redirect to /user/sign_in"
+      it "should have an appropriate flash message"
+    end
+    
+    describe "when signed in" do
+      it "should redirect to /users/edit"
     end
   end
 

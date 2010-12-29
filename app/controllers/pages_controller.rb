@@ -10,4 +10,6 @@ class PagesController < ApplicationController
   def contact
     @title = 'Contact the administrator'
   end
+  
+
 end

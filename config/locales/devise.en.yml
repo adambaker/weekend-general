@@ -24,8 +24,8 @@ en:
       send_instructions: 'You will receive an email with instructions about how to confirm your account in a few minutes.'
       confirmed: 'Your account was successfully confirmed. You are now signed in.'
     registrations:
-      signed_up: "I guess the recruiter thought you have some stuff. Now gather some intel and execute your ops, warrior."
-      updated: 'Yeah yeah. I got your personnel info filed. Now quit dallying with the paperwork and go gather some intel.'
+      signed_up: "I guess the recruiter thought you have some stuff. Now go gather some intel and execute some ops, warrior."
+      updated: 'Yeah yeah. I got your personnel info filed. Now quit dallying with the paperwork and get to your ops.'
       destroyed: "You have your discharge. You know where the recruiter is if you want back in."
     unlocks:
       send_instructions: 'You will receive an email with instructions about how to unlock your account in a few minutes.'

@@ -27,12 +27,9 @@ class UsersController < ApplicationController
   # GET /users/new
   # GET /users/new.xml
   def new
-    @user = User.new
-
-    respond_to do |format|
-      format.html # new.html.erb
-      #format.xml  { render :xml => @user }
-    end
+    @title = 'sign up'
+    
+    redirect_to new_user_registration_path title: 'sign up'
   end
 
   # GET /users/1/edit
