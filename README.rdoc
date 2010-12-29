@@ -1,0 +1,39 @@
+== Weekend General
+
+The Weekend General is a social planning web application. It will allow you to
+enter events, see who will attend what, and find out what your friends will be
+attending. The following features are planned:
+
+* Stores information on people, venues, and events.
+* User tracking, so that you receive emails when another user says they're 
+  attending an event.
+* Send emails to all users attending an event.
+* Set up monthly or weekly events.
+* List and calendar views for events, with event filtering.
+* Tags and links.
+* Default city for all address fields.
+
+=== Making a Weekend General for your group of friends.
+
+Users will not be grouped in any way, so if you want to set up your own event
+manager for your group of friends you should clone this app and create your own
+deployment. My current deployment will be hosted at:
+
+http://weekend-general.heroku.com
+
+If you'd like to set up your deployment, contact me at:
+
+adam.durandal@gmail.com
+
+I'll help you set up a deployment as best I can and replace this section with 
+deployment instructions.
+
+=== Contact
+
+Direct all comments, suggestions, insults, feature requests, etc to
+
+adam.durandal@gmail.com
+
+=== Liscence
+
+MIT License. Copyright 2010 Adam C. Baker
