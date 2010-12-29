@@ -1,77 +1,99 @@
 require 'spec_helper'
 
 describe UsersController do
-
-  def mock_user(stubs={})
-    (@mock_user ||= mock_model(User).as_null_object).tap do |user|
-      user.stub(stubs) unless stubs.empty?
-    end
+  render_views
+  
+  before(:each) do
+    @user = Factory(:user)
   end
-
+  
   describe "GET index" do
-    it "should be successful"
-    it "should have the right title"
-    it "should have an element for each user"
-    it "should not have delete links"
+    before(:each) do
+      @users = [@user]
+      40.times do
+        @users << Factory(:user, name:  Factory.next(:name),
+                                 email: Factory.next(:email))
+      end
+      get :index
+    end
+    
+    it "should be successful." do
+      response.should be_success
+    end
+    
+    it "should have the right title." do
+      response.should have_selector :title, content: 'Warrior muster'
+    end
+    
+    it "should have an element for each user." do
+      @users.each do |u|
+        response.should have_selector :td, content: u.name
+      end
+    end
+    
+    it "should not have delete links." do
+      response.should_not have_selector :a, content: 'Destroy'
+    end
   end
   
   #just a reminder to go back and implement xml and json APIs
   describe "GET index.xml" do 
-    it "should have an element for each user"
+    it "should have an element for each user."
   end
   describe "GET index.json" do
-    it "should have an element for each user"
+    it "should have an element for each user."
   end
 
   describe "GET show" do
-    it "should be successful"
-    it "should have the user's name in the title"
+    it "should be successful." do
+      get :show, id: @user
+      response.should be_success
+    end
+    
+    it "should have the user's name in the title." do
+      get :show, id: @user
+      response.should have_selector :title, content: @user.name
+    end
   end
 
   describe "GET new" do
-    it "should redirect to /users/sign_up."
-    it "should redirect to / when signed in."
+    it "should be successful." do
+      get :new
+      response.should be_success
+    end
+    
+    it "should have 'enlistment' in the title." do
+      get :new
+      response.should have_selector :title, content: 'enlistment' 
+    end
+          
+    it "should redirect to / when signed in." 
   end
 
   describe "GET edit" do
     describe "when not signed in" do
-      it "should redirect to /user/sign_in"
-      it "should have an appropriate flash message"
+      it "should redirect to /user/sign_in."
+      it "should have an appropriate flash message."
     end
     
     describe "when signed in" do
-      it "should redirect to /users/edit"
+      it "should have the users name in the the title."
+      it "should redirect edit the current user."
     end
   end
 
   describe "POST create" do
 
     describe "with valid params" do
-      it "assigns a newly created user as @user" do
-        User.stub(:new).with({'these' => 'params'}) { mock_user(:save => true) }
-        post :create, :user => {'these' => 'params'}
-        assigns(:user).should be(mock_user)
-      end
-
-      it "redirects to the created user" do
-        User.stub(:new) { mock_user(:save => true) }
-        post :create, :user => {}
-        response.should redirect_to(user_url(mock_user))
-      end
+      it "should create a new user."
+      it "should redirects to the created user."
+      it "should have an appropriate welcome message."
+      it "should sign the user in."
     end
 
     describe "with invalid params" do
-      it "assigns a newly created but unsaved user as @user" do
-        User.stub(:new).with({'these' => 'params'}) { mock_user(:save => false) }
-        post :create, :user => {'these' => 'params'}
-        assigns(:user).should be(mock_user)
-      end
-
-      it "re-renders the 'new' template" do
-        User.stub(:new) { mock_user(:save => false) }
-        post :create, :user => {}
-        response.should render_template("new")
-      end
+      it "should not create a new user."
+      it "should re-renders the 'new' template." 
     end
 
   end
@@ -79,52 +101,41 @@ describe UsersController do
   describe "PUT update" do
 
     describe "with valid params" do
-      it "updates the requested user" do
-        User.should_receive(:find).with("37") { mock_user }
-        mock_user.should_receive(:update_attributes).with({'these' => 'params'})
-        put :update, :id => "37", :user => {'these' => 'params'}
-      end
-
-      it "assigns the requested user as @user" do
-        User.stub(:find) { mock_user(:update_attributes => true) }
-        put :update, :id => "1"
-        assigns(:user).should be(mock_user)
-      end
-
-      it "redirects to the user" do
-        User.stub(:find) { mock_user(:update_attributes => true) }
-        put :update, :id => "1"
-        response.should redirect_to(user_url(mock_user))
-      end
+      it "should change the user's attributes."
+      it "should have a flash message."
+      it "should redirect to the user's show page."
     end
 
     describe "with invalid params" do
-      it "assigns the user as @user" do
-        User.stub(:find) { mock_user(:update_attributes => false) }
-        put :update, :id => "1"
-        assigns(:user).should be(mock_user)
-      end
-
-      it "re-renders the 'edit' template" do
-        User.stub(:find) { mock_user(:update_attributes => false) }
-        put :update, :id => "1"
-        response.should render_template("edit")
-      end
+      it "re-renders the 'edit' template."
+      it "has the user's old name in the title."
     end
 
   end
 
   describe "DELETE destroy" do
-    it "destroys the requested user" do
-      User.should_receive(:find).with("37") { mock_user }
-      mock_user.should_receive(:destroy)
-      delete :destroy, :id => "37"
+    describe "when not signed in" do
+      it "should not destroy the user."
+      it "should redirect to the sign in page."
     end
-
-    it "redirects to the users list" do
-      User.stub(:find) { mock_user }
-      delete :destroy, :id => "1"
-      response.should redirect_to(users_url)
+    
+    describe "as a different user" do
+      it "should not destroy the user."
+      it "should redirect to the user's show page."
+    end
+    
+    describe "as the current user" do
+      it "should destroy the user."
+      it "should redirect to the home page."
+      it "should display an appropriate flash message."
+    end
+    
+    #admin features will be added later.
+    describe "as an admin" do
+      it "should destroy the user."
+      it "should redirect to the users index page."
+      it "should display an appropriate flash message."
+      it "should send an email to the deleted user." 
     end
   end
 

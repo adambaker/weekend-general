@@ -3,7 +3,7 @@ class UsersController < ApplicationController
   # GET /users.xml
   def index
     @users = User.all
-
+    @title = "Warrior muster"
     respond_to do |format|
       format.html # index.html.erb
       #format.xml  { render :xml => @users }  add xml and json responses
@@ -16,7 +16,7 @@ class UsersController < ApplicationController
   # GET /users/1.json
   def show
     @user = User.find(params[:id])
-
+    @title = @user.name + "'s dossier"
     respond_to do |format|
       format.html # show.html.erb
       #format.xml  { render :xml => @user }
@@ -27,9 +27,7 @@ class UsersController < ApplicationController
   # GET /users/new
   # GET /users/new.xml
   def new
-    @title = 'sign up'
-    
-    redirect_to new_user_registration_path title: 'sign up'
+    @title = 'New recruit enlistment'
   end
 
   # GET /users/1/edit

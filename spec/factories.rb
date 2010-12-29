@@ -8,3 +8,7 @@ end
 Factory.sequence :email do |n|
   "person-#{n}@example.com"
 end
+
+Factory.sequence :name do |n|
+  "lemming-#{n}"
+end
