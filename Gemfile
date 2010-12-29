@@ -12,9 +12,9 @@ group :test do
   gem 'rspec', '2.3.0'
   gem 'webrat', '0.7.1'
   gem 'factory_girl_rails'
+  gem 'autotest'
 end
 
-gem 'autotest'
 gem 'haml'
 gem 'devise', '1.1.5'
 gem 'hpricot', '0.8.3'
