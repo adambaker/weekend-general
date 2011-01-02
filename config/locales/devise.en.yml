@@ -1,19 +1,9 @@
 en:
-  errors:
-    messages:
-      not_found: "not found"
-      already_confirmed: "was already confirmed"
-      not_locked: "was not locked"
-
   devise:
     failure:
       unauthenticated: "You don't look like you belong here. Sound off and I'll see if you're on my roll."
-      unconfirmed: 'You have to confirm your account before continuing.'
-      locked: 'Your account is locked.'
       invalid: "I don't have you on my roll. Sound off again or head over to the recruiter."
-      invalid_token: 'Invalid authentication token.'
       timeout: 'You were caught loitering and tossed out. Sound off before you go back in.'
-      inactive: 'Your account was not activated yet.'
     sessions:
       signed_in: 'There you are. Now fall in.'
       signed_out: 'Dismissed!'
@@ -21,19 +11,7 @@ en:
       send_instructions: "I guess some people can't remember a few simple details. You'll have your instructions in an email in a few moments."
       updated: "You got your new password. Now get yer ass out there and do something."
     confirmations:
-      send_instructions: 'You will receive an email with instructions about how to confirm your account in a few minutes.'
-      confirmed: 'Your account was successfully confirmed. You are now signed in.'
     registrations:
       signed_up: "I guess the recruiter thought you have some stuff. Now go gather some intel and execute some ops, warrior."
       updated: 'Yeah yeah. I got your personnel info filed. Now quit dallying with the paperwork and get to your ops.'
       destroyed: "You have your discharge. You know where the recruiter is if you want back in."
-    unlocks:
-      send_instructions: 'You will receive an email with instructions about how to unlock your account in a few minutes.'
-      unlocked: 'Your account was successfully unlocked. You are now signed in.'
-    mailer:
-      confirmation_instructions:
-        subject: 'Confirmation instructions'
-      reset_password_instructions:
-        subject: 'Reset password instructions'
-      unlock_instructions:
-        subject: 'Unlock Instructions'

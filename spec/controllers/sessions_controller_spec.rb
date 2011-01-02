@@ -48,6 +48,11 @@ describe SessionsController do
         post :create
         response.should redirect_to root_path
       end
+      
+      it "should have an appropriate flash message." do
+        post :create
+        flash[:notice].should =~ /fall in/i
+      end
     end
   end
   
@@ -66,6 +71,23 @@ describe SessionsController do
       it "should redirect to root." do
         delete :destroy
         response.should redirect_to root_path
+      end
+      
+      it "should have an appropriate flash message." do
+        delete :destroy
+        flash[:notice].should =~ /dismissed/i
+      end
+    end
+    
+    describe 'with no user signed in' do
+      it "should redirect to root." do
+        delete :destroy
+        response.should redirect_to root_path
+      end
+      
+      it "should have an error message." do
+        delete :destroy
+        flash[:error].should =~ /sound off .* dismissed/i
       end
     end
   end

@@ -6,7 +6,6 @@ class SessionsController < ApplicationController
       flash[:notice] = "I already know you're here, warrior. Now get to work!"
       redirect_to current_user
     elsif user.nil?
-      puts auth
       redirect_to controller: :users, action: :new,  
                   user: { provider: auth['provider'],
                           uid: auth['uid'],
@@ -16,13 +15,19 @@ class SessionsController < ApplicationController
                         
     else
       session[:user_id] = user.id
-      redirect_to root_url, :notice => "Signed in!"
+      redirect_to root_url, :notice => "There you are. Now fall in."
     end
   end
   
   def destroy
-    session[:user_id] = nil
-    redirect_to root_url, :notice => "Signed out!"
+    if current_user
+      session[:user_id] = nil
+      redirect_to root_url, :notice => "Dismissed!"
+    else
+      session[:user_id] = nil
+      flash[:error] = 'You need to sound off before you can be dismissed!'
+      redirect_to root_url
+    end
   end
 
 end
