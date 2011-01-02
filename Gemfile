@@ -16,7 +16,7 @@ group :test do
 end
 
 gem 'haml'
-gem 'devise', '1.1.5'
+gem 'omniauth'
 gem 'hpricot', '0.8.3'
 gem 'ruby_parser'
 

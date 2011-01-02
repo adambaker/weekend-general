@@ -1,0 +1,13 @@
+= render 'shared/error_messages', :object => f.object
+.hidden
+  = f.hidden_field :uid 
+  = f.hidden_field :provider
+.field
+  = f.label :name 
+  %br/
+  = f.text_field :name 
+.field
+  = f.label :email 
+  %br/
+  = f.text_field :email 
+

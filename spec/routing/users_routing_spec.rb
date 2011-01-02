@@ -20,7 +20,7 @@ describe UsersController do
     end
 
     it "recognizes and generates #create" do
-      { :post => "/users" }.should route_to(:controller => "devise/registrations", :action => "create")
+      { :post => "/users" }.should route_to(:controller => "users", :action => "create")
     end
 
     it "recognizes and generates #update" do

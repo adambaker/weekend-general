@@ -8,31 +8,36 @@ describe UsersController do
   end
   
   describe "GET index" do
-    before(:each) do
-      @users = [@user]
-      40.times do
-        @users << Factory(:user, name:  Factory.next(:name),
-                                 email: Factory.next(:email))
-      end
-      get :index
-    end
     
     it "should be successful." do
+      get :index
       response.should be_success
     end
     
     it "should have the right title." do
+      get :index
       response.should have_selector :title, content: 'Warrior muster'
     end
     
-    it "should have an element for each user." do
-      @users.each do |u|
-        response.should have_selector :td, content: u.name
+    describe "with many users" do
+      before(:each) do
+        @users = [@user]
+        40.times do
+          @users << Factory(:user, name:  Factory.next(:name),
+                                   email: Factory.next(:email))
+        end
+        get :index
       end
-    end
-    
-    it "should not have delete links." do
-      response.should_not have_selector :a, content: 'Destroy'
+
+      it "should have an element for each user." do
+        @users.each do |u|
+          response.should have_selector :td, content: u.name
+        end
+      end
+      
+      it "should not have delete links." do
+        response.should_not have_selector :a, content: 'Destroy'
+      end
     end
   end
   
@@ -57,17 +62,17 @@ describe UsersController do
   end
 
   describe "GET new" do
-    it "should be successful." do
-      get :new
-      response.should be_success
-    end
+  #  it "should be successful." do
+  #    get :new
+  #    response.should be_success
+  #  end
     
-    it "should have 'enlistment' in the title." do
-      get :new
-      response.should have_selector :title, content: 'enlistment' 
-    end
+  #  it "should have 'enlistment' in the title." do
+  #    get :new
+  #    response.should have_selector :title, content: 'enlistment' 
+  #  end
           
-    it "should redirect to / when signed in." 
+  #  it "should redirect to / when signed in." 
   end
 
   describe "GET edit" do

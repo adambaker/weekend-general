@@ -1,16 +1,16 @@
 WeekendGeneral::Application.routes.draw do
-  get "pages/home"
-  get "pages/about"
   
-  devise_for :users
-
   resources :users
   
+  resources :sessions, only: [:create, :destroy]
+  
+  match "/auth/:provider/callback" => "sessions#create"
+  match "/signout" => "sessions#destroy", as: :sign_out
   root to: 'pages#home'
   
-  match '/contact', :to => 'pages#contact'
-  match '/about',   :to => 'pages#about'
-  match '/help',    :to => 'pages#help'
+  match '/contact', to: 'pages#contact'
+  match '/about',   to: 'pages#about'
+  match '/help',    to: 'pages#help'
   
   # The priority is based upon order of creation:
   # first created -> highest priority.

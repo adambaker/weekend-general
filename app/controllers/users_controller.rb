@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+
   # GET /users
   # GET /users.xml
   def index
@@ -28,6 +29,7 @@ class UsersController < ApplicationController
   # GET /users/new.xml
   def new
     @title = 'New recruit enlistment'
+    @user = User.new params[:user]
   end
 
   # GET /users/1/edit
@@ -38,6 +40,7 @@ class UsersController < ApplicationController
   # POST /users
   # POST /users.xml
   def create
+    raise params.to_yaml
     @user = User.new(params[:user])
 
     respond_to do |format|
@@ -84,4 +87,5 @@ class UsersController < ApplicationController
       #format.xml  { head :ok }
     end
   end
+  
 end

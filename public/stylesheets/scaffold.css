@@ -1,4 +1,4 @@
-body { background-color: #7DC1CF; }
+body { background-color: #fff; }
 
 body, p, ol, ul, td {
   font-family: palatino, times, serif;
@@ -42,9 +42,9 @@ h1, h2, h3, h4, h5, h6
 
 #content
 {
-  background-color: #fff; color: #333;
-  padding: 10px;
-  border-radius: 5px; -moz-border-radius: 5px;
+  background-image: url('../images/papmust.gif'); 
+  color: #333;
+  padding: 20px; 
 }
 
 pre {
