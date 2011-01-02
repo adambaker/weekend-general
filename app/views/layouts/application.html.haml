@@ -10,11 +10,11 @@
     #container 
       #header
         #session_links
-          - if current_user 
+          -if current_user 
             Signed in as
             = link_to current_user.name , current_user
-            -# %br/
-            -# = link_to "Sign out", destroy_user_session_path
+            %br/
+            = link_to "Sign out", sign_out_path
           -else
             = link_to "Sign in with Google", '/auth/google'
         #navi
@@ -24,7 +24,7 @@
             %li= link_to 'People', users_path
             %li= link_to 'Events', '#'
       #content
-        - flash.each do |key, value| 
+        -flash.each do |key, value| 
           = content_tag(:div, value, :class => "flash #{key}") 
         = yield 
       

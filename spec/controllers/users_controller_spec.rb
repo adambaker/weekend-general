@@ -22,21 +22,37 @@ describe UsersController do
     describe "with many users" do
       before(:each) do
         @users = [@user]
-        40.times do
-          @users << Factory(:user, name:  Factory.next(:name),
+        35.times do
+          @users << Factory(:user, uid:  Factory.next(:uid),
                                    email: Factory.next(:email))
         end
-        get :index
       end
 
       it "should have an element for each user." do
+        get :index
         @users.each do |u|
           response.should have_selector :td, content: u.name
         end
       end
       
       it "should not have delete links." do
+        get :index
         response.should_not have_selector :a, content: 'Destroy'
+      end
+      
+      it "should not have emails when not signed in" do
+        get :index
+        @users.each do |u|
+          response.should_not have_selector :td, content: u.email
+        end
+      end
+      
+      it "should have emails when signed in" do
+        test_sign_in @user
+        get :index
+        @users.each do |u|
+          response.should have_selector :td, content: u.email
+        end
       end
     end
   end
@@ -59,20 +75,59 @@ describe UsersController do
       get :show, id: @user
       response.should have_selector :title, content: @user.name
     end
+  
+    describe "when not signed in" do 
+      it "should not have the user's email." do
+        get :show, id: @user
+        response.should_not contain @user.email
+      end
+      
+      it "should not have an edit link." do
+        get :show, id: @user
+        response.should_not have_selector :a, href: "/users/#{@user.id}/edit" 
+      end
+    end
+
+    describe "when signed in" do
+      before :each do
+        test_sign_in @user
+      end
+      
+      it "should have the user's email." do
+        get :show, id: @user
+        response.should contain @user.email
+      end
+      
+      it "should have an edit link if signed in as the same user" do
+        get :show, id: @user
+        response.should have_selector :a, href: "/users/#{@user.id}/edit"
+      end
+      
+      it "should not have an edit link if signed in as a different user" do
+        other_user = Factory(:user, 
+          email: 'fake@phony.lie', uid: 'laughing-man')
+        get :show, id: other_user
+        response.should_not have_selector :a, href: "/users/#{@user.id}/edit"
+      end
+    end
   end
 
   describe "GET new" do
-  #  it "should be successful." do
-  #    get :new
-  #    response.should be_success
-  #  end
+    it "should be successful." do
+      get :new
+      response.should be_success
+    end
     
-  #  it "should have 'enlistment' in the title." do
-  #    get :new
-  #    response.should have_selector :title, content: 'enlistment' 
-  #  end
+    it "should have 'enlistment' in the title." do
+      get :new
+      response.should have_selector :title, content: 'enlistment' 
+    end
           
-  #  it "should redirect to / when signed in." 
+    it "should redirect to root when signed in." do
+      test_sign_in @user
+      get :new
+      response.should redirect_to root_path
+    end
   end
 
   describe "GET edit" do

@@ -17,7 +17,7 @@ describe PagesController do
     describe 'when signed in' do
       before(:each) do
         @user = Factory(:user)
-        sign_in(@user)
+        test_sign_in(@user)
         get 'home'
       end
       
@@ -39,9 +39,6 @@ describe PagesController do
         response.should have_selector(:a, content: 'Sign in')
       end
       
-      it 'should have a sign up link.' do
-        response.should have_selector(:a, content: 'Sign up')
-      end
     end
   end
   

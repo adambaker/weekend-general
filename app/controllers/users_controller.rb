@@ -28,8 +28,12 @@ class UsersController < ApplicationController
   # GET /users/new
   # GET /users/new.xml
   def new
-    @title = 'New recruit enlistment'
-    @user = User.new params[:user]
+    if current_user
+      redirect_to root_path
+    else
+      @title = 'New recruit enlistment'
+      @user = User.new params[:user]
+    end
   end
 
   # GET /users/1/edit
@@ -40,7 +44,6 @@ class UsersController < ApplicationController
   # POST /users
   # POST /users.xml
   def create
-    raise params.to_yaml
     @user = User.new(params[:user])
 
     respond_to do |format|

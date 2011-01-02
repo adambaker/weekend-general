@@ -3,13 +3,15 @@
 %table
   %tr
     %th Name
-    %th Email
+    - if current_user
+      %th Email
     %th
     %th
   - @users.each do |user|
     %tr
       %td= user.name
-      %td= user.email
+      -if current_user
+        %td= user.email
       %td= link_to 'Show', user
       %td= link_to 'Edit', edit_user_path(user)
 
