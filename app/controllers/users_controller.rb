@@ -39,6 +39,14 @@ class UsersController < ApplicationController
   # GET /users/1/edit
   def edit
     @user = User.find(params[:id])
+    if current_user.nil?
+      redirect_to '/auth/google'
+    elsif @user == current_user
+      @title = "Editing #{@user.name}'s dossier."
+    else
+      flash[:error] = "You can't edit another user's profile."
+      redirect_to @user
+    end
   end
 
   # POST /users

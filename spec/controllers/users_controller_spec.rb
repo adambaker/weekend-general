@@ -5,17 +5,17 @@ describe UsersController do
   
   before(:each) do
     @user = Factory(:user)
+    @user_attr = { provider: @user.provider,
+                   uid:      @user.uid,
+                   name:     @user.name,
+                   email:    @user.email }
   end
   
   describe "GET index" do
     
-    it "should be successful." do
+    it "should be successful with 'Warrior muster' in the title." do
       get :index
       response.should be_success
-    end
-    
-    it "should have the right title." do
-      get :index
       response.should have_selector :title, content: 'Warrior muster'
     end
     
@@ -66,24 +66,16 @@ describe UsersController do
   end
 
   describe "GET show" do
-    it "should be successful." do
+    it "should be successful w/ the user's name in the title." do
       get :show, id: @user
       response.should be_success
-    end
-    
-    it "should have the user's name in the title." do
-      get :show, id: @user
       response.should have_selector :title, content: @user.name
     end
   
     describe "when not signed in" do 
-      it "should not have the user's email." do
+      it "should not have the user's email or edit link." do
         get :show, id: @user
         response.should_not contain @user.email
-      end
-      
-      it "should not have an edit link." do
-        get :show, id: @user
         response.should_not have_selector :a, href: "/users/#{@user.id}/edit" 
       end
     end
@@ -113,13 +105,9 @@ describe UsersController do
   end
 
   describe "GET new" do
-    it "should be successful." do
+    it "should be successful w/ 'enlistment' in the title." do
       get :new
       response.should be_success
-    end
-    
-    it "should have 'enlistment' in the title." do
-      get :new
       response.should have_selector :title, content: 'enlistment' 
     end
           
@@ -128,17 +116,56 @@ describe UsersController do
       get :new
       response.should redirect_to root_path
     end
+    
+    it "should fill in the form with default values from params." do
+      get :new, user: @user_attr
+      response.should have_selector :input,type: 'hidden',value: @user.uid
+      response.should have_selector :input,type: 'hidden',value: @user.provider
+      response.should have_selector :input, type: 'text', value: @user.name
+      response.should have_selector :input, type: 'text', value: @user.email
+    end
   end
 
   describe "GET edit" do
     describe "when not signed in" do
-      it "should redirect to /user/sign_in."
-      it "should have an appropriate flash message."
+      it "should redirect to /auth/google." do
+        get :edit, id: @user
+        response.should redirect_to '/auth/google'
+      end 
     end
     
-    describe "when signed in" do
-      it "should have the users name in the the title."
-      it "should redirect edit the current user."
+    describe "when signed in as the same user" do
+      before :each do 
+        test_sign_in @user
+      end
+      
+      it "should be successful and have user's name in the title." do
+        get :edit, id: @user
+        response.should be_success
+        response.should have_selector :title, content: @user.name
+      end
+      
+      it "should have the user's information filled in." do
+        get :edit, id: @user
+        response.should have_selector :input,type: 'hidden',value: @user.uid
+        response.should have_selector :input,type: 'hidden',value: @user.provider
+        response.should have_selector :input, type: 'text', value: @user.name
+        response.should have_selector :input, type: 'text', value: @user.email
+      end
+    end
+    
+    describe "when signed in as a different user" do
+      before :each do
+        other_user = Factory(:user, email: Factory.next(:email),
+                                    uid:   Factory.next(:uid) )
+        test_sign_in other_user
+      end
+      
+      it "should redirect to the user's profile w/ a flash message." do
+        get :edit, id: @user
+        response.should redirect_to @user
+        flash[:error].should =~ /can't edit another/i
+      end
     end
   end
 
@@ -146,14 +173,14 @@ describe UsersController do
 
     describe "with valid params" do
       it "should create a new user."
-      it "should redirects to the created user."
+      it "should redirect to the created user."
       it "should have an appropriate welcome message."
       it "should sign the user in."
     end
 
     describe "with invalid params" do
       it "should not create a new user."
-      it "should re-renders the 'new' template." 
+      it "should re-render the 'new' template." 
     end
 
   end
