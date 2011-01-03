@@ -115,6 +115,7 @@ describe UsersController do
       test_sign_in @user
       get :new
       response.should redirect_to root_path
+      flash[:error].should =~ /already signed in/i
     end
     
     it "should fill in the form with default values from params." do
@@ -164,7 +165,7 @@ describe UsersController do
       it "should redirect to the user's profile w/ a flash message." do
         get :edit, id: @user
         response.should redirect_to @user
-        flash[:error].should =~ /can't edit another/i
+        flash[:error].should =~ /can't edit/i
       end
     end
   end
@@ -172,49 +173,200 @@ describe UsersController do
   describe "POST create" do
 
     describe "with valid params" do
-      it "should create a new user."
-      it "should redirect to the created user."
-      it "should have an appropriate welcome message."
-      it "should sign the user in."
+      before :each do
+        @attr = @user_attr.merge email: 'fake@phony.lie', uid: 'new_uid'
+      end
+      
+      it "should create a new user." do
+        lambda do
+          post :create, :user => @attr
+        end.should change(User, :count).by(1)
+      end
+      
+      it "should redirect to the created user with a welcome message." do
+        post :create, user: @attr
+        response.should redirect_to User.find_by_email @attr[:email]
+        flash[:success].should =~ /enlisted/i
+      end
+      
+      it "should sign the user in." do
+        post :create, user: @attr
+        controller.current_user.email.should == @attr[:email]
+      end
+      
+      describe "with a user signed in" do
+        before :each do
+          test_sign_in @user
+        end
+        
+        it "should not create a new user." do
+          lambda do
+            post :create, :user => @attr
+          end.should_not change(User, :count)
+        end
+        
+        it "should redirect to root with an appropriate message." do
+          post :create, user: @attr
+          response.should redirect_to root_path
+          flash[:error].should =~ /already signed in/i
+        end 
+      end
     end
 
     describe "with invalid params" do
-      it "should not create a new user."
-      it "should re-render the 'new' template." 
-    end
-
+      it "should not create a new user." do
+        lambda do
+          post :create, :user => @user_attr
+        end.should_not change(User, :count)
+      end
+      
+      it "should re-render the 'new' template." do
+        post :create, user: @user_attr
+        response.should render_template 'new'
+      end
+    end  
   end
 
   describe "PUT update" do
+    describe 'when signed in as the updated user' do
+      before :each do
+        test_sign_in @user
+      end
+      
+      describe "with valid params" do
+        before :each do
+          @new_attr = @user_attr.merge email: 'fake@phony.lie'
+        end
+        
+        it "should change the user's attributes." do
+          put :update, id: @user, user: @new_attr
+          @user.reload
+          @new_attr.each do |k, v|
+            @user.send(k).should == v
+          end
+        end
+        
+        it "should redirect to the user's show page w/ a flash message." do
+          put :update, id: @user, user: @new_attr
+          response.should redirect_to @user
+          flash[:success].should_not be_nil
+        end
+      end
 
-    describe "with valid params" do
-      it "should change the user's attributes."
-      it "should have a flash message."
-      it "should redirect to the user's show page."
+      describe "with invalid params" do
+        before :each do
+          @new_attr = @user_attr.merge email: 'fake'
+        end
+        
+        it "re-renders the 'edit' template." do
+          put :update, id: @user, user: @new_attr
+          response.should render_template 'edit'
+        end
+        
+        it "does not change the user's attributes." do
+          put :update, id: @user, user: @new_attr
+          @user.reload
+          @user_attr.each do |k, v|
+            @user.send(k).should == v
+          end
+        end
+      end
     end
-
-    describe "with invalid params" do
-      it "re-renders the 'edit' template."
-      it "has the user's old name in the title."
+    
+    describe 'when signed in as a different user' do
+      before :each do
+        test_sign_in Factory(:user, email: 'fake@phony.lie', uid: 'new_uid')
+        @new_attr = @user_attr.merge email: 'even-more-fake@phony.lie'
+      end
+      
+      it "does not change the user's attributes." do
+        put :update, id: @user, user: @new_attr
+        @user.reload
+        @user_attr.each do |k, v|
+          @user.send(k).should == v
+        end
+      end
+      
+      it "redirects to the user's show page with a flash message." do
+        put :update, id: @user, user: @new_attr
+        response.should redirect_to @user
+        flash[:error].should =~ /can't edit/i
+      end
     end
-
+    
+    describe 'when not signed in' do
+      before :each do
+        @new_attr = @user_attr.merge email: 'fake@phony.lie'
+      end
+      
+      it "does not change the user's attributes." do
+        put :update, id: @user, user: @new_attr
+        @user.reload
+        @user_attr.each do |k, v|
+          @user.send(k).should == v
+        end
+      end
+      
+      it "redirects to the user's show page with a flash message." do
+        put :update, id: @user, user: @new_attr
+        response.should redirect_to '/auth/google'
+      end
+    end
   end
 
   describe "DELETE destroy" do
     describe "when not signed in" do
-      it "should not destroy the user."
-      it "should redirect to the sign in page."
+      it "should not destroy the user." do
+        lambda do
+          delete :destroy, id: @user
+        end.should_not change(User, :count)
+      end
+      
+      it "should redirect to /auth/google." do
+        delete :destroy, id: @user
+        response.should redirect_to '/auth/google'
+      end
     end
     
     describe "as a different user" do
-      it "should not destroy the user."
-      it "should redirect to the user's show page."
+      before :each do
+        test_sign_in Factory(:user, email: 'fake@phony.lie', uid: 'new_uid')
+      end
+      
+      it "should not destroy the user." do
+        lambda do
+          delete :destroy, id: @user
+        end.should_not change(User, :count)
+      end
+      
+      it "should redirect to the user's show page with a flash message." do
+        delete :destroy, id: @user
+        response.should redirect_to @user
+        flash[:error].should_not be_nil
+      end
     end
     
     describe "as the current user" do
-      it "should destroy the user."
-      it "should redirect to the home page."
-      it "should display an appropriate flash message."
+      before :each do
+        test_sign_in @user
+      end
+      
+      it "should destroy the user." do
+        lambda do
+          delete :destroy, id: @user
+        end.should change(User, :count).by -1
+      end
+      
+      it "should redirect to the home page w/ a flash message." do
+        delete :destroy, id: @user
+        response.should redirect_to root_path
+        flash[:success].should =~ /discharge/i
+      end
+      
+      it "should sign the user out." do
+        delete :destroy, id: @user
+        controller.current_user.should be_nil
+      end
     end
     
     #admin features will be added later.

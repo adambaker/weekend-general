@@ -29,6 +29,7 @@ class UsersController < ApplicationController
   # GET /users/new.xml
   def new
     if current_user
+      flash[:error] = "You're already signed in. You can't re-enlist."
       redirect_to root_path
     else
       @title = 'New recruit enlistment'
@@ -44,7 +45,7 @@ class UsersController < ApplicationController
     elsif @user == current_user
       @title = "Editing #{@user.name}'s dossier."
     else
-      flash[:error] = "You can't edit another user's profile."
+      flash[:error] = "You can't edit someone else's profile."
       redirect_to @user
     end
   end
@@ -52,20 +53,25 @@ class UsersController < ApplicationController
   # POST /users
   # POST /users.xml
   def create
-    @user = User.new(params[:user])
-
-    respond_to do |format|
-      if @user.save
-        format.html { redirect_to(@user, 
-            :notice => 'User was successfully created.') }
-        #format.xml  { render :xml      => @user, 
-        #                     :status   => :created, 
-        #                     :location => @user }
-      else
-        format.html { render :action => "new" }
-        #format.xml  { render :xml    => @user.errors, 
-        #                     :status => :unprocessable_entity }
+    if current_user.nil?
+      @user = User.new(params[:user]) 
+      respond_to do |format|
+        if @user.save
+          session[:user_id] = @user.id
+          flash[:success] = "You've successfully enlisted. Now go kick some ass."
+          format.html { redirect_to(@user)}
+          #format.xml  { render :xml      => @user, 
+          #                     :status   => :created, 
+          #                     :location => @user }
+        else
+          format.html { render :action => "new" }
+          #format.xml  { render :xml    => @user.errors, 
+          #                     :status => :unprocessable_entity }
+        end
       end
+    else
+      flash[:error] = "You're already signed in. You can't re-enlist."
+      redirect_to root_path
     end
   end
 
@@ -73,17 +79,25 @@ class UsersController < ApplicationController
   # PUT /users/1.xml
   def update
     @user = User.find(params[:id])
-
-    respond_to do |format|
-      if @user.update_attributes(params[:user])
-        format.html { redirect_to(@user, 
-            :notice => 'User was successfully updated.') }
-        #format.xml  { head :ok }
-      else
-        format.html { render :action => "edit" }
-        #format.xml  { render :xml => @user.errors, 
-        #                     :status => :unprocessable_entity }
+    
+    if current_user == @user
+      respond_to do |format|
+        if @user.update_attributes(params[:user])
+          flash[:success] = 'Yeah yeah. I got your personnel info filed. ' + 
+            'Now quit dallying with the paperwork and get to your ops.'
+          format.html { redirect_to(@user) }
+          #format.xml  { head :ok }
+        else
+          format.html { render :action => "edit" }
+          #format.xml  { render :xml => @user.errors, 
+          #                     :status => :unprocessable_entity }
+        end
       end
+    elsif current_user.nil?
+      redirect_to '/auth/google'
+    else
+      flash[:error] = "You can't edit someone else's profile."
+      redirect_to @user
     end
   end
 
@@ -91,11 +105,24 @@ class UsersController < ApplicationController
   # DELETE /users/1.xml
   def destroy
     @user = User.find(params[:id])
-    @user.destroy
-
-    respond_to do |format|
-      format.html { redirect_to(users_url) }
-      #format.xml  { head :ok }
+    if current_user.nil?
+      redirect_to '/auth/google'
+    elsif current_user == @user
+      sign_out
+      @user.destroy
+      
+      respond_to do |format|
+        format.html do
+          flash[:success] = "You have your discharge. You know where the " + 
+            "recruiter is if you want back in."
+          redirect_to root_path
+        end
+        #format.xml  { head :ok }
+      end
+    else
+      flash[:error] = "You don't have clearance to give someone " + 
+        "else a discharge."
+      redirect_to @user
     end
   end
   
