@@ -3,29 +3,27 @@ class SessionsController < ApplicationController
     auth = request.env["omniauth.auth"]
     user = User.find_by_provider_and_uid(auth["provider"], auth["uid"]) 
     if current_user
-      flash[:notice] = "I already know you're here, warrior. Now get to work!"
+      flash[:notice] = Themes::current_theme['sessions']['already_signed_in']
       redirect_to current_user
     elsif user.nil?
       redirect_to controller: :users, action: :new,  
-                  user: { provider: auth['provider'],
-                          uid: auth['uid'],
-                          name: auth['user_info']['name'],
-                          email: auth['user_info']['email']
-                  }
-                        
+        user: { provider: auth['provider'], name: auth['user_info']['name'], 
+          uid: auth['uid'], email: auth['user_info']['email']}                
     else
       session[:user_id] = user.id
-      redirect_to root_url, :notice => "There you are. Now fall in."
+      flash[:notice] = Themes::current_theme['sessions']['sign_in']
+      redirect_to root_url
     end
   end
   
   def destroy
     if current_user
       session[:user_id] = nil
-      redirect_to root_url, :notice => "Dismissed!"
+      flash[:notice] = Themes::current_theme['sessions']['sign_out']
+      redirect_to root_url
     else
       session[:user_id] = nil
-      flash[:error] = 'You need to sound off before you can be dismissed!'
+      flash[:error] = Themes::current_theme['sessions']['already_signed_out']
       redirect_to root_url
     end
   end

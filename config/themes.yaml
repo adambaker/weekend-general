@@ -1,0 +1,30 @@
+generic:
+  sessions:
+    authenticating: "We're checking up on your with Google."
+    sign_in: "Welcome back. Now tell your friends about what you're doing."
+    sign_out: "You're out. See you again soon."
+    timeout: "Sometimes people get signed out for hanging around doing nothing. I guess that's what happened to you."
+    already_signed_in: "You're already signed in. You don't need to sign in again."
+    already_signed_out: "You can't sign out before you've even signed in."
+    
+  users:
+    signed_up: "Good to see a new face. Now see what your friends are doing and let them know what you're up to."
+    sign_up_button: "Sign up"
+    updated: "Your profile info has been changed."
+    destroyed: "So sorry you don't want to stay. Come back any time and we'll have a place for you."
+
+
+general:
+  sessions:
+    authenticating: "I'm looking for you on my roll."
+    sign_in: 'There you are. Now fall in.'
+    sign_out: 'Dismissed!'
+    timeout: 'You were caught loitering and tossed out.'
+    already_signed_in: "I already know you're here, warrior. Now get to work!"
+    already_signed_out: "You haven't even checked in and you're trying to check out."
+    
+  users:
+    signed_up: "I guess the recruiter thought you have some stuff. Now go gather some intel and execute some ops, warrior."
+    sign_up_button: "Enlist"
+    updated: 'Yeah yeah. I got your personnel info filed. Now quit dallying with the paperwork and get to your ops.'
+    destroyed: "You have your discharge. You know where the recruiter is if you want back in."
