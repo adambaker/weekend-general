@@ -1,0 +1,14 @@
+%h1= t '.title'
+%p
+  = link_to t('back'), venues_path
+  = link_to t('edit'), edit_venue_path(@venue)
+
+%dl
+  %dt= Venue.human_attribute_name :name
+  %dd= @venue.name
+  %dt= Venue.human_attribute_name :city
+  %dd= @venue.city
+  %dt= Venue.human_attribute_name :url
+  %dd= @venue.url
+  %dt= Venue.human_attribute_name :description
+  %dd= @venue.description

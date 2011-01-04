@@ -5,8 +5,7 @@ class User < ActiveRecord::Base
   attr_accessible :email, :name, :provider, :uid
   
   validates :name,     presence:   true
-  validates :email,    presence:   true, 
-                       uniqueness: {case_sensitive: false},
+  validates :email,    uniqueness: {case_sensitive: false},
                        format:     {with: email_regex}
   validates :provider, presence:   true
   validates :uid,      presence:   true,

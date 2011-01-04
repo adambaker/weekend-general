@@ -74,9 +74,8 @@ describe User do
   
   it "should allow same uid with different providers" do
     User.create!(@attr)
-    other_user = User.new(
-        name: 'foo', email:'fake@phony.lie', provider: 'foo', uid: @attr[:uid]
-      )
+    other_user = User.new(name: 'foo', email:'fake@phony.lie', provider: 'foo',
+      uid: @attr[:uid])
     other_user.should be_valid
   end
 end

@@ -1,5 +1,7 @@
 WeekendGeneral::Application.routes.draw do
   
+  resources :venues
+
   resources :users
   
   resources :sessions, only: [:create, :destroy]
