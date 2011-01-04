@@ -3,9 +3,10 @@
 = form_for(@user) do |f| 
   = render 'fields', :f => f
   .actions
-    = f.submit "Edit"
+    = f.submit "Save changes"
  
 %h3 Cancel my account
 %p
-  Unhappy? #{link_to "Receive an honorable discharge", @user , :confirm => "Are you sure?", :method => :delete}.
+  Unhappy? #{link_to Themes::current_theme['users']['cancel_account'], |
+    @user , confirm: "Are you sure?", method: :delete}.                |
 = link_to "Back", :back

@@ -17,6 +17,7 @@ generic:
     
     destroyed: "So sorry you don't want to stay. Come back any time and we'll have a place for you."
     destroy_not_you: "Why are you trying to delete someone else's account? That doesn't seem ethical."
+    cancel_account: "Cancel your account."
 
 general:
   sessions:
@@ -25,7 +26,7 @@ general:
     sign_out: 'Dismissed!'
     timeout: 'You were caught loitering and tossed out.'
     already_signed_in: "I already know you're here, warrior. Now get to work!"
-    already_signed_out: "You haven't even checked in and you're trying to check out."
+    already_signed_out: "You haven't even checked in and you're trying to check out!?"
     
   users:
     signed_up: "You've successfully enlisted. Now go kick some ass."
@@ -37,4 +38,5 @@ general:
 
     destroyed: "You have your discharge. You know where the recruiter is if you want back in."
     destroy_not_you: "You don't have clearence to discharge another recruit!"
+    cancel_account: "Receive an honorable discharge"
 

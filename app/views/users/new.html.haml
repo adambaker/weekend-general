@@ -3,4 +3,4 @@
 = form_for(@user) do |f| 
   = render 'fields', :f => f
   .actions
-    = f.submit "Enlist" 
+    = f.submit Themes::current_theme['users']['sign_up_button'] 
