@@ -1,0 +1,24 @@
+%h1 Venues
+%p= link_to 'Add a new venue', new_venue_path
+
+%table
+  %thead
+    %tr
+      %th= Venue.human_attribute_name :name
+      %th= Venue.human_attribute_name :address
+      %th= Venue.human_attribute_name :city
+      %th= Venue.human_attribute_name :url
+      %th= Venue.human_attribute_name :description
+      %th{:colspan => 3}= 'actions'
+  
+  %tbody
+    - for venue in @venues
+      %tr{ :class => cycle(:odd, :even) }
+        %td= venue.name
+        %td= venue.address
+        %td= venue.city
+        %td= venue.url
+        %td= venue.description
+        %td.action= link_to 'show', venue
+        %td.action= link_to 'edit', edit_venue_path(venue)
+        %td.action= link_to 'destroy', venue, :confirm => 'are_you_sure', :method => :delete
