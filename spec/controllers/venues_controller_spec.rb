@@ -25,15 +25,15 @@ describe VenuesController do
       response.should_not have_selector :a, content: 'destroy'
     end
     
-    it "should strip allowed tags truncate description to 100 characters." do
+    it "should strip tags truncate description to 50 characters." do
       get :index
       response.should have_selector(:td, 
-        content: stripped_description[0...100]+'...')
+        content: stripped_description[0...47]+'...')
     end
     
     it "should have a link to the site's webpage." do
       get :index
-      response.should have_selector(:a, href: @venue.url, content: 'Website')
+      response.should have_selector(:a, href: @venue.url, content: 'website')
     end
     
     it "should display all the venues." do
@@ -50,13 +50,29 @@ describe VenuesController do
   end
 
   describe "GET show" do
-    it "assigns the requested venue as @venue" do
-      Venue.stub(:find).with("37") { mock_venue }
-      get :show, :id => "37"
-      assigns(:venue).should be(mock_venue)
+    it "be successful and have the right title." do
+      get :show, id: @venue
+      response.should be_successful
+      response.should have_selector :title, content: @venue.name
+    end
+    
+    it "should have a link to the site's webpage." do
+      get :show, id: @venue
+      response.should have_selector(:a, href: @venue.url, content: 'website')
+    end
+    
+    it "should have a sanitized, formatted description." do
+      paragraphs = sanitized_description.split("\n")
+      get :show, id: @venue
+      response.should have_selector 'p a', href: 'www.ahappyplace.com',
+                                            content: 'A Happy Place'
+      response.should have_selector 'p em', content: 'hate'
+      response.should have_selector 'p', content: 'Red Eye'
+      response.should have_selector 'p', content: paragraphs[2]
+      response.should_not have_selector 'p script'
     end
   end
-
+  
   describe "GET new" do
     it "assigns a new venue as @venue" do
       Venue.stub(:new) { mock_venue }
@@ -140,7 +156,6 @@ describe VenuesController do
         response.should render_template("edit")
       end
     end
-
   end
 
   describe "DELETE destroy" do

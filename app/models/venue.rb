@@ -8,4 +8,15 @@ class Venue < ActiveRecord::Base
                    uniqueness: {scope: [:address, :city]}
   validates :url,  format:     {with: url_regex}
   validates :city, presence:   true
+  
+  def url
+    protocol_regex = /^[a-z]+:\/\//
+    stored = read_attribute(:url)
+    if protocol_regex =~ stored or stored==''
+      stored
+    else
+      'http://'+stored
+    end
+  end
+  
 end

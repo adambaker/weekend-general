@@ -1,16 +1,19 @@
-%h1= @venue.name
+%h1= link_to @venue.name, @venue.url
+
+%dl
+  %dt= Venue.human_attribute_name :address
+  %dd
+    = @venue.address
+    %br/
+    = @venue.city
+    %br/
+    = link_to 'website', @venue.url
+  %dt= Venue.human_attribute_name :description
+  %dd= simple_format(sanitize(@venue.description, tags: allowed_tags), |
+        {}, sanitize: false)                                           |
+  
 %p
   = link_to 'back', venues_path
   = link_to 'edit', edit_venue_path(@venue)
+  
 
-%dl
-  %dt= Venue.human_attribute_name :name
-  %dd= @venue.name
-  %dt= Venue.human_attribute_name :address
-  %dd= @venue.address
-  %dt= Venue.human_attribute_name :city
-  %dd= @venue.city
-  %dt= Venue.human_attribute_name :url
-  %dd= @venue.url
-  %dt= Venue.human_attribute_name :description
-  %dd= @venue.description

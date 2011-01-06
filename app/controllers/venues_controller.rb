@@ -1,25 +1,23 @@
 class VenuesController < ApplicationController
+  
+  respond_to :html #, :xml, :json
+
   # GET /venues
   # GET /venues.xml
   def index
     @venues = Venue.all
     @title = "Venues"
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @venues }
-    end
+    
+    respond_with @venues
   end
 
   # GET /venues/1
   # GET /venues/1.xml
   def show
     @venue = Venue.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @venue }
-    end
+    @title = @venue.name
+    
+    respond_with @venue
   end
 
   # GET /venues/new

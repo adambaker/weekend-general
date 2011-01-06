@@ -43,4 +43,19 @@ describe Venue do
   it "should require a city." do
     Venue.new(@attr.merge city: '').should_not be_valid
   end
+  
+  it "should prefix url with http:// if no protocol is not present." do
+    venue = Venue.create!(@attr)
+    venue.url.should == 'http://'+@attr[:url]
+  end
+  
+  it "should not prefix url with a protocol if one is present." do
+    venue = Venue.create!(@attr.merge(url: 'http://ahappyplace.com'))
+    venue.url.should == 'http://ahappyplace.com'
+  end
+  
+  it "should not prefix a blank url." do
+    venue = Venue.create!(@attr.merge(url: ''))
+    venue.url.should == ''
+  end
 end

@@ -18,7 +18,7 @@
         %td= venue.address
         %td= venue.city
         %td
-          %a{href: venue.url} Website
-        %td= truncate strip_tags(h venue.description)
+          %a{href: venue.url} website
+        %td= truncate strip_tags(venue.description), length: 50
         %td.action= link_to 'show', venue
         %td.action= link_to 'edit', edit_venue_path(venue)
