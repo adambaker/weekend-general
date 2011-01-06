@@ -9,8 +9,7 @@
     %br/
     = link_to 'website', @venue.url
   %dt= Venue.human_attribute_name :description
-  %dd= simple_format(sanitize(@venue.description, tags: allowed_tags), |
-        {}, sanitize: false)                                           |
+  %dd= display_format(@venue.description)
   
 %p
   = link_to 'back', venues_path

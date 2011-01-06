@@ -12,4 +12,8 @@ module ApplicationHelper
         blockquote pre ul ol li table tr td p]
   end
   
+  def display_format(text)
+    simple_format(sanitize(text, tags: allowed_tags), {}, sanitize: false)
+      .html_safe
+  end
 end
