@@ -1,4 +1,5 @@
 generic:
+  name: 'generic'
   sessions:
     authenticating: "We're checking up on your with Google."
     sign_in: "Welcome back. Now tell your friends about what you're doing."
@@ -19,13 +20,14 @@ generic:
     destroy_not_you: "Why are you trying to delete someone else's account? That doesn't seem ethical."
 
 general:
+  name: 'general'
   sessions:
     authenticating: "I'm looking for you on my roll."
     sign_in: 'There you are. Now fall in.'
     sign_out: 'Dismissed!'
     timeout: 'You were caught loitering and tossed out.'
     already_signed_in: "I already know you're here, warrior. Now get to work!"
-    already_signed_out: "You haven't even checked in and you're trying to check out."
+    already_signed_out: "You haven't even checked in and you're trying to check out?!"
     
   users:
     signed_up: "You've successfully enlisted. Now go kick some ass."
