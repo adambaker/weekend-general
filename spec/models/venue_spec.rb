@@ -2,21 +2,7 @@ require 'spec_helper'
 
 describe Venue do
   before :each do 
-    @attr = { 
-      name: 'A Happy Place',
-      address: '1234 Happy Street',
-      city: 'Chicago',
-      url: 'www.ahappyplace.com',
-      description: <<-all_good_strings
-        A Happy Place is a terrible place to go if you want to hate things
-        and kill yourself. The people look at each other with wide smilas and
-        bloodshot eyes. Ask the bartender in the back for the Red Eye to get
-        the optimal Happy Place experience.
-        
-        Cover for events ranges from free to about $1200, so be prepared. 
-        Typically hosts goblin eating contests and thrash metal.
-      all_good_strings
-    }
+    @attr = venue_attr
   end
   
   it "should create a new instance with valid parameters." do
@@ -52,5 +38,9 @@ describe Venue do
     Venue.new(@attr).should_not be_valid
     Venue.new(@attr.merge address: '1234 sad road').should be_valid
     Venue.new(@attr.merge city: 'Evanston').should be_valid
+  end
+  
+  it "should require a city." do
+    Venue.new(@attr.merge city: '').should_not be_valid
   end
 end

@@ -4,7 +4,8 @@ class Venue < ActiveRecord::Base
     
   attr_accessible :name, :address, :city, :url, :description
   
-  validates :name, presence: true,
+  validates :name, presence:   true,
                    uniqueness: {scope: [:address, :city]}
-  validates :url,  format:   {with: url_regex}
+  validates :url,  format:     {with: url_regex}
+  validates :city, presence:   true
 end
