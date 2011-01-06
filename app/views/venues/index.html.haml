@@ -17,8 +17,8 @@
         %td= venue.name
         %td= venue.address
         %td= venue.city
-        %td= venue.url
-        %td= venue.description
+        %td
+          %a{href: venue.url} Website
+        %td= truncate strip_tags(h venue.description)
         %td.action= link_to 'show', venue
         %td.action= link_to 'edit', edit_venue_path(venue)
-        %td.action= link_to 'destroy', venue, :confirm => 'are_you_sure', :method => :delete

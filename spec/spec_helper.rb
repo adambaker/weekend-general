@@ -37,14 +37,53 @@ RSpec.configure do |config|
       url: 'www.ahappyplace.com',
       description: <<-all_good_strings
         <a href="www.ahappyplace.com">A Happy Place</a> is a terrible place to 
-        go if you want to <em>hate</em> things and kill yourself. The people 
-        look at each other with wide smilas and bloodshot eyes. Ask the 
-        bartender in the back for the Red Eye to get the optimal Happy Place
-        experience.
+        go if you want to <em>hate</em> things and kill yourself. The 
+        <script> foobar</script>people look at each other with wide smiles and
+        bloodshot eyes. Ask the bartender in the back for the Red Eye to get 
+        the optimal Happy Place experience.
         
         Cover for events ranges from free to about $1200, so be prepared. 
         Typically hosts goblin eating contests and thrash metal.
       all_good_strings
     }
+  end
+  
+  def stripped_description
+    <<-all_good_strings
+        A Happy Place is a terrible place to 
+        go if you want to hate things and kill yourself. The 
+        &lt;script&gt; foobar&lt;/script&gt;people look at each other with wide smiles and
+        bloodshot eyes. Ask the bartender in the back for the Red Eye to get 
+        the optimal Happy Place experience.
+        
+        Cover for events ranges from free to about $1200, so be prepared. 
+        Typically hosts goblin eating contests and thrash metal.
+    all_good_strings
+  end
+  
+  def escaped_description
+    <<-all_good_strings
+        &lt;a href="www.ahappyplace.com"&gt;A Happy Place&lt;/a&gt; is a terrible place to 
+        go if you want to &lt;em&gt;hate&lt;/em&gt; things and kill yourself. The 
+        &lt;script&gt; foobar&lt;/script&gt;people look at each other with wide smiles and
+        bloodshot eyes. Ask the bartender in the back for the Red Eye to get 
+        the optimal Happy Place experience.
+        
+        Cover for events ranges from free to about $1200, so be prepared. 
+        Typically hosts goblin eating contests and thrash metal.    
+    all_good_strings
+  end
+  
+  def restored_description
+    <<-all_good_strings
+        <a href="www.ahappyplace.com">A Happy Place</a> is a terrible place to 
+        go if you want to <em>hate</em> things and kill yourself. The 
+        &lt;script&gt; foobar&lt;/script&gt;people look at each other with wide smiles and
+        bloodshot eyes. Ask the bartender in the back for the Red Eye to get 
+        the optimal Happy Place experience.
+        
+        Cover for events ranges from free to about $1200, so be prepared. 
+        Typically hosts goblin eating contests and thrash metal.
+    all_good_strings
   end
 end

@@ -19,14 +19,14 @@ Factory.define :venue do |venue|
   venue.city        'Chicago'
   venue.url         'www.ahappyplace.com'
   venue.description <<-all_good_strings
-    <a href="www.ahappyplace.com">A Happy Place</a> is a terrible place to 
-    go if you want to <em>hate</em> things and kill yourself. The people 
-    look at each other with wide smilas and bloodshot eyes. Ask the 
-    bartender in the back for the Red Eye to get the optimal Happy Place
-    experience.
-    
-    Cover for events ranges from free to about $1200, so be prepared. 
-    Typically hosts goblin eating contests and thrash metal.
+        <a href="www.ahappyplace.com">A Happy Place</a> is a terrible place to 
+        go if you want to <em>hate</em> things and kill yourself. The 
+        <script> foobar</script>people look at each other with wide smiles and
+        bloodshot eyes. Ask the bartender in the back for the Red Eye to get 
+        the optimal Happy Place experience.
+        
+        Cover for events ranges from free to about $1200, so be prepared. 
+        Typically hosts goblin eating contests and thrash metal.
   all_good_strings
 end
 

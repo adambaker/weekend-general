@@ -3,6 +3,7 @@ class VenuesController < ApplicationController
   # GET /venues.xml
   def index
     @venues = Venue.all
+    @title = "Venues"
 
     respond_to do |format|
       format.html # index.html.erb
