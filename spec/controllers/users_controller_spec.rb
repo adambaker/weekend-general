@@ -271,6 +271,26 @@ describe UsersController do
           end
         end
       end
+      
+      describe "when changing uid and provider" do
+        it "should reject a change of uid" do
+          put :update, id: @user, user: @user_attr.merge(uid: 'evil')
+          response.should be_redirect
+          flash[:error].should_not be_nil
+          flash[:error].should == Themes::current_theme['users']['edit_uid']
+          @user.reload
+          @user.uid.should == @user_attr[:uid]
+        end
+        
+        it "should reject a change of provider" do
+          put :update, id: @user, user: @user_attr.merge(provider: 'evil')
+          response.should be_redirect
+          flash[:error].should_not be_nil
+          flash[:error].should == Themes::current_theme['users']['edit_uid']
+          @user.reload
+          @user.uid.should == @user_attr[:uid]
+        end
+      end
     end
     
     describe 'when signed in as a different user' do

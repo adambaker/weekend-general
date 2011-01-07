@@ -15,6 +15,7 @@ generic:
     
     updated: "Your profile info has been changed."
     edit_not_you: "You can't edit someone else's profile."
+    edit_uid: "YOu can't edit your authentication information."
     
     destroyed: "So sorry you don't want to stay. Come back any time and we'll have a place for you."
     destroy_not_you: "Why are you trying to delete someone else's account? That doesn't seem ethical."
@@ -44,6 +45,7 @@ general:
 
     updated: 'Yeah yeah. I got your personnel info filed. Now quit dallying with the paperwork and get to your ops.'
     edit_not_you: "You can't edit someone else's profile!"
+    edit_uid: "The office uses that to verify your identity. You can't change it!"
 
     destroyed: "You have your discharge. You know where the recruiter is if you want back in."
     destroy_not_you: "You don't have clearence to discharge another recruit!"

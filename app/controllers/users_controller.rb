@@ -3,6 +3,7 @@ class UsersController < ApplicationController
   before_filter :not_logged_in, only: [:new, :create]
   before_filter :fetch_user, except: [:index, :new, :create]
   before_filter :edit_authorize, only: [:edit, :update]
+  before_filter :check_uid_provider, only: :update
   
   respond_to :html #, :xml, :json
   # GET /users
@@ -113,5 +114,14 @@ class UsersController < ApplicationController
         flash[:error] = current_theme 'edit_not_you'
         redirect_to @user
       end
-    end    
+    end
+    
+    def check_uid_provider
+      unless params[:user][:uid] == @user.uid and 
+          params[:user][:provider] == @user.provider
+        flash[:error] = current_theme 'edit_uid'
+        redirect_to @user
+      end
+    end
+    
 end
