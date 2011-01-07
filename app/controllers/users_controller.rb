@@ -1,112 +1,79 @@
 class UsersController < ApplicationController
+  before_filter :authenticate, only: [:update, :destroy, :edit]
+  before_filter :not_logged_in, only: [:new, :create]
+  before_filter :fetch_user, except: [:index, :new, :create]
+  before_filter :edit_authorize, only: [:edit, :update]
   
+  respond_to :html #, :xml, :json
   # GET /users
   # GET /users.xml
   def index
     @users = User.all
     @title = "Warrior muster"
-    respond_to do |format|
-      format.html # index.html.erb
-      #format.xml  { render :xml => @users }  add xml and json responses
-      #format.json { render :json => @users } for external APIs later
-    end
+    
+    respond_with @users
   end
 
   # GET /users/1
   # GET /users/1.xml
   # GET /users/1.json
   def show
-    @user = User.find(params[:id])
     @title = @user.name + "'s dossier"
-    respond_to do |format|
-      format.html # show.html.erb
-      #format.xml  { render :xml => @user }
-      #format.json { render :json => @user }
-    end
+    respond_with @user
   end
 
   # GET /users/new
   # GET /users/new.xml
   def new
-    if current_user
-      flash[:error] = current_theme 'already_signed_in'
-      redirect_to root_path
-    else
-      @title = 'New recruit enlistment'
-      @user = User.new params[:user]
-    end
+    @title = 'New recruit enlistment'
+    @user = User.new params[:user]
   end
 
   # GET /users/1/edit
   def edit
-    @user = User.find(params[:id])
-    if current_user.nil?
-      redirect_to '/auth/google'
-    elsif @user == current_user
-      @title = "Editing #{@user.name}'s dossier."
-    else
-      flash[:error] = current_theme 'edit_not_you'
-      redirect_to @user
-    end
+    @title = "Editing #{@user.name}'s dossier."
   end
 
   # POST /users
   # POST /users.xml
   def create
-    if current_user.nil?
-      @user = User.new(params[:user]) 
-      respond_to do |format|
-        if @user.save
-          session[:user_id] = @user.id
-          flash[:success] = current_theme 'signed_up'
-          format.html { redirect_to(@user)}
-          #format.xml  { render :xml      => @user, 
-          #                     :status   => :created, 
-          #                     :location => @user }
-        else
-          format.html { render :action => "new" }
-          #format.xml  { render :xml    => @user.errors, 
-          #                     :status => :unprocessable_entity }
-        end
+    @user = User.new(params[:user]) 
+    respond_to do |format|
+      if @user.save
+        session[:user_id] = @user.id
+        flash[:success] = current_theme 'signed_up'
+        format.html { redirect_to(@user)}
+        #format.xml  { render :xml      => @user, 
+        #                     :status   => :created, 
+        #                     :location => @user }
+      else
+        format.html { render :action => "new" }
+        #format.xml  { render :xml    => @user.errors, 
+        #                     :status => :unprocessable_entity }
       end
-    else
-      flash[:error] = current_theme 'already_signed_in'
-      redirect_to root_path
     end
   end
 
   # PUT /users/1
   # PUT /users/1.xml
   def update
-    @user = User.find(params[:id])
-    
-    if current_user == @user
-      respond_to do |format|
-        if @user.update_attributes(params[:user])
-          flash[:success] = current_theme 'updated'
-          format.html { redirect_to(@user) }
-          #format.xml  { head :ok }
-        else
-          format.html { render :action => "edit" }
-          #format.xml  { render :xml => @user.errors, 
-          #                     :status => :unprocessable_entity }
-        end
+    respond_to do |format|
+      if @user.update_attributes(params[:user])
+        flash[:success] = current_theme 'updated'
+        format.html { redirect_to(@user) }
+        #format.xml  { head :ok }
+      else
+        format.html { render :action => "edit" }
+        #format.xml  { render :xml => @user.errors, 
+        #                     :status => :unprocessable_entity }
       end
-    elsif current_user.nil?
-      redirect_to '/auth/google'
-    else
-      flash[:error] = current_theme 'edit_not_you'
-      redirect_to @user
     end
   end
 
   # DELETE /users/1
   # DELETE /users/1.xml
   def destroy
-    @user = User.find(params[:id])
-    if current_user.nil?
-      redirect_to '/auth/google'
-    elsif current_user == @user
+    if current_user == @user
       sign_out
       @user.destroy
       
@@ -128,4 +95,23 @@ class UsersController < ApplicationController
   def current_theme(message)
     Themes::current_theme['users'][message]
   end
+  
+  private
+    def not_logged_in
+      if current_user
+        flash[:error] = current_theme 'already_signed_in'
+        redirect_to root_path
+      end
+    end
+    
+    def fetch_user
+      @user = User.find(params[:id])
+    end
+    
+    def edit_authorize
+      if @user != current_user
+        flash[:error] = current_theme 'edit_not_you'
+        redirect_to @user
+      end
+    end    
 end
