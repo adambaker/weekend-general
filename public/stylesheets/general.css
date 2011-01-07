@@ -1,0 +1,13 @@
+#general_img
+{
+  height: 150px; z-index: -1;
+  position: absolute; left: 20px; top: 20px;
+}
+
+#speech_img { position: absolute; top: 52px; left: 195px; }
+
+.flash
+{
+  display: inline-block; margin-left: 20px; margin-top: 60px;
+  border-radius: 10px; -moz-border-radius: 10px;
+}

@@ -1,5 +1,5 @@
-%h1= t '.title'
+%h1= "Edit #{@venue.name}"
 %p
-  = link_to t('back'), venues_path
-  = link_to t('show'), @venue
+  = link_to 'back', venues_path
+  = link_to 'show', @venue
 = render 'form'

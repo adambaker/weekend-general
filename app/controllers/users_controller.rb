@@ -123,6 +123,8 @@ class UsersController < ApplicationController
     end
   end
   
+  helper_method :current_theme
+  
   def current_theme(message)
     Themes::current_theme['users'][message]
   end

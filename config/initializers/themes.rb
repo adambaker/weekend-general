@@ -11,4 +11,8 @@ module Themes
   def self.current_theme=( theme_name )
     @@current_theme = THEMES[theme_name]
   end
+  
+  def self.is_general?
+    @@current_theme == THEMES["general"]
+  end
 end

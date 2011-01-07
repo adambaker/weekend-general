@@ -1,14 +1,17 @@
-%h1= t '.title'
-%p
-  = link_to t('back'), venues_path
-  = link_to t('edit'), edit_venue_path(@venue)
+%h1= link_to @venue.name, @venue.url
 
 %dl
-  %dt= Venue.human_attribute_name :name
-  %dd= @venue.name
-  %dt= Venue.human_attribute_name :city
-  %dd= @venue.city
-  %dt= Venue.human_attribute_name :url
-  %dd= @venue.url
+  %dt= Venue.human_attribute_name :address
+  %dd
+    = @venue.address
+    %br/
+    = @venue.city
+    %br/
+    = link_to 'website', @venue.url
   %dt= Venue.human_attribute_name :description
-  %dd= @venue.description
+  %dd= display_format(@venue.description)
+  
+%p
+  = link_to 'back', venues_path
+  = link_to 'edit', edit_venue_path(@venue)
+

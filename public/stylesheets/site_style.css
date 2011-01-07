@@ -11,7 +11,7 @@ h1, h2, h3, h4, h5, h6
   font-family: helvetica, arial, sans-serif;
 }
 
-#container{ width: 800px; margin: 10px auto; }
+#container{ width: 800px; margin-top: 10px; margin-left: 160px; }
 
 #header{height: 40px; position: relative;}
 
@@ -63,13 +63,10 @@ div.field, div.actions {
 
 .flash
 {
-  width: 450px; border: 2px solid #000;
+  border: 2px solid #000;
   margin: 10px; padding: 10px;
 }
 
-.notice {
-  background-color: #EEDC9A;
-}
 
 .field_with_errors {
   padding: 2px;

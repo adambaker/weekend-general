@@ -1,7 +1,7 @@
 = form_for(@venue) do |f|
   - if @venue.errors.any?
     #errorExplanation
-      %h2= "#{pluralize(@venue.errors.count, 'error')} prohibited this user from being saved:"
+      %h2= "#{pluralize(@venue.errors.count, 'error')} prohibited this venue from being saved:"
       %ul
       - @venue.errors.full_messages.each do |msg|
         %li= msg
@@ -10,6 +10,10 @@
     = f.label :name
     %br
     = f.text_field :name
+  .field
+    = f.label :address
+    %br
+    = f.text_field :address
   .field
     = f.label :city
     %br
@@ -24,4 +28,4 @@
     = f.text_area :description
 
   .actions
-    = f.submit
+    = f.submit current_theme 'submit'

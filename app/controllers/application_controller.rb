@@ -12,4 +12,9 @@ class ApplicationController < ActionController::Base
     session[:user_id] = nil
   end
   
+  def authenticate
+    if current_user.nil?
+      redirect_to '/auth/google'
+    end
+  end
 end

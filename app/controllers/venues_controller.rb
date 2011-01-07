@@ -1,39 +1,38 @@
 class VenuesController < ApplicationController
+  respond_to :html #, :xml, :json
+  
+  before_filter :authenticate, except: [:index, :show]
+  
   # GET /venues
   # GET /venues.xml
   def index
     @venues = Venue.all
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @venues }
-    end
+    @title = "Venues"
+    
+    respond_with @venues
   end
 
   # GET /venues/1
   # GET /venues/1.xml
   def show
     @venue = Venue.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @venue }
-    end
+    @title = @venue.name
+    
+    respond_with @venue
   end
 
   # GET /venues/new
   # GET /venues/new.xml
   def new
-    @venue = Venue.new
+    @venue = Venue.new(city: WeekendGeneral::Local.city)
+    @title = 'New venue intel' 
 
-    respond_to do |format|
-      format.html # new.html.erb
-      format.xml  { render :xml => @venue }
-    end
+    respond_with @venue
   end
 
   # GET /venues/1/edit
   def edit
+    @title = 'Revise venue intel'
     @venue = Venue.find(params[:id])
   end
 
@@ -44,11 +43,14 @@ class VenuesController < ApplicationController
 
     respond_to do |format|
       if @venue.save
-        format.html { redirect_to(@venue, :notice => 'Venue was successfully created.') }
-        format.xml  { render :xml => @venue, :status => :created, :location => @venue }
+        flash[:success] = current_theme 'new'
+        format.html { redirect_to @venue }
+        #format.xml  { render :xml => @venue, 
+          #:status => :created, :location => @venue }
       else
         format.html { render :action => "new" }
-        format.xml  { render :xml => @venue.errors, :status => :unprocessable_entity }
+        #format.xml  { render :xml => @venue.errors, 
+          #:status => :unprocessable_entity }
       end
     end
   end
@@ -60,11 +62,13 @@ class VenuesController < ApplicationController
 
     respond_to do |format|
       if @venue.update_attributes(params[:venue])
-        format.html { redirect_to(@venue, :notice => 'Venue was successfully updated.') }
-        format.xml  { head :ok }
+        flash[:success] = current_theme 'updated'
+        format.html { redirect_to @venue }
+        #format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
-        format.xml  { render :xml => @venue.errors, :status => :unprocessable_entity }
+        #format.xml  { render :xml => @venue.errors, :status
+          #=> :unprocessable_entity }
       end
     end
   end
@@ -76,8 +80,15 @@ class VenuesController < ApplicationController
     @venue.destroy
 
     respond_to do |format|
+      flash[:success] = current_theme 'deleted'
       format.html { redirect_to(venues_url) }
-      format.xml  { head :ok }
+      #format.xml  { head :ok }
     end
+  end
+  
+  helper_method :current_theme
+  
+  def current_theme(message)
+    Themes::current_theme['venues'][message]
   end
 end
