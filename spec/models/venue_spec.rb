@@ -45,13 +45,13 @@ describe Venue do
   end
   
   it "should prefix url with http:// if no protocol is not present." do
-    venue = Venue.create!(@attr)
-    venue.url.should == 'http://'+@attr[:url]
+    venue = Venue.create!(@attr.merge(url: 'www.ahappyplace.com'))
+    venue.url.should == @attr[:url]
   end
   
   it "should not prefix url with a protocol if one is present." do
-    venue = Venue.create!(@attr.merge(url: 'http://ahappyplace.com'))
-    venue.url.should == 'http://ahappyplace.com'
+    venue = Venue.create!(@attr)
+    venue.url.should == @attr[:url]
   end
   
   it "should not prefix a blank url." do

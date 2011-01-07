@@ -18,6 +18,11 @@ generic:
     
     destroyed: "So sorry you don't want to stay. Come back any time and we'll have a place for you."
     destroy_not_you: "Why are you trying to delete someone else's account? That doesn't seem ethical."
+    
+  venues:
+    new: "Another favorite place added to the list."
+    update: "Changes to this venue have been saved."
+    deleted: "The venue information was removed. I'm sure it will be missed."
 
 general:
   name: 'general'
@@ -39,4 +44,8 @@ general:
 
     destroyed: "You have your discharge. You know where the recruiter is if you want back in."
     destroy_not_you: "You don't have clearence to discharge another recruit!"
-
+    
+  venues:
+    new: "We got your intel on this new location."
+    updated: "Revising our intel on this theater... Good thinking."
+    deleted: "That intel was outdated anyway."

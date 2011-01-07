@@ -17,7 +17,7 @@ Factory.define :venue do |venue|
   venue.name        'A Happy Place'
   venue.address     '1234 Happy Street'
   venue.city        'Chicago'
-  venue.url         'www.ahappyplace.com'
+  venue.url         'http://www.ahappyplace.com'
   venue.description <<-all_good_strings
 <a href="www.ahappyplace.com">A Happy Place</a> is a terrible place to go if you want to <em>hate</em> things and kill yourself. The <script> foobar</script>people look at each other with wide smiles and bloodshot eyes. Ask the bartender in the back for the Red Eye to get the optimal Happy Place experience.
 
