@@ -1,0 +1,22 @@
+%h1= t '.title'
+%p
+  = link_to t('back'), events_path
+  = link_to t('edit'), edit_event_path(@event)
+
+%dl
+  %dt= Event.human_attribute_name :name
+  %dd= @event.name
+  %dt= Event.human_attribute_name :date
+  %dd= @event.date
+  %dt= Event.human_attribute_name :time
+  %dd= @event.time
+  %dt= Event.human_attribute_name :price
+  %dd= @event.price
+  %dt= Event.human_attribute_name :venue
+  %dd= @event.venue
+  %dt= Event.human_attribute_name :address
+  %dd= @event.address
+  %dt= Event.human_attribute_name :city
+  %dd= @event.city
+  %dt= Event.human_attribute_name :description
+  %dd= @event.description
