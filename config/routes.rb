@@ -1,5 +1,7 @@
 WeekendGeneral::Application.routes.draw do
   
+  resources :events
+
   resources :venues
 
   resources :users
