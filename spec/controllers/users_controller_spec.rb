@@ -3,6 +3,11 @@ require 'spec_helper'
 describe UsersController do
   render_views
   
+  def test_flash(type, message)
+    flash[type].should_not be_nil
+    flash[type].should == Themes::current_theme['users'][message]
+  end
+  
   before(:each) do
     @user = Factory(:user)
     @user_attr = { provider: @user.provider,
@@ -115,7 +120,7 @@ describe UsersController do
       test_sign_in @user
       get :new
       response.should redirect_to root_path
-      flash[:error].should_not be_nil
+      test_flash :error, 'already_signed_in'
     end
     
     it "should fill in the form with default values from params." do
@@ -165,7 +170,7 @@ describe UsersController do
       it "should redirect to the user's profile w/ a flash message." do
         get :edit, id: @user
         response.should redirect_to @user
-        flash[:error].should =~ /can't edit/i
+        test_flash :error, 'edit_not_you'
       end
     end
   end
@@ -186,7 +191,7 @@ describe UsersController do
       it "should redirect to the created user with a welcome message." do
         post :create, user: @attr
         response.should redirect_to User.find_by_email @attr[:email]
-        flash[:success].should =~ /enlisted/i
+        test_flash :success, 'signed_up'
       end
       
       it "should sign the user in." do
@@ -208,7 +213,7 @@ describe UsersController do
         it "should redirect to root with an appropriate message." do
           post :create, user: @attr
           response.should redirect_to root_path
-          flash[:error].should_not be_nil
+          test_flash :error, 'already_signed_in'
         end 
       end
     end
@@ -249,7 +254,7 @@ describe UsersController do
         it "should redirect to the user's show page w/ a flash message." do
           put :update, id: @user, user: @new_attr
           response.should redirect_to @user
-          flash[:success].should_not be_nil
+          test_flash :success, 'updated'
         end
       end
 
@@ -276,8 +281,7 @@ describe UsersController do
         it "should reject a change of uid" do
           put :update, id: @user, user: @user_attr.merge(uid: 'evil')
           response.should be_redirect
-          flash[:error].should_not be_nil
-          flash[:error].should == Themes::current_theme['users']['edit_uid']
+          test_flash :error, 'edit_uid'
           @user.reload
           @user.uid.should == @user_attr[:uid]
         end
@@ -285,8 +289,7 @@ describe UsersController do
         it "should reject a change of provider" do
           put :update, id: @user, user: @user_attr.merge(provider: 'evil')
           response.should be_redirect
-          flash[:error].should_not be_nil
-          flash[:error].should == Themes::current_theme['users']['edit_uid']
+          test_flash :error, 'edit_uid'
           @user.reload
           @user.uid.should == @user_attr[:uid]
         end
@@ -310,7 +313,7 @@ describe UsersController do
       it "redirects to the user's show page with a flash message." do
         put :update, id: @user, user: @new_attr
         response.should redirect_to @user
-        flash[:error].should =~ /can't edit/i
+        test_flash :error, 'edit_not_you'
       end
     end
     
@@ -362,7 +365,7 @@ describe UsersController do
       it "should redirect to the user's show page with a flash message." do
         delete :destroy, id: @user
         response.should redirect_to @user
-        flash[:error].should_not be_nil
+        test_flash :error, 'destroy_not_you'
       end
     end
     
@@ -380,7 +383,7 @@ describe UsersController do
       it "should redirect to the home page w/ a flash message." do
         delete :destroy, id: @user
         response.should redirect_to root_path
-        flash[:success].should =~ /discharge/i
+        test_flash :success, 'destroyed'
       end
       
       it "should sign the user out." do
@@ -391,9 +394,24 @@ describe UsersController do
     
     #admin features will be added later.
     describe "as an admin" do
-      it "should destroy the user."
-      it "should redirect to the users index page."
-      it "should display an appropriate flash message."
+      before :each do
+        @admin = Factory(:user, email: WeekendGeneral::Local::admins[0], 
+            uid: Factory.next(:uid) )
+        test_sign_in @admin
+      end
+      
+      it "should destroy the user." do
+        lambda do
+          delete :destroy, id: @user
+        end.should change(User, :count).by -1
+      end
+      
+      it "should redirect to the users index page with an appropriate flash." do
+        delete :destroy, id: @user
+        response.should redirect_to users_path
+        test_flash :success, 'admin_destroy'
+      end
+      
       it "should send an email to the deleted user." 
     end
   end
