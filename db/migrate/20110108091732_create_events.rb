@@ -5,7 +5,7 @@ class CreateEvents < ActiveRecord::Migration
       t.date :date
       t.time :time
       t.integer :price
-      t.reference :venue
+      t.references :venue
       t.string :address
       t.string :city
       t.text :description
