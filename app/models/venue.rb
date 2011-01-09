@@ -9,14 +9,12 @@ class Venue < ActiveRecord::Base
   validates :url,  format:     {with: url_regex}
   validates :city, presence:   true
   
-  def url
+  def url=(new_url)
     protocol_regex = /^[a-z]+:\/\//
-    stored = read_attribute(:url)
-    if protocol_regex =~ stored or stored==''
-      stored
+    if protocol_regex =~ new_url or new_url == ''
+      write_attribute :url, new_url
     else
-      'http://'+stored
+      write_attribute :url, 'http://'+new_url
     end
   end
-  
 end
