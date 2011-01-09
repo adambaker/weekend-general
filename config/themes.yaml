@@ -19,6 +19,7 @@ generic:
     
     destroyed: "So sorry you don't want to stay. Come back any time and we'll have a place for you."
     destroy_not_you: "Why are you trying to delete someone else's account? That doesn't seem ethical."
+    admin_destroy: "That user must have done something awful, I'm sure."
 
     
   venues:
@@ -49,6 +50,7 @@ general:
 
     destroyed: "You have your discharge. You know where the recruiter is if you want back in."
     destroy_not_you: "You don't have clearence to discharge another recruit!"
+    admin_destroy: "That worthless cadet deserves a dishonorable discharge."
     
   venues:
     new: "We got your intel on this new location."

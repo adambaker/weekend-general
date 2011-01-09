@@ -85,6 +85,10 @@ class UsersController < ApplicationController
         end
         #format.xml  { head :ok }
       end
+    elsif current_user.admin
+      @user.destroy
+      flash[:success] = current_theme 'admin_destroy'
+      redirect_to users_path
     else
       flash[:error] = current_theme 'destroy_not_you'
       redirect_to @user

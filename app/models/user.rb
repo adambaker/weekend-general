@@ -14,6 +14,11 @@ class User < ActiveRecord::Base
   before_save :check_admin
   
   def check_admin
-    self.admin = true if WeekendGeneral::Local.admins.include? self.email
+    self.admin = true if super_admin?
   end
+  
+  def super_admin? #planning on letting super admins add and remove admins
+    WeekendGeneral::Local.admins.include? self.email
+  end
+  
 end
