@@ -10,4 +10,10 @@ class User < ActiveRecord::Base
   validates :provider, presence:   true
   validates :uid,      presence:   true,
                        uniqueness: {scope: :provider}
+         
+  before_save :check_admin
+  
+  def check_admin
+    self.admin = true if WeekendGeneral::Local.admins.include? self.email
+  end
 end
