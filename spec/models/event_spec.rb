@@ -11,7 +11,7 @@ describe Event do
         'date(3i)' => 2.days.from_now.day.to_s,
         time: '',
         price: '21.40',
-        venue: @venue,
+        venue_id: @venue.id.to_s,
         address: '',
         city: '',
         links_attributes: [],
@@ -25,7 +25,7 @@ describe Event do
         'date(3i)' => 2.weeks.from_now.day.to_s,
         time: '9pm', 
         price: '',
-        venue: nil,
+        venue_id: '',
         address: '1234 Evil hill',
         city: 'Chicago, Il',
         links_attributes: [
@@ -85,5 +85,8 @@ describe Event do
     Event.new.city.should == WeekendGeneral::Local::city
   end
   
-  
+  it 'should reject invalid links.' do
+    @with_venue_attr[:links_attributes] << {url: invalid_urls[0], text: ''}
+    Event.new(@with_venue_attr).should_not be_valid
+  end
 end

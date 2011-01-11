@@ -1,15 +1,16 @@
 class Event < ActiveRecord::Base
-  attr_accessible :name, :date, :time, :price, :venue, :address, :city, :links,
+  attr_accessible :name, :date, :time, :price, :venue_id, :address, :city,
     :description
-  
-  validates :name, presence: true
-  validates :address, presence: true
-  validates :city, presence: true
 
   belongs_to :venue
   has_many :links
   
+  validates_associated :links
   accepts_nested_attributes_for :links
+  
+  validates :name, presence: true
+  validates :address, presence: true
+  validates :city, presence: true
   
   before_validation :venue_address
   before_save :convert_price
@@ -31,7 +32,7 @@ class Event < ActiveRecord::Base
       self.price = (Float(
           price_before_type_cast.strip.gsub('$','').gsub(',',''))*100
         ).round
-    rescue ArgumentError
+    rescue Exception
       self.price = nil
     end
   end
