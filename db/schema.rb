@@ -15,7 +15,7 @@ ActiveRecord::Schema.define(:version => 20110109021618) do
   create_table "events", :force => true do |t|
     t.string   "name"
     t.date     "date"
-    t.time     "time"
+    t.string   "time"
     t.integer  "price"
     t.integer  "venue_id"
     t.string   "address"
