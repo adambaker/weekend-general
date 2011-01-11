@@ -1,6 +1,6 @@
 class Event < ActiveRecord::Base
   attr_accessible :name, :date, :time, :price, :venue_id, :address, :city,
-    :description
+    :description, :links_attributes
 
   belongs_to :venue
   has_many :links

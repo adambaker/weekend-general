@@ -37,8 +37,8 @@ describe Event do
   end
   
   it 'should create a new instance with valid attributes.' do
-    Event.create! @with_venue_attr
-    Event.create! @with_address_attr
+    Event.create!(@with_venue_attr)
+    Event.create!(@with_address_attr)
   end
   
   it "should use the venue's address when a venue is given." do
@@ -85,8 +85,14 @@ describe Event do
     Event.new.city.should == WeekendGeneral::Local::city
   end
   
+  it 'should contain a link for each links attribute.' do
+    event = Event.create(@with_address_attr) 
+    event.links.size.should == 2
+  end
+  
   it 'should reject invalid links.' do
     @with_venue_attr[:links_attributes] << {url: invalid_urls[0], text: ''}
     Event.new(@with_venue_attr).should_not be_valid
   end
+  
 end
