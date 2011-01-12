@@ -10,37 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110111223641) do
-
-  create_table "event_attendees", :force => true do |t|
-    t.integer  "user_id"
-    t.integer  "event_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "event_attendees", ["event_id"], :name => "index_event_attendees_on_event_id"
-  add_index "event_attendees", ["user_id"], :name => "index_event_attendees_on_user_id"
-
-  create_table "event_hosts", :force => true do |t|
-    t.integer  "event_id"
-    t.integer  "user_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "event_hosts", ["event_id"], :name => "index_event_hosts_on_event_id"
-  add_index "event_hosts", ["user_id"], :name => "index_event_hosts_on_user_id"
-
-  create_table "event_maybes", :force => true do |t|
-    t.integer  "user_id"
-    t.integer  "event_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "event_maybes", ["event_id"], :name => "index_event_maybes_on_event_id"
-  add_index "event_maybes", ["user_id"], :name => "index_event_maybes_on_user_id"
+ActiveRecord::Schema.define(:version => 20110111213912) do
 
   create_table "events", :force => true do |t|
     t.string   "name"
@@ -60,6 +30,18 @@ ActiveRecord::Schema.define(:version => 20110111223641) do
     t.string  "text"
     t.integer "event_id"
   end
+
+  create_table "rsvps", :force => true do |t|
+    t.integer  "event_id"
+    t.integer  "user_id"
+    t.string   "kind"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "rsvps", ["event_id"], :name => "index_rsvps_on_event_id"
+  add_index "rsvps", ["user_id", "kind"], :name => "index_rsvps_on_user_id_and_kind"
+  add_index "rsvps", ["user_id"], :name => "index_rsvps_on_user_id"
 
   create_table "users", :force => true do |t|
     t.string   "name"

@@ -5,14 +5,8 @@ class Event < ActiveRecord::Base
   belongs_to :venue
   has_many :links, dependent: :destroy
   
-  has_many :event_hosts, dependent: :destroy
-  has_many :hosts, through: :event_hosts, source: :user
-  
-  has_many :event_attendees, dependent: :destroy
-  has_many :attendees, through: :event_attendees, source: :user
-  
-  has_many :event_maybes, dependent: :destroy
-  has_many :maybes, through: :event_maybes, source: :user
+  has_many :rsvps, dependent: :destroy
+  has_many :users, through: :rsvps
   
   validates_associated :links
   accepts_nested_attributes_for :links
@@ -44,5 +38,21 @@ class Event < ActiveRecord::Base
     rescue Exception
       self.price = nil
     end
+  end
+  
+  def hosts
+    users_by_kind 'host'
+  end
+  
+  def attendees
+    users_by_kind 'attend'
+  end
+  
+  def maybes
+    users_by_kind 'maybe'
+  end
+  
+  def users_by_kind(kind)
+    rsvps.where(kind: kind).map{|r| r.user}
   end
 end

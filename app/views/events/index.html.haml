@@ -1,5 +1,5 @@
-%h1= t('.title')
-%p= link_to t('.new_event'), new_event_path
+%h1 Events Listing
+%p= link_to 'Post a new event', new_event_path
 
 %table
   %thead
@@ -12,19 +12,17 @@
       %th= Event.human_attribute_name :address
       %th= Event.human_attribute_name :city
       %th= Event.human_attribute_name :description
-      %th{:colspan => 3}= t 'actions'
+      %th= 'actions'
   
   %tbody
     - for event in @events
       %tr{ :class => cycle(:odd, :even) }
-        %td= event.name
+        %td= link_to event.name, event
         %td= event.date
         %td= event.time
         %td= event.price
         %td= event.venue
         %td= event.address
         %td= event.city
-        %td= event.description
-        %td.action= link_to t('show'), event
-        %td.action= link_to t('edit'), edit_event_path(event)
-        %td.action= link_to t('destroy'), event, :confirm => t('are_you_sure'), :method => :delete
+        %td= truncate strip_tags(event.description), length: 50
+        %td.action= link_to 'edit', edit_event_path(event)

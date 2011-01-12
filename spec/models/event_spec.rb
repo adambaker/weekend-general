@@ -113,7 +113,7 @@ describe Event do
     describe "hosts" do
       before :each do
         @users.each do |user|
-          user.host! @event
+          user.host @event
         end
       end
       
@@ -122,7 +122,7 @@ describe Event do
       end
       
       it "should let a user unhost an event." do
-        @users[0].unhost! @event
+        @users[0].unattend @event
         @event.hosts.should_not include(@users[0])
       end
     end
@@ -130,7 +130,7 @@ describe Event do
     describe "attendants" do
       before :each do
         @users.each do |user|
-          user.attend! @event
+          user.attend @event
         end
       end
       
@@ -139,7 +139,7 @@ describe Event do
       end
       
       it "should let a user unhost an event." do
-        @users[0].unattend! @event
+        @users[0].unattend @event
         @event.attendees.should_not include(@users[0])
       end
     end
@@ -147,7 +147,7 @@ describe Event do
     describe "maybes" do
       before :each do
         @users.each do |user|
-          user.maybe! @event
+          user.maybe @event
         end
       end
       
@@ -156,19 +156,19 @@ describe Event do
       end
       
       it "should let a user unhost an event." do
-        @users[0].unmaybe! @event
+        @users[0].unattend @event
         @event.maybes.should_not include(@users[0])
       end
     end
         
     describe "combinations" do
       before :each do
-        @users[0].host! @event
-        @users[1].host! @event
-        @users[2].attend! @event
-        @users[3].attend! @event
-        @users[4].maybe! @event
-        @users[5].maybe! @event
+        @users[0].host @event
+        @users[1].host @event
+        @users[2].attend @event
+        @users[3].attend @event
+        @users[4].maybe @event
+        @users[5].maybe @event
       end
       
       it "should have the right event associations." do
@@ -178,14 +178,13 @@ describe Event do
         @event.attendees.should include(@users[3])
         @event.maybes.should include(@users[4])
         @event.maybes.should include(@users[5])
+        @event.users.should == @users
       end
       
       it "should delete associations when the event is destroyed." do
         id = @event.id
         @event.destroy
-        EventHost.find_by_event_id(id).should be_nil
-        EventMaybe.find_by_event_id(id).should be_nil
-        EventAttendee.find_by_event_id(id).should be_nil
+        Rsvp.find_by_event_id(id).should be_nil
       end
     end
   end

@@ -1,35 +1,25 @@
 class EventsController < ApplicationController
+  respond_to :html#, :xml, :json
+  
   # GET /events
   # GET /events.xml
   def index
     @events = Event.all
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @events }
-    end
+    respond_with @events
   end
 
   # GET /events/1
   # GET /events/1.xml
   def show
     @event = Event.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @event }
-    end
+    respond_with @events
   end
 
   # GET /events/new
   # GET /events/new.xml
   def new
     @event = Event.new
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.xml  { render :xml => @event }
-    end
+    respond_with @event
   end
 
   # GET /events/1/edit

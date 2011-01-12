@@ -1,6 +1,9 @@
 WeekendGeneral::Application.routes.draw do
   
-  resources :events
+  resources :events do
+    resources :links, only: [:create, :update, :destroy]
+    resources :rsvps, only: [:create, :destroy]
+  end
 
   resources :venues
 

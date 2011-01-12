@@ -114,7 +114,7 @@ describe User do
     describe "hosting" do
       before :each do
         @events.each do |event|
-          @user.host! event
+          @user.host event
         end
       end
       
@@ -123,7 +123,7 @@ describe User do
       end
       
       it "should let a user unhost an event." do
-        @user.unhost! @events[0]
+        @user.unattend @events[0]
         @user.hosting.should_not include(@events[0])
       end
     end
@@ -131,7 +131,7 @@ describe User do
     describe "attending" do
       before :each do
         @events.each do |event|
-          @user.attend! event
+          @user.attend event
         end
       end
       
@@ -140,7 +140,7 @@ describe User do
       end
       
       it "should let a user unattend an event." do
-        @user.unattend! @events[0]
+        @user.unattend @events[0]
         @user.attending.should_not include(@events[0])
       end
     end
@@ -148,28 +148,28 @@ describe User do
     describe "maybe" do
       before :each do
         @events.each do |event|
-          @user.maybe! event
+          @user.maybe event
         end
       end
       
       it "should track which events a user may be attending." do
-        @user.maybe.should == @events
+        @user.maybes.should == @events
       end
       
       it "should let a user unmaybe an event." do
-        @user.unmaybe! @events[0]
-        @user.maybe.should_not include(@events[0])
+        @user.unattend @events[0]
+        @user.maybes.should_not include(@events[0])
       end
     end
     
     describe "combinations" do
       before :each do
-        @user.host! @events[0]
-        @user.host! @events[1]
-        @user.attend! @events[2]
-        @user.attend! @events[3]
-        @user.maybe! @events[4]
-        @user.maybe! @events[5]
+        @user.host @events[0]
+        @user.host @events[1]
+        @user.attend @events[2]
+        @user.attend @events[3]
+        @user.maybe @events[4]
+        @user.maybe @events[5]
       end
       
       it "should have the right event associations." do
@@ -177,16 +177,15 @@ describe User do
         @user.hosting.should include(@events[1])
         @user.attending.should include(@events[2])
         @user.attending.should include(@events[3])
-        @user.maybe.should include(@events[4])
-        @user.maybe.should include(@events[5])
+        @user.maybes.should include(@events[4])
+        @user.maybes.should include(@events[5])
+        @user.events.should == @events
       end
       
       it "should delete associations when the user is destroyed." do
         id = @user.id
         @user.destroy
-        EventHost.find_by_user_id(id).should be_nil
-        EventMaybe.find_by_user_id(id).should be_nil
-        EventAttendee.find_by_user_id(id).should be_nil
+        Rsvp.find_by_user_id(id).should be_nil
       end
     end
   end
