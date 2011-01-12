@@ -1,6 +1,7 @@
 class Venue < ActiveRecord::Base
     
   attr_accessible :name, :address, :city, :url, :description
+  has_many :events
   
   validates :name, presence:   true,
                    uniqueness: {scope: [:address, :city]}

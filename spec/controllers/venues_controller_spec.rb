@@ -33,7 +33,7 @@ describe VenuesController do
     it "should display all the venues." do
       venues = [@venue]
       35.times do
-        venues << Factory(:venue, name: Factory.next(:venue_name))
+        venues << Factory(:venue, name: Factory.next(:name))
       end
       
       get :index

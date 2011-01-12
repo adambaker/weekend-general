@@ -53,4 +53,12 @@ describe Venue do
     venue = Venue.create!(@attr.merge(url: ''))
     venue.url.should == ''
   end
+  
+  it "should track its events." do
+    venue = Venue.create(@attr)
+    events = [Factory(:event, venue_id: venue.id)]
+    5.times { events << Factory(:event,
+      venue_id: venue.id, name: Factory.next(:name)) }
+    venue.events.should == events
+  end
 end

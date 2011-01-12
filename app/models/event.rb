@@ -3,7 +3,7 @@ class Event < ActiveRecord::Base
     :description, :links_attributes
 
   belongs_to :venue
-  has_many :links
+  has_many :links, dependent: :destroy
   
   validates_associated :links
   accepts_nested_attributes_for :links

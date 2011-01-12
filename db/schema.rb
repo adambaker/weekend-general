@@ -10,7 +10,37 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110109021618) do
+ActiveRecord::Schema.define(:version => 20110111223641) do
+
+  create_table "event_attendees", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "event_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "event_attendees", ["event_id"], :name => "index_event_attendees_on_event_id"
+  add_index "event_attendees", ["user_id"], :name => "index_event_attendees_on_user_id"
+
+  create_table "event_hosts", :force => true do |t|
+    t.integer  "event_id"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "event_hosts", ["event_id"], :name => "index_event_hosts_on_event_id"
+  add_index "event_hosts", ["user_id"], :name => "index_event_hosts_on_user_id"
+
+  create_table "event_maybes", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "event_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "event_maybes", ["event_id"], :name => "index_event_maybes_on_event_id"
+  add_index "event_maybes", ["user_id"], :name => "index_event_maybes_on_user_id"
 
   create_table "events", :force => true do |t|
     t.string   "name"

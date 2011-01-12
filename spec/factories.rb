@@ -27,14 +27,14 @@ Factory.define :venue do |venue|
   venue.description @@generic_description
 end
 
-Factory.sequence :venue_name do |n|
-  "Place #{n}"
+Factory.sequence :name do |n|
+  "Name #{n}"
 end
 
 Factory.define :event do |event|
   event.name              "a happy gathering"
   event.date              2.days.from_now
-  event.time              ''
+  event.time              '9pm'
   event.price             '21.40'
   event.venue             nil
   event.address           '1234 Happy Street'

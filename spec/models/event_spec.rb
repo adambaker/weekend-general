@@ -95,4 +95,10 @@ describe Event do
     Event.new(@with_venue_attr).should_not be_valid
   end
   
+  it 'should delete associated links when destroyed.' do
+    event = Event.create @with_address_attr
+    links = event.links
+    event.destroy
+    links.each { |link| Link.find_by_id(link.id).should be_nil }
+  end
 end
