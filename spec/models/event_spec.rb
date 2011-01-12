@@ -101,4 +101,92 @@ describe Event do
     event.destroy
     links.each { |link| Link.find_by_id(link.id).should be_nil }
   end
+  
+  describe "users attending" do
+    before :each do
+      @event = Event.create(@with_venue_attr)
+      @users = [Factory(:user)]
+      5.times { @users << Factory(:user, uid: Factory.next(:uid),
+        email: Factory.next(:email)) }
+    end
+    
+    describe "hosts" do
+      before :each do
+        @users.each do |user|
+          user.host! @event
+        end
+      end
+      
+      it "should track which users are hosting." do
+        @event.hosts.should == @users
+      end
+      
+      it "should let a user unhost an event." do
+        @users[0].unhost! @event
+        @event.hosts.should_not include(@users[0])
+      end
+    end
+    
+    describe "attendants" do
+      before :each do
+        @users.each do |user|
+          user.attend! @event
+        end
+      end
+      
+      it "should track which users are hosting." do
+        @event.attendees.should == @users
+      end
+      
+      it "should let a user unhost an event." do
+        @users[0].unattend! @event
+        @event.attendees.should_not include(@users[0])
+      end
+    end
+    
+    describe "maybes" do
+      before :each do
+        @users.each do |user|
+          user.maybe! @event
+        end
+      end
+      
+      it "should track which users are hosting." do
+        @event.maybes.should == @users
+      end
+      
+      it "should let a user unhost an event." do
+        @users[0].unmaybe! @event
+        @event.maybes.should_not include(@users[0])
+      end
+    end
+        
+    describe "combinations" do
+      before :each do
+        @users[0].host! @event
+        @users[1].host! @event
+        @users[2].attend! @event
+        @users[3].attend! @event
+        @users[4].maybe! @event
+        @users[5].maybe! @event
+      end
+      
+      it "should have the right event associations." do
+        @event.hosts.should include(@users[0])
+        @event.hosts.should include(@users[1])
+        @event.attendees.should include(@users[2])
+        @event.attendees.should include(@users[3])
+        @event.maybes.should include(@users[4])
+        @event.maybes.should include(@users[5])
+      end
+      
+      it "should delete associations when the event is destroyed." do
+        id = @event.id
+        @event.destroy
+        EventHost.find_by_event_id(id).should be_nil
+        EventMaybe.find_by_event_id(id).should be_nil
+        EventAttendee.find_by_event_id(id).should be_nil
+      end
+    end
+  end
 end

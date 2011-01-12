@@ -5,6 +5,15 @@ class Event < ActiveRecord::Base
   belongs_to :venue
   has_many :links, dependent: :destroy
   
+  has_many :event_hosts, dependent: :destroy
+  has_many :hosts, through: :event_hosts, source: :user
+  
+  has_many :event_attendees, dependent: :destroy
+  has_many :attendees, through: :event_attendees, source: :user
+  
+  has_many :event_maybes, dependent: :destroy
+  has_many :maybes, through: :event_maybes, source: :user
+  
   validates_associated :links
   accepts_nested_attributes_for :links
   
