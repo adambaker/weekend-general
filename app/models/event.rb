@@ -20,7 +20,7 @@ class Event < ActiveRecord::Base
   before_save :convert_price
   
   def initialize(attrs = {}, &block)
-    attrs[:city] = WeekendGeneral::Local::city if attrs[:city].nil?
+    attrs[:city] = Settings::city if attrs[:city].nil?
     super
   end
   

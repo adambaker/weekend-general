@@ -1,4 +1,4 @@
-module WeekendGeneral::Local
+module Settings
   def self.city
     "Chicago, IL"
   end

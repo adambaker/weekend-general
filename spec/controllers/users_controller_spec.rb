@@ -395,7 +395,7 @@ describe UsersController do
     #admin features will be added later.
     describe "as an admin" do
       before :each do
-        @admin = Factory(:user, email: WeekendGeneral::Local::admins[0], 
+        @admin = Factory(:user, email: Settings::admins[0], 
             uid: Factory.next(:uid) )
         test_sign_in @admin
       end

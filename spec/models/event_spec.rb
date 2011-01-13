@@ -86,7 +86,7 @@ describe Event do
   end
   
   it 'should default to the local city.' do
-    Event.new.city.should == WeekendGeneral::Local::city
+    Event.new.city.should == Settings::city
   end
   
   it 'should contain a link for each links attribute.' do

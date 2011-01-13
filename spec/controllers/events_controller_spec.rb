@@ -52,6 +52,15 @@ describe EventsController do
       response.should contain @event.address
     end
     
+    it "should have a link to the venue page." do
+      venue = Factory(:venue)
+      @event.venue = venue
+      @event.save
+      get :show, id: @event.id
+      response.should have_selector :a, href: venue_path(venue),
+        content: venue.name
+    end
+    
     it "should display a list of links." do
       @event.links.create(url: 'foo.bar.com')
       @event.links.create(url: 'http://www.google.com', text: 'google')
@@ -114,40 +123,93 @@ describe EventsController do
     end
   end
   
-  describe "GET new" do
+  describe 'when signed in' do
+    before :each do
+      @user = test_sign_in Factory(:user)
+    end
+    
+    describe "GET new" do
+      it 'should be successful.' do
+        get :new
+        response.should be_success
+      end
+      
+      it "should have the default city filled in." do
+        get :new
+        response.should have_selector 'input[type="text"]', 
+          value: Settings::city
+      end
+      
+      it 'should have name and address text fields.' do
+        get :new
+        %w[name address price time].each do |attr|
+          response.should have_selector :input, 
+            name: "event[#{attr}]", type: 'text'
+        end
+      end
+      
+      it 'should have a Venue selector.' do
+        venues = [Factory(:venue)]
+        4.times {venues << Factory(:venue, name: Factory.next(:name))}
+        get :new
+        response.should have_selector :select, name: 'event[venue_id]'
+        response.should have_selector :option, value: 'no_venue',
+          content: '--'
+        venues.each do |venue|
+          response.should have_selector :option, value: venue.id.to_s,
+            content: venue.name
+        end
+      end
+    end
 
-  end
+    describe "GET edit" do
+      it 'should be successful.' do
+        get :edit, id: @event.id
+        response.should be_success
+      end
+      
+      it 'should have all the links with an extra blank link field.' do
+        @event.links.create({url: 'http://terrible.co'})
+        @event.links.create({url: 'http://gorby.ru'})
+        get :edit, id: @event.id
+        response.should have_selector :input, type: 'text', 
+          name: 'event[links_attributes][][url]',
+          content: 'http://terrible.co'
+        response.should have_selector :input, type: 'text', 
+          name: 'event[links_attributes][][url]',
+          content: 'http://gorby.ru'
+        response.should have_selector :input, type: 'text', 
+          name: 'event[links_attributes][][url]',
+          content: ''
+      end
+    end
 
-  describe "GET edit" do
+    describe "POST create" do
 
-  end
+      describe "with valid params" do
 
-  describe "POST create" do
+      end
 
-    describe "with valid params" do
+      describe "with invalid params" do
+
+      end
 
     end
 
-    describe "with invalid params" do
+    describe "PUT update" do
+
+      describe "with valid params" do
+
+      end
+
+      describe "with invalid params" do
+
+      end
 
     end
 
-  end
-
-  describe "PUT update" do
-
-    describe "with valid params" do
+    describe "DELETE destroy" do
 
     end
-
-    describe "with invalid params" do
-
-    end
-
   end
-
-  describe "DELETE destroy" do
-
-  end
-
 end

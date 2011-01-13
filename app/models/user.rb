@@ -20,7 +20,7 @@ class User < ActiveRecord::Base
   end
   
   def super_admin? #planning on letting super admins add and remove admins
-    WeekendGeneral::Local.admins.include? self.email
+    Settings::admins.include? self.email
   end
   
   def hosting

@@ -24,7 +24,7 @@ class VenuesController < ApplicationController
   # GET /venues/new
   # GET /venues/new.xml
   def new
-    @venue = Venue.new(city: WeekendGeneral::Local.city)
+    @venue = Venue.new(city: Settings::city)
     @title = 'New venue intel' 
 
     respond_with @venue

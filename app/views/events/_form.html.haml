@@ -1,10 +1,5 @@
 = form_for(@event) do |f|
-  - if @event.errors.any?
-    #errorExplanation
-      %h2= "#{pluralize(@event.errors.count, 'error')} prohibited this user from being saved:"
-      %ul
-      - @event.errors.full_messages.each do |msg|
-        %li= msg
+  = render 'shared/error_messages', object: @event 
   
   .field
     = f.label :name
@@ -13,11 +8,11 @@
   .field
     = f.label :date
     %br
-    = f.date_select :date
+    = f.date_select :date, start_year: Time.now.year
   .field
     = f.label :time
     %br
-    = f.time_select :time
+    = f.text_field :time
   .field
     = f.label :price
     %br
@@ -25,7 +20,7 @@
   .field
     = f.label :venue
     %br
-    = f.text_field :venue
+    = f.select :venue_id, venue_options
   .field
     = f.label :address
     %br

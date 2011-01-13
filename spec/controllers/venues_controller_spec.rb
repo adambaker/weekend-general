@@ -83,8 +83,10 @@ describe VenuesController do
     
       it "should have the default city filled in." do
         get :new
-        response.should have_selector 'input[type="text"]', value: 'Chicago, IL'
+        response.should have_selector 'input[type="text"]', 
+          value: Settings::city
       end
+      
     end
     
     describe 'GET edit' do

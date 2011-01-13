@@ -6,25 +6,26 @@
 %dl
   %dt= Event.human_attribute_name :date
   %dd= @event.date
-  %dt= Event.human_attribute_name :time
-  %dd= @event.time
+  - unless @event.time.blank?
+    %dt= Event.human_attribute_name :time
+    %dd= @event.time
   %dt= Event.human_attribute_name :price
-  %dd= @event.price
-  %dt= Event.human_attribute_name :venue
-  %dd= @event.venue
+  %dd= @event.price || 'No price information.' 
+  - unless @event.venue.nil?
+    %dt Venue
+    %dd= link_to @event.venue.name, @event.venue
   %dt= Event.human_attribute_name :address
-  %dd= @event.address
-  %dt
-    = Event.human_attribute_name :city
+  %dd
+    = @event.address
     %br/
-    = Event.human_attribute_name :description
+    = @event.city
   %dt Links
   %dt
     %ul
       - @event.links.each do |link|
         %li= link_to link.text, link.url
-  %dd Description
-  %dt= display_format @event.description
+  %dt Description
+  %dd= display_format @event.description
 
 %h2 RSVPs
 - [ {title: 'Mastermind', method: :hosts},

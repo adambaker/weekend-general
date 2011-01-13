@@ -83,7 +83,7 @@ describe User do
     before :each do
       @user = User.create(@attr)
       @admin_users = []
-      WeekendGeneral::Local.admins.each do |email|
+      Settings::admins.each do |email|
         @admin_users << User.create(@attr.merge(
           email: email, uid: Factory.next(:uid)) )
       end
