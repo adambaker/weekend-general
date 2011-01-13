@@ -35,6 +35,11 @@ class User < ActiveRecord::Base
     events_by_kind 'maybe'
   end
   
+  def attendance(event)
+    rsvp = rsvps.find_by_event_id(event.id)
+    rsvp and rsvp.kind
+  end
+  
   def events_by_kind(kind)
     rsvps.where(kind: kind).map{|rsvp| rsvp.event}
   end

@@ -27,9 +27,21 @@
   %dt Description
   %dd= display_format @event.description
 
-%h2 RSVPs
-- [ {title: 'Mastermind', method: :hosts},
-    {title: 'Operative', method: :attendees},
-    {title: 'Prospective', method: :maybes} ].each do |locals|
-  = render 'shared/rsvp', locals.merge(object: @event)
+- if current_user
+  %h2 RSVPs
+  - [ {title: 'Mastermind', method: :hosts},
+      {title: 'Operative', method: :attendees},
+      {title: 'Prospective', method: :maybes} ].each do |locals|
+    = render 'shared/rsvp', locals.merge(object: @event)
 
+
+  %h2 What about you?
+  - attendance = current_user.attendance(@event)
+  - unless attendance == 'host'
+    = button_to "I'm hosting/organizing", event_hosts_path(@event)
+  - unless attendance == 'attend'
+    = button_to "I'm going", event_attendees_path(@event)
+  - unless attendance == 'maybe'
+    = button_to "Maybe...", event_maybes_path(@event)
+  - if attendance
+    = button_to "I won't be there", event_rsvp_path(@event), method: :delete

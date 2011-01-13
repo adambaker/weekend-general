@@ -21,7 +21,7 @@
         %td= event.date
         %td= event.time
         %td= event.price
-        %td= event.venue
+        %td= link_to event.venue.name, venue_path(event.venue) if event.venue
         %td= event.address
         %td= event.city
         %td= truncate strip_tags(event.description), length: 50

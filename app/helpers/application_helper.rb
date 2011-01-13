@@ -16,4 +16,5 @@ module ApplicationHelper
     simple_format(sanitize(text, tags: allowed_tags), {}, sanitize: false)
       .html_safe
   end
+  
 end

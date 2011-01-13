@@ -72,6 +72,7 @@ class EventsController < ApplicationController
     @event.destroy
 
     respond_to do |format|
+      flash[:success] = current_theme 'events', 'deleted'
       format.html { redirect_to(events_url) }
       #format.xml  { head :ok }
     end

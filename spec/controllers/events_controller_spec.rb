@@ -18,7 +18,16 @@ describe EventsController do
       response.should_not have_selector :a, content: 'destroy'
     end
     
-    it "should strip tags truncate description to 50 characters." do
+    it "should have a link to the venue." do
+      venue = Factory(:venue)
+      @event.venue = venue
+      @event.save
+      get :index
+      response.should have_selector :a, href: venue_path(venue), 
+        content: venue.name
+    end
+    
+    it "should strip tags and truncate description to 50 characters." do
       get :index
       response.should have_selector(:td, 
         content: stripped_description[0...47]+'...')
@@ -93,6 +102,33 @@ describe EventsController do
       get :show, id: @event.id
       users.each {|u| response.should contain u.name}
       %w[Mastermind Operative Prospective].each {|w| response.should contain w}
+    end
+    
+    describe 'with a signed in user.' do
+      before :each do
+        @user = test_sign_in Factory :user
+      end
+      
+      it 'should have rsvp buttons.' do
+        get :show, id: @event.id
+        response.should have_selector 'input',
+          value: 'Maybe...', type: 'submit'
+        response.should have_selector 'input',
+          value: "I'm hosting/organizing"
+        response.should have_selector 'input',
+          value: "I'm going", type: 'submit'
+      end
+      
+      it "should change rsvp buttons if you've already rsvp'd" do
+        @user.attend @event
+        get :show, id: @event.id
+        response.should have_selector 'input',
+          value: 'Maybe...', type: 'submit'
+        response.should have_selector 'input',
+          value: "I'm hosting/organizing"
+        response.should have_selector 'input',
+          value: "I won't be there", type: 'submit'
+      end
     end
   end
 
@@ -239,15 +275,33 @@ describe EventsController do
         end
 
         describe "with invalid params" do
-          it "should render the edit template."
-          it "should not change the event."
+          it "should render the edit template." do
+            put :update, id: @event.id, event: @invalid_attr
+            response.should render_template 'edit'
+          end
+          
+          it "should not change the event." do
+            name, address = @event.name, @event.address
+            put :update, id: @event.id, event: @invalid_attr
+            @event.reload
+            @event.name.should == name
+            @event.address.should == address
+          end
         end
-
       end
     end
     
     describe "DELETE destroy" do
-
+      it "should redirect to the events list with a flash." do
+        delete :destroy, id: @event.id
+        response.should redirect_to events_path
+        test_flash :success, 'events', 'deleted'
+      end
+      
+      it "should delete the event." do
+        lambda {delete :destroy, id: @event.id}.should change(Event, :count)
+          .by -1
+      end
     end
   end
 end
