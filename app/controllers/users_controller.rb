@@ -126,6 +126,5 @@ class UsersController < ApplicationController
         flash[:error] = current_theme 'edit_uid'
         redirect_to @user
       end
-    end
-    
+    end  
 end

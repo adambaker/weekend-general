@@ -30,6 +30,23 @@
     %br
     = f.text_field :city
   .field
+    %ul.links
+      %h3 Event links
+      %span.instructions
+        Put links for this event. If you need to buy tickets, add a link to 
+        a web page to purchase tickets. For a concert, link to songs
+        or videos by the artist.
+      = f.fields_for :links do |linkf|
+        %li
+          .field
+            = linkf.label :url
+            %br/
+            = linkf.text_field :url
+          .field
+            = linkf.label :text
+            %br/
+            = linkf.text_field :text
+  .field
     = f.label :description
     %br
     = f.text_area :description

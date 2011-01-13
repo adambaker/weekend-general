@@ -160,6 +160,12 @@ describe EventsController do
             content: venue.name
         end
       end
+      
+      it 'should have an empty set of link fields.' do
+        get :new
+        response.should have_selector :input, type: 'text', 
+          name: 'event[links_attributes][0][url]'
+      end
     end
 
     describe "GET edit" do
@@ -173,41 +179,73 @@ describe EventsController do
         @event.links.create({url: 'http://gorby.ru'})
         get :edit, id: @event.id
         response.should have_selector :input, type: 'text', 
-          name: 'event[links_attributes][][url]',
-          content: 'http://terrible.co'
+          name: 'event[links_attributes][0][url]',
+          value: 'http://terrible.co'
         response.should have_selector :input, type: 'text', 
-          name: 'event[links_attributes][][url]',
-          content: 'http://gorby.ru'
-        response.should have_selector :input, type: 'text', 
-          name: 'event[links_attributes][][url]',
-          content: ''
+          name: 'event[links_attributes][1][url]',
+          value: 'http://gorby.ru'
+      end   
+    end
+    
+    describe 'create and update' do
+      before :each do
+        @valid_attr = valid_event_attr
+        @invalid_attr = valid_event_attr.merge({name: ''})
+      end
+    
+    
+      describe "POST create" do
+        describe "with valid params" do
+          it 'should redirect to the new event.' do
+            post :create, event: @valid_attr
+            response.should redirect_to event_path assigns :event
+            test_flash :success, 'events', 'new'
+          end
+          
+          it 'should create a new event.' do
+            lambda {post :create, event: @valid_attr}
+              .should change(Event, :count).by 1
+          end
+        end
+
+        describe "with invalid params" do
+          it "should render the new template." do
+            post :create, event: @invalid_attr
+            response.should render_template 'new'
+          end
+          
+          it "should not create a new event." do
+            lambda {post :create, event: @invalid_attr}
+              .should_not change(Event, :count)
+          end
+        end
+      end
+
+      describe "PUT update" do
+
+        describe "with valid params" do
+          it 'should redirect to the event with an appropriate flash.' do
+            put :update, id: @event.id, event: @valid_attr
+            response.should redirect_to @event
+            test_flash :success, 'events', 'updated'
+          end
+          
+          it 'should update the event.' do
+            put :update, id: @event.id, event: @valid_attr
+            @event.reload
+            @event.name.should == @valid_attr[:name]
+            @event.address.should == @valid_attr[:address]
+          end
+        end
+
+        describe "with invalid params" do
+          it "should render the edit template."
+          it "should not change the event."
+        end
+
       end
     end
-
-    describe "POST create" do
-
-      describe "with valid params" do
-
-      end
-
-      describe "with invalid params" do
-
-      end
-
-    end
-
-    describe "PUT update" do
-
-      describe "with valid params" do
-
-      end
-
-      describe "with invalid params" do
-
-      end
-
-    end
-
+    
     describe "DELETE destroy" do
 
     end

@@ -17,4 +17,8 @@ class ApplicationController < ActionController::Base
       redirect_to '/auth/google'
     end
   end
+  
+  def current_theme(controller, message)
+    Themes::current_theme[controller][message]
+  end
 end

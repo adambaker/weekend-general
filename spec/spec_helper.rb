@@ -74,4 +74,25 @@ Cover for events ranges from free to about $1200, so be prepared. Typically host
     ['foo', 'foo?a=12', 'game/tell.us', '1934://punt.me',
       'sq\\id://foo.bar', 'www.foo.bar.com/seven-tell()/go' ]
   end
+  
+  def valid_event_attr
+    { 
+      name: 'war and famine',
+      'date(1i)' => 2.weeks.from_now.year.to_s,
+      'date(2i)' => 2.weeks.from_now.month.to_s,
+      'date(3i)' => 2.weeks.from_now.day.to_s,
+      time: '9pm', 
+      price: '',
+      venue_id: 'none',
+      address: '1234 Evil hill',
+      city: 'Chicago, Il',
+      links_attributes: [],
+      description: ''
+    }
+  end
+  
+  def test_flash(type, controller, message)
+    flash[type].should_not be_nil
+    flash[type].should == Themes::current_theme[controller][message]
+  end
 end

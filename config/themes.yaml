@@ -28,6 +28,12 @@ generic:
     deleted: "The venue information was removed. I'm sure it will be missed."
     submit: "Submit"
 
+  events:
+    new: "You've posted a new event. Here's hoping it's all you hope for and more."
+    update: "The event information's been updated."
+    deleted: "I guess nobody wanted that event info anyway. It's gone."
+    submit: "Submit"
+    
 general:
   name: 'general'
   sessions:
@@ -57,3 +63,9 @@ general:
     updated: "Revising our intel on this theater... Good thinking."
     deleted: "That intel was outdated anyway."
     submit: 'File intel'
+    
+  events:
+    new: "Your mission briefing has been filed."
+    updated: "Alright, we've incorporated your revisions to the intel for this mission."
+    deleted: "Recalling all sorties on this mission and cancelling all operations."
+    submit: 'File mission breifing.'
