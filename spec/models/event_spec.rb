@@ -47,8 +47,12 @@ describe Event do
     event.city.should == @venue.city
   end
   
-  it 'should require a name.' do
+  it 'should require a name unique name.' do
     Event.new(@with_venue_attr.merge(name: '')).should_not be_valid
+    Event.create(@with_venue_attr)
+    Event.new(@with_venue_attr).should_not be_valid
+    @with_venue_attr[:name].upcase!
+    Event.new(@with_venue_attr).should_not be_valid
   end
   
   it 'should require an address.' do
@@ -93,6 +97,11 @@ describe Event do
   it 'should reject invalid links.' do
     @with_venue_attr[:links_attributes] << {url: invalid_urls[0], text: ''}
     Event.new(@with_venue_attr).should_not be_valid
+  end
+  
+  it 'should silently reject blank links.' do
+    @with_address_attr[:links_attributes] << {url: '', text: 'foo'}
+    Event.create!(@with_address_attr).links.size.should == 2
   end
   
   it 'should delete associated links when destroyed.' do

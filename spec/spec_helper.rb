@@ -27,6 +27,11 @@ RSpec.configure do |config|
   
   def test_sign_in(user)
     session[:user_id] = user.id
+    user
+  end
+  
+  def sign_in_path
+    '/auth/google'
   end
   
   def venue_attr

@@ -1,0 +1,5 @@
+- if object.send(method).any?
+  %ul{:class => "rsvp #{method}"}
+    %h3= pluralize(object.send(method).size, title)
+    - for item in object.send(method)
+      %li= item.name

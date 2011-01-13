@@ -1,11 +1,9 @@
-%h1= t '.title'
+%h1= @event.name
 %p
-  = link_to t('back'), events_path
-  = link_to t('edit'), edit_event_path(@event)
+  = link_to 'back', events_path
+  = link_to 'edit', edit_event_path(@event)
 
 %dl
-  %dt= Event.human_attribute_name :name
-  %dd= @event.name
   %dt= Event.human_attribute_name :date
   %dd= @event.date
   %dt= Event.human_attribute_name :time
@@ -16,7 +14,21 @@
   %dd= @event.venue
   %dt= Event.human_attribute_name :address
   %dd= @event.address
-  %dt= Event.human_attribute_name :city
-  %dd= @event.city
-  %dt= Event.human_attribute_name :description
-  %dd= @event.description
+  %dt
+    = Event.human_attribute_name :city
+    %br/
+    = Event.human_attribute_name :description
+  %dt Links
+  %dt
+    %ul
+      - @event.links.each do |link|
+        %li= link_to link.text, link.url
+  %dd Description
+  %dt= display_format @event.description
+
+%h2 RSVPs
+- [ {title: 'Mastermind', method: :hosts},
+    {title: 'Operative', method: :attendees},
+    {title: 'Prospective', method: :maybes} ].each do |locals|
+  = render 'shared/rsvp', locals.merge(object: @event)
+

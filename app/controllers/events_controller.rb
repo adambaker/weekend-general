@@ -1,4 +1,6 @@
 class EventsController < ApplicationController
+  before_filter :authenticate, except: [:index, :show]
+  
   respond_to :html#, :xml, :json
   
   # GET /events

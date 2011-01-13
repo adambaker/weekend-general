@@ -9,9 +9,10 @@ class Event < ActiveRecord::Base
   has_many :users, through: :rsvps
   
   validates_associated :links
-  accepts_nested_attributes_for :links
+  accepts_nested_attributes_for :links,
+    reject_if: proc {|attr| attr[:url].blank?}
   
-  validates :name, presence: true
+  validates :name, presence: true, uniqueness: {case_sensitive: false}
   validates :address, presence: true
   validates :city, presence: true
   

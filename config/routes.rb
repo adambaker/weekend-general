@@ -3,12 +3,18 @@ WeekendGeneral::Application.routes.draw do
   resources :events do
     resources :links, only: [:create, :update, :destroy]
     resources :rsvps, only: [:create, :destroy]
+    
+    #rsvp aliases
+    resources :hosts, controller: :rsvps, kind: 'host', 
+      only: [:create, :destroy]
+    resources :maybes, controller: :rsvps, kind: 'maybe', 
+      only: [:create, :destroy]
+    resources :attendees, controller: :rsvps, kind: 'attend', 
+      only: [:create, :destroy]  
   end
 
   resources :venues
-
   resources :users
-  
   resources :sessions, only: [:create, :destroy]
   
   match "/auth/:provider/callback" => "sessions#create"
