@@ -6,5 +6,5 @@ class Rsvp < ActiveRecord::Base
   
   validates :event_id, presence: true
   validates :user_id,  presence: true
-  validates :kind,     presence: true
+  validates_inclusion_of :kind, in: %w(host attend maybe)
 end

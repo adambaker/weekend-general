@@ -3,10 +3,6 @@ require 'spec_helper'
 describe UsersController do
   render_views
   
-  def test_flash(type, message)
-    flash[type].should_not be_nil
-    flash[type].should == Themes::current_theme['users'][message]
-  end
   
   before(:each) do
     @user = Factory(:user)
@@ -76,14 +72,7 @@ describe UsersController do
       response.should be_success
       response.should have_selector :title, content: @user.name
     end
-  
-    describe "when not signed in" do 
-      it "should not have the user's email or edit link." do
-        get :show, id: @user
-        response.should_not contain @user.email
-        response.should_not have_selector :a, href: "/users/#{@user.id}/edit" 
-      end
-    end
+
 
     describe "when signed in" do
       before :each do
@@ -100,11 +89,12 @@ describe UsersController do
         response.should have_selector :a, href: "/users/#{@user.id}/edit"
       end
       
-      it "should not have an edit link if signed in as a different user" do
+      it "should not have edit or email address if signed in as a different user" do
         other_user = Factory(:user, 
           email: 'fake@phony.lie', uid: 'laughing-man')
         get :show, id: other_user
         response.should_not have_selector :a, href: "/users/#{@user.id}/edit"
+        response.should_not contain other_user.email
       end
     end
   end
@@ -120,7 +110,7 @@ describe UsersController do
       test_sign_in @user
       get :new
       response.should redirect_to root_path
-      test_flash :error, 'already_signed_in'
+      test_flash :error, 'users', 'already_signed_in'
     end
     
     it "should fill in the form with default values from params." do
@@ -170,7 +160,7 @@ describe UsersController do
       it "should redirect to the user's profile w/ a flash message." do
         get :edit, id: @user
         response.should redirect_to @user
-        test_flash :error, 'edit_not_you'
+        test_flash :error, 'users', 'edit_not_you'
       end
     end
   end
@@ -191,7 +181,7 @@ describe UsersController do
       it "should redirect to the created user with a welcome message." do
         post :create, user: @attr
         response.should redirect_to User.find_by_email @attr[:email]
-        test_flash :success, 'signed_up'
+        test_flash :success, 'users', 'signed_up'
       end
       
       it "should sign the user in." do
@@ -213,7 +203,7 @@ describe UsersController do
         it "should redirect to root with an appropriate message." do
           post :create, user: @attr
           response.should redirect_to root_path
-          test_flash :error, 'already_signed_in'
+          test_flash :error, 'users', 'already_signed_in'
         end 
       end
     end
@@ -254,7 +244,7 @@ describe UsersController do
         it "should redirect to the user's show page w/ a flash message." do
           put :update, id: @user, user: @new_attr
           response.should redirect_to @user
-          test_flash :success, 'updated'
+          test_flash :success, 'users', 'updated'
         end
       end
 
@@ -281,7 +271,7 @@ describe UsersController do
         it "should reject a change of uid" do
           put :update, id: @user, user: @user_attr.merge(uid: 'evil')
           response.should be_redirect
-          test_flash :error, 'edit_uid'
+          test_flash :error, 'users', 'edit_uid'
           @user.reload
           @user.uid.should == @user_attr[:uid]
         end
@@ -289,7 +279,7 @@ describe UsersController do
         it "should reject a change of provider" do
           put :update, id: @user, user: @user_attr.merge(provider: 'evil')
           response.should be_redirect
-          test_flash :error, 'edit_uid'
+          test_flash :error, 'users', 'edit_uid'
           @user.reload
           @user.uid.should == @user_attr[:uid]
         end
@@ -313,7 +303,7 @@ describe UsersController do
       it "redirects to the user's show page with a flash message." do
         put :update, id: @user, user: @new_attr
         response.should redirect_to @user
-        test_flash :error, 'edit_not_you'
+        test_flash :error, 'users', 'edit_not_you'
       end
     end
     
@@ -365,7 +355,7 @@ describe UsersController do
       it "should redirect to the user's show page with a flash message." do
         delete :destroy, id: @user
         response.should redirect_to @user
-        test_flash :error, 'destroy_not_you'
+        test_flash :error, 'users', 'destroy_not_you'
       end
     end
     
@@ -383,7 +373,7 @@ describe UsersController do
       it "should redirect to the home page w/ a flash message." do
         delete :destroy, id: @user
         response.should redirect_to root_path
-        test_flash :success, 'destroyed'
+        test_flash :success, 'users', 'destroyed'
       end
       
       it "should sign the user out." do
@@ -409,7 +399,7 @@ describe UsersController do
       it "should redirect to the users index page with an appropriate flash." do
         delete :destroy, id: @user
         response.should redirect_to users_path
-        test_flash :success, 'admin_destroy'
+        test_flash :success, 'users', 'admin_destroy'
       end
       
       it "should send an email to the deleted user." 

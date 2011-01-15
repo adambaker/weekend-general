@@ -9,9 +9,7 @@ class UsersController < ApplicationController
   # GET /users
   # GET /users.xml
   def index
-    @users = User.all
-    @title = "Warrior muster"
-    
+    @users = User.all    
     respond_with @users
   end
 
@@ -19,20 +17,17 @@ class UsersController < ApplicationController
   # GET /users/1.xml
   # GET /users/1.json
   def show
-    @title = @user.name + "'s dossier"
     respond_with @user
   end
 
   # GET /users/new
   # GET /users/new.xml
   def new
-    @title = 'New recruit enlistment'
     @user = User.new params[:user]
   end
 
   # GET /users/1/edit
   def edit
-    @title = "Editing #{@user.name}'s dossier."
   end
 
   # POST /users

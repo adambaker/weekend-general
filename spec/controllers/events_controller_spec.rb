@@ -89,21 +89,32 @@ describe EventsController do
                                         content: 'A Happy Place'
       response.should have_selector :em, content: 'hate'
     end
-    
-    it "should show user rsvps." do
-      users = [Factory(:user)]
-      3.times {users << Factory(
-        :user, email: Factory.next(:email), uid: Factory.next(:uid))}
-      users[0].host @event
-      users[1].attend @event
-      users[2].attend @event
-      users[3].maybe @event
+    describe "rsvp display." do
+      before :each do
+        @users = [Factory(:user)]
+        3.times {@users << Factory(
+          :user, email: Factory.next(:email), uid: Factory.next(:uid))}
+        @users[0].host @event
+        @users[1].attend @event
+        @users[2].attend @event
+        @users[3].maybe @event
+      end
       
-      get :show, id: @event.id
-      users.each {|u| response.should contain u.name}
-      %w[Mastermind Operative Prospective].each {|w| response.should contain w}
+      it "should show user rsvps when signed in." do      
+        test_sign_in @users[0]
+        get :show, id: @event.id
+        @users.each {|u| response.should contain u.name}
+        %w[Mastermind Operative Prospective].each {|w| response.should contain w}
+      end
+      
+      it "should not show user rsvps when not signed in." do
+        get :show, id: @event.id
+        @users.each {|u| response.should_not contain u.name}
+        %w[Mastermind Operative Prospective].each do |w| 
+          response.should_not contain w
+        end
+      end
     end
-    
     describe 'with a signed in user.' do
       before :each do
         @user = test_sign_in Factory :user

@@ -1,3 +1,6 @@
+- content_for :title do
+  %title= "Editing #{@user.name}'s dossier."
+  
 %h1= "Edit #{@user.name}'s dossier."
 
 = form_for(@user) do |f| 

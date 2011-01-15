@@ -41,9 +41,11 @@ describe Rsvp do
       @rsvp.should_not be_valid
     end
     
-    it "should require a kind" do
-      @rsvp.kind = ''
-      @rsvp.should_not be_valid
+    it "should reject kinds that aren't 'host', 'attend', or 'maybe'." do
+      [' ', '', 'foobar', 'unholy example', 'desecrate'].each do |kind|
+        @rsvp.kind = kind
+        @rsvp.should_not be_valid
+      end
     end
   end
 end

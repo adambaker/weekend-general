@@ -1,3 +1,6 @@
+- content_for :title do
+  %title= @venue.name
+
 %h1= link_to @venue.name, @venue.url
 
 %dl

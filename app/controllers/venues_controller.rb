@@ -6,18 +6,14 @@ class VenuesController < ApplicationController
   # GET /venues
   # GET /venues.xml
   def index
-    @venues = Venue.all
-    @title = "Venues"
-    
+    @venues = Venue.all  
     respond_with @venues
   end
 
   # GET /venues/1
   # GET /venues/1.xml
   def show
-    @venue = Venue.find(params[:id])
-    @title = @venue.name
-    
+    @venue = Venue.find(params[:id])   
     respond_with @venue
   end
 
@@ -25,14 +21,11 @@ class VenuesController < ApplicationController
   # GET /venues/new.xml
   def new
     @venue = Venue.new(city: Settings::city)
-    @title = 'New venue intel' 
-
     respond_with @venue
   end
 
   # GET /venues/1/edit
   def edit
-    @title = 'Revise venue intel'
     @venue = Venue.find(params[:id])
   end
 
