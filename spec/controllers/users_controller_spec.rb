@@ -89,12 +89,37 @@ describe UsersController do
         response.should have_selector :a, href: "/users/#{@user.id}/edit"
       end
       
-      it "should not have edit or email address if signed in as a different user" do
-        other_user = Factory(:user, 
-          email: 'fake@phony.lie', uid: 'laughing-man')
-        get :show, id: other_user
-        response.should_not have_selector :a, href: "/users/#{@user.id}/edit"
-        response.should_not contain other_user.email
+      describe "as another user" do
+        before :each do
+          @other_user = Factory(:user, 
+            email: 'fake@phony.lie', uid: 'laughing-man')
+        end
+        
+        it "should not have edit or email address" do
+          get :show, id: @other_user
+          response.should_not have_selector :a, 
+            href: "/users/#{@other_user.id}/edit"
+          response.should_not contain @other_user.email
+        end
+        
+        describe 'rsvps' do
+          before :each do
+            @events = [Factory(:event)]
+            3.times {@events << Factory(:event, name: Factory.next(:name))}
+            @other_user.host @events[0]
+            @other_user.attend @events[1]
+            @other_user.attend @events[2]
+            @other_user.maybe @events[3]
+          end
+          
+          it "should list the events that the user has RSVP'd to." do
+            get :show, id: @other_user
+            response.should contain 'Orchestrating'
+            response.should contain 'Participating in'
+            response.should contain 'Considering'
+            @events.each {|e| response.should contain e.name}
+          end
+        end
       end
     end
   end
@@ -382,7 +407,8 @@ describe UsersController do
       end
     end
     
-    #admin features will be added later.
+    #officer features will be added later.
+=begin
     describe "as an admin" do
       before :each do
         @admin = Factory(:user, email: Settings::admins[0], 
@@ -404,6 +430,7 @@ describe UsersController do
       
       it "should send an email to the deleted user." 
     end
+=end
   end
 
 end

@@ -9,5 +9,12 @@
     %b Email:
     = @user.email
   = link_to 'Edit', edit_user_path(@user)
-  |
+  
+- if current_user
+  %h2 RSVPs
+  - [ {title: 'Orchestrating', method: :hosting},
+      {title: 'Participating in', method: :attending},
+      {title: 'Considering', method: :maybes} ].each do |locals|
+    = render 'rsvp', locals
+
 = link_to 'Back', users_path

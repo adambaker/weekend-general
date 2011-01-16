@@ -35,7 +35,7 @@
   - [ {title: 'Mastermind', method: :hosts},
       {title: 'Operative', method: :attendees},
       {title: 'Prospective', method: :maybes} ].each do |locals|
-    = render 'shared/rsvp', locals.merge(object: @event)
+    = render 'rsvp', locals
 
 
   %h2 What about you?

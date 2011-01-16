@@ -79,29 +79,7 @@ describe User do
     other_user.should be_valid
   end
   
-  describe "admin privileges" do
-    before :each do
-      @user = User.create(@attr)
-      @admin_users = []
-      Settings::admins.each do |email|
-        @admin_users << User.create(@attr.merge(
-          email: email, uid: Factory.next(:uid)) )
-      end
-    end
-    
-    it "should have an admin attribute." do
-      @user.should respond_to :admin
-    end
-    
-    it "should default to not being admin." do
-      @user.should_not be_admin
-    end
-    
-    it "should make users listed as admins in the config administrators." do
-      @admin_users.each do |admin|
-        admin.should be_admin
-      end
-    end
+  describe "rank and privileges" do
   end
   
   describe "event attendance" do
