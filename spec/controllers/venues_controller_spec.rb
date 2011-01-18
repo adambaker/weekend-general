@@ -56,14 +56,8 @@ describe VenuesController do
     end
     
     it "should have a sanitized, formatted description." do
-      paragraphs = sanitized_description.split("\n")
       get :show, id: @venue
-      response.should have_selector 'p a', href: 'www.ahappyplace.com',
-                                            content: 'A Happy Place'
-      response.should have_selector 'p em', content: 'hate'
-      response.should have_selector 'p', content: 'Red Eye'
-      response.should have_selector 'p', content: paragraphs[2]
-      response.should_not have_selector 'p script'
+      test_sanitized_description
     end
   end
   
@@ -112,8 +106,7 @@ describe VenuesController do
         it "redirects to the created venue with an appropriate flash" do
           post :create, venue: @new_attr
           response.should redirect_to venue_path assigns :venue
-          flash[:success].should_not be_nil
-          flash[:success].should == Themes::current_theme['venues']['new']
+          test_flash :success, 'venues', 'new'
         end
         
         it "creates a new venue." do
@@ -145,8 +138,7 @@ describe VenuesController do
         it "redirects to the venue with an appropriate flash message." do
           put :update, id: @venue, venue: @new_attr
           response.should redirect_to @venue
-          flash[:success].should_not be_nil
-          flash[:success].should == Themes::current_theme['venues']['updated']
+          test_flash :success, 'venues', 'updated'
         end
         
         it "updates the requested venue" do
@@ -184,8 +176,7 @@ describe VenuesController do
       it "redirects to the venues list" do
         delete :destroy, id: @venue
         response.should redirect_to(venues_url)
-        flash[:success].should_not be_nil
-        flash[:success].should == Themes::current_theme['venues']['deleted']
+        test_flash :success, 'venues', 'deleted'
       end
     end
   end

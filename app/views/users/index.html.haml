@@ -6,15 +6,9 @@
 %table
   %tr
     %th Name
-    - if current_user
-      %th Email
-    %th
-    %th
+    %th Rank
   - @users.each do |user|
     %tr
       %td= user.name
-      -if current_user
-        %td= user.email
-      %td= link_to 'Show', user
-      %td= link_to 'Edit', edit_user_path(user)
+      %td= image_tag(rank_title(user)+'.png', title: rank_title(user))
 

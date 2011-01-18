@@ -6,10 +6,11 @@ describe UsersController do
   
   before(:each) do
     @user = Factory(:user)
-    @user_attr = { provider: @user.provider,
-                   uid:      @user.uid,
-                   name:     @user.name,
-                   email:    @user.email }
+    @user_attr = { provider:    @user.provider,
+                   uid:         @user.uid,
+                   name:        @user.name,
+                   email:       @user.email, 
+                   description: @user.description}
   end
   
   describe "GET index" do
@@ -18,6 +19,11 @@ describe UsersController do
       get :index
       response.should be_success
       response.should have_selector :title, content: 'Warrior muster'
+    end
+    
+    it "should have the rank insignia." do
+      get :index
+      response.should have_selector :img, alt: 'Private', title: 'private'
     end
     
     describe "with many users" do
@@ -41,18 +47,11 @@ describe UsersController do
         response.should_not have_selector :a, content: 'Destroy'
       end
       
-      it "should not have emails when not signed in" do
-        get :index
-        @users.each do |u|
-          response.should_not have_selector :td, content: u.email
-        end
-      end
-      
-      it "should have emails when signed in" do
+      it "should not have emails" do
         test_sign_in @user
         get :index
         @users.each do |u|
-          response.should have_selector :td, content: u.email
+          response.should_not contain u.email
         end
       end
     end
@@ -72,8 +71,17 @@ describe UsersController do
       response.should be_success
       response.should have_selector :title, content: @user.name
     end
-
-
+    
+    it "should have a rank insignia." do
+      get :show, id: @user
+      response.should have_selector :img, alt: 'Private', title: 'private'
+    end
+    
+    it "should have a sanitized description." do
+      get :show, id: @user
+      test_sanitized_description
+    end
+    
     describe "when signed in" do
       before :each do
         test_sign_in @user

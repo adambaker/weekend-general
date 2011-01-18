@@ -9,7 +9,12 @@
     %b Email:
     = @user.email
   = link_to 'Edit', edit_user_path(@user)
-  
+
+%b Rank:
+= image_tag rank_title(@user)+'.png', title: rank_title(@user)
+
+= display_format @user.description
+
 - if current_user
   %h2 RSVPs
   - [ {title: 'Orchestrating', method: :hosting},

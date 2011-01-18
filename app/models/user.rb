@@ -1,7 +1,7 @@
 class User < ActiveRecord::Base
   email_regex = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
 
-  attr_accessible :email, :name, :provider, :uid
+  attr_accessible :email, :name, :provider, :uid, :description
   
   has_many :rsvps, dependent: :destroy
   has_many :events, through: :rsvps
@@ -12,6 +12,11 @@ class User < ActiveRecord::Base
   validates :provider, presence:   true
   validates :uid,      presence:   true,
                        uniqueness: {scope: :provider}
+  
+  def initialize(attr={}, &block)
+    super
+    self.rank = 4 if Settings::majors.include? email 
+  end
   
   def hosting
     events_by_kind 'host'
@@ -52,5 +57,9 @@ class User < ActiveRecord::Base
   def maybe(event)
     unattend event
     rsvps.create!(event_id: event.id, kind: 'maybe')
+  end
+  
+  def promote
+    self.rank += 1
   end
 end

@@ -95,4 +95,14 @@ Cover for events ranges from free to about $1200, so be prepared. Typically host
     flash[type].should_not be_nil
     flash[type].should == Themes::current_theme[controller][message]
   end
+  
+  def test_sanitized_description
+    paragraphs = sanitized_description.split("\n")
+    response.should have_selector 'p a', href: 'www.ahappyplace.com',
+                                          content: 'A Happy Place'
+    response.should have_selector 'p em', content: 'hate'
+    response.should have_selector 'p', content: 'Red Eye'
+    response.should have_selector 'p', content: paragraphs[2]
+    response.should_not have_selector 'p script'
+  end
 end

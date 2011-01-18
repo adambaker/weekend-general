@@ -7,7 +7,8 @@ describe User do
       name: 'Example User',
       email: 'user@example.com',
       uid: 'foobar',
-      provider: 'google'
+      provider: 'google',
+      description: venue_attr[:description]
     }
   end
 
@@ -72,16 +73,17 @@ describe User do
     user_w_same_provider_uid.should_not be_valid
   end
   
-  it "should allow same uid with different providers" do
+  it "should allow same uid with different providers." do
     User.create!(@attr)
     other_user = User.new(name: 'foo', email:'fake@phony.lie', provider: 'foo',
       uid: @attr[:uid])
     other_user.should be_valid
   end
   
-  describe "rank and privileges" do
+  it "should have a description." do
+    User.create!(@attr).should respond_to(:description)
   end
-  
+
   describe "event attendance" do
     before :each do
       @user = User.create(@attr)
@@ -165,6 +167,23 @@ describe User do
         @user.destroy
         Rsvp.find_by_user_id(id).should be_nil
       end
+    end
+  end
+  
+  describe "rank" do
+    
+    it "should default to 1" do
+      User.create(@attr).rank.should == 1
+    end
+    
+    it "should allow users to be promoted." do
+      user = User.create(@attr)
+      user.promote
+      user.rank.should == 2
+    end
+    
+    it "should promote users in the majors list to rank 4" do
+      User.create(@attr.merge(email: Settings::majors[0])).rank.should == 4
     end
   end
 end
