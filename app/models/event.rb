@@ -2,6 +2,12 @@ class Event < ActiveRecord::Base
   attr_accessible :name, :date, :time, :price, :venue_id, :address, :city,
     :description, :links_attributes
 
+  scope :future, lambda {where("date >= ?", Time.zone.today)}
+  scope :past, lambda {where("date < ?", Time.zone.today)}
+  scope :today, lambda {where("date = ?", Time.zone.today)}
+  scope :this_week, lambda {future.where("date < ?", 1.week.from_now)}
+  scope :this_month, lambda {future.where("date < ?", 1.month.from_now)}
+  
   belongs_to :venue
   has_many :links, dependent: :destroy
   

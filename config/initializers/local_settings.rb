@@ -3,7 +3,8 @@ module Settings
     "Chicago, IL"
   end
   
-  def self.admins #add administrator email addresses here.
+  def self.majors #add email addresses for rank Major users here.
     ['adam.durandal@gmail.com']
   end
+  
 end

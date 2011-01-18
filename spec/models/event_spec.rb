@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'set'
 
 describe Event do
   before :each do
@@ -195,6 +196,63 @@ describe Event do
         @event.destroy
         Rsvp.find_by_event_id(id).should be_nil
       end
+    end
+  end
+  
+  describe "event orderings and scopes" do
+    before :each do
+      @today_event = Factory(:event, 
+        name: Factory.next(:name), date: Time.zone.today, price: 3000)
+      @this_week_events = [Factory(:event), 
+        Factory(:event, name: Factory.next(:name))] + [@today_event]
+      @past_events = [
+        Factory(:event, name: Factory.next(:name), date: 2.days.ago),
+        Factory(:event, name: Factory.next(:name), date: 1.days.ago)
+      ]
+      @past_events.reverse!
+      @far_future_events = [
+        Factory(:event, name: Factory.next(:name), date: 2.months.from_now,
+          price: 1000),
+        Factory(:event, name: Factory.next(:name), date: 2.months.from_now,
+          price: 0)
+      ]
+      @this_month_events = [
+        Factory(:event, name: Factory.next(:name), date: 2.weeks.from_now,
+          price: 2000),
+        Factory(:event, name: Factory.next(:name), date: 2.weeks.from_now,
+          price: 0)
+      ] + @this_week_events
+      @future_events = [@today_event]+@this_week_events+@this_month_events+
+        @far_future_events
+      @free_events = [@far_future_events[1], @this_month_events[1]]
+      @cheap_events = @free_events + [@far_future_events[0]]
+    end
+    
+    #below events are mapped to sets of id, date pairs to make failure
+    #messages easy to read and informative
+    it "should have future events in 'future'." do
+      Event.future.all.map{|e| [e.id, e.date.day]}.to_set.should == 
+        @future_events.map{|e| [e.id, e.date.day]}.to_set
+    end
+    
+    it "should have past events in 'past'." do
+      Event.past.all.map{|e| [e.id, e.date.day]}.to_set.should == 
+        @past_events.map{|e| [e.id, e.date.day]}.to_set
+    end
+    
+    it "should have today's events in 'today'." do
+      Event.today.all.size.should == 1
+      Event.today.first.id.should == @today_event.id
+    end
+    
+    it "should have this week's events in 'this_week'." do
+      Event.this_week.all.map{|e| [e.id, e.date.day]}.to_set.should == 
+        @this_week_events.map{|e| [e.id, e.date.day]}.to_set
+    end
+    
+    it "should have this month's events in 'this_month." do
+      Event.this_month.all.map{|e| [e.id, e.date.day]}.to_set.should == 
+        @this_month_events.map{|e| [e.id, e.date.day]}.to_set
     end
   end
 end
