@@ -1,0 +1,4 @@
+%h1.title= title
+- if allow_edit
+  .edit
+    = link_to edit_text, url_for(id: object.id, action: :edit)

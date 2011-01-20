@@ -1,33 +1,33 @@
 - content_for :title do
   %title= "Mission intel: #{@event.name}"
 
-%h1= @event.name
-%p
-  = link_to 'back', events_path
-  = link_to 'edit', edit_event_path(@event)
-
-%dl
-  %dt= Event.human_attribute_name :date
-  %dd= @event.date
-  - unless @event.time.blank?
-    %dt= Event.human_attribute_name :time
-    %dd= @event.time
-  %dt= Event.human_attribute_name :price
-  %dd= @event.price || 'No price information.' 
+.sidebar
   - unless @event.venue.nil?
-    %dt Venue
+    %dt Venue:
     %dd= link_to @event.venue.name, @event.venue
-  %dt= Event.human_attribute_name :address
+  %dt Address:
   %dd
     = @event.address
     %br/
     = @event.city
-  %dt Links
-  %dt
+  %dt Links:
+  %dd
     %ul
       - @event.links.each do |link|
-        %li= link_to link.text, link.url
-  %dt Description
+        %li.event_link= link_to link.text, link.url
+        
+= render 'shared/heading', object: @event, allow_edit: true,
+    title: @event.name, edit_text: "Edit this event"
+
+
+%h3= @event.date.strftime('%A %B %d, %Y')
+%dl
+  - unless @event.time.blank?
+    %dt Operations begin:
+    %dd= @event.time
+  %dt Price:
+  %dd= @event.price || 'No price information.' 
+  %dt Detail:
   %dd= display_format @event.description
 
 - if current_user

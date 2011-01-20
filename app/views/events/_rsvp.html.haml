@@ -2,4 +2,4 @@
   %ul{:class => "rsvp #{method}"}
     %h3= pluralize(@event.send(method).size, title)
     - for user in @event.send(method)
-      %li= link_to user.name, user_path(@user)
+      %li= link_to user.name, user_path(user)

@@ -26,6 +26,12 @@ describe UsersController do
       response.should have_selector :img, alt: 'Private', title: 'private'
     end
     
+    it "should link to the user's show page." do
+      get :index
+      response.should have_selector :a, href: user_path(@user), 
+        content: @user.name
+    end
+    
     describe "with many users" do
       before(:each) do
         @users = [@user]

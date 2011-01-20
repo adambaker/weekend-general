@@ -17,4 +17,10 @@ module UsersHelper
       'major'
     end
   end
+  
+  def event_date(event)
+    date_format = '%a, %b %d'
+    date_format += ' %Y' unless event.date.year == Time.zone.now.year
+    event.date.strftime(date_format)
+  end
 end

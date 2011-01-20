@@ -11,6 +11,10 @@ h1, h2, h3, h4, h5, h6
   font-family: helvetica, arial, sans-serif;
 }
 
+td {padding: 5px;}
+
+.sidebar ul, ul.rsvp{ list-style: none; padding: 0px; }
+
 #container{ width: 800px; margin-top: 10px; margin-left: 160px; }
 
 #header{height: 40px; position: relative;}
@@ -37,7 +41,7 @@ h1, h2, h3, h4, h5, h6
       border-top-left-radius: 5px; -moz-border-radius-topleft: 5px;
       border-top-right-radius: 5px; -moz-border-radius-topright: 5px;
       background-color: #C9E235; 
-      text-align: center; text-decoration: none;
+      text-align: center; font-weight: normal;
     }
 
 #content
@@ -47,14 +51,40 @@ h1, h2, h3, h4, h5, h6
   padding: 20px; 
 }
 
+.links li .field{ display: inline-block; }
+
+h1.title { display: inline-block; }
+
+.edit { display: inline-block; margin-left: 10px; }
+
+.sidebar
+{
+  float: right;
+  width: 200px; margin: 20px;
+}
+  .sidebar .rank { display: block; margin: auto }
+
+dt { font-weight: bold; }
+
+dd { margin-left: 25px; }
+  dd ul { margin: 0px; }
+
+form.button_to { display: inline-block; }
+
+ul.rsvp 
+{
+  display: inline-block; vertical-align: top;
+  width: 150px; margin: 10px;
+}
+
 pre {
   background-color: #eee;
   padding: 10px;
   font-size: 11px;
 }
 
-a { color: #507901; }
-a:visited { color: #619012; }
+a { color: #487700; text-decoration: none; font-weight: bold;}
+a:visited { color: #598810; }
 a:hover { color: #77a628; }
 
 div.field, div.actions {

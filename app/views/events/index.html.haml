@@ -4,25 +4,26 @@
 %table
   %thead
     %tr
-      %th= Event.human_attribute_name :name
       %th= Event.human_attribute_name :date
-      %th= Event.human_attribute_name :time
+      %th= Event.human_attribute_name :name
       %th= Event.human_attribute_name :price
-      %th= Event.human_attribute_name :venue
       %th= Event.human_attribute_name :address
-      %th= Event.human_attribute_name :city
+      %th Venue
       %th= Event.human_attribute_name :description
-      %th= 'actions'
   
   %tbody
     - for event in @events
       %tr{ :class => cycle(:odd, :even) }
-        %td= link_to event.name, event
         %td= event.date
-        %td= event.time
+        %td= link_to event.name, event
         %td= event.price
-        %td= link_to event.venue.name, venue_path(event.venue) if event.venue
-        %td= event.address
-        %td= event.city
+        %td
+          = event.address
+          %br/
+          = event.city
+        %td
+          - if event.venue
+            = link_to event.venue.name, event.venue
+          - else
+            None
         %td= truncate strip_tags(event.description), length: 50
-        %td.action= link_to 'edit', edit_event_path(event)

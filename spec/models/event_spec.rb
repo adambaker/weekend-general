@@ -64,9 +64,9 @@ describe Event do
     Event.new(@with_address_attr.merge(city: '')).should_not be_valid
   end
   
-  it 'should store the price as an integer in cents.' do
+  it 'should return the same price specified.' do
     event = Event.create(@with_venue_attr)
-    event.price.should == (@with_venue_attr[:price].to_f*100).round
+    event.price.should == @with_venue_attr[:price]
   end
   
   it 'should store a price that is not a number as nil.' do
@@ -76,7 +76,7 @@ describe Event do
   
   it 'should handle numbers with commas and dollars.' do
     event = Event.create(@with_venue_attr.merge(price: '$1,024'))
-    event.price.should == 102400
+    event.price.should == '1024.00'
   end
   
   it 'should have the appropriate date.' do
@@ -200,6 +200,10 @@ describe Event do
   end
   
   describe "event orderings and scopes" do
+    def id_date_set(events)
+      events.map{|e| [e.id, e.date.day]}.to_set
+    end
+    
     before :each do
       @today_event = Factory(:event, 
         name: Factory.next(:name), date: Time.zone.today, price: 3000)
@@ -236,8 +240,7 @@ describe Event do
     end
     
     it "should have past events in 'past'." do
-      Event.past.all.map{|e| [e.id, e.date.day]}.to_set.should == 
-        @past_events.map{|e| [e.id, e.date.day]}.to_set
+      id_date_set(Event.past.all).should == id_date_set(@past_events)
     end
     
     it "should have today's events in 'today'." do
@@ -246,13 +249,12 @@ describe Event do
     end
     
     it "should have this week's events in 'this_week'." do
-      Event.this_week.all.map{|e| [e.id, e.date.day]}.to_set.should == 
-        @this_week_events.map{|e| [e.id, e.date.day]}.to_set
+      id_date_set(Event.this_week.all).should == id_date_set(@this_week_events)
     end
     
     it "should have this month's events in 'this_month." do
-      Event.this_month.all.map{|e| [e.id, e.date.day]}.to_set.should == 
-        @this_month_events.map{|e| [e.id, e.date.day]}.to_set
+      id_date_set(Event.this_month.all).should == 
+        id_date_set(@this_month_events)
     end
   end
 end

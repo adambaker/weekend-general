@@ -2,4 +2,6 @@
   %ul{:class => "rsvp #{method}"}
     %h3= title
     - for event in @user.send(method)
-      %li= link_to event.name, event_path(event)
+      %li
+        = event_date(event) + ': '
+        = link_to(event.name, event_path(event))

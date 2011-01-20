@@ -1,20 +1,22 @@
 - content_for :title do
   %title= @user.name + "'s dossier"
-%p#notice= notice 
-%p
-  %b Name:
-  = @user.name
-- if current_user == @user
-  %p
-    %b Email:
-    = @user.email
-  = link_to 'Edit', edit_user_path(@user)
 
-%b Rank:
-= image_tag rank_title(@user)+'.png', title: rank_title(@user)
+.sidebar 
+  %dl
+    %dt Name:
+    %dd= @user.name
+    - if current_user == @user
+      %dt Email:
+      %dd= @user.email
+    %dt Rank:
+    %dd= image_tag rank_title(@user)+'.png', title: rank_title(@user),
+      class: 'rank'
+
+= render 'shared/heading', title: @user.name, edit_text: 'Edit your profile',
+  allow_edit: (@user == current_user), object: @user
 
 = display_format @user.description
-
+  
 - if current_user
   %h2 RSVPs
   - [ {title: 'Orchestrating', method: :hosting},
@@ -22,4 +24,3 @@
       {title: 'Considering', method: :maybes} ].each do |locals|
     = render 'rsvp', locals
 
-= link_to 'Back', users_path

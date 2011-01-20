@@ -7,22 +7,20 @@
 %table
   %thead
     %tr
-      %th= Venue.human_attribute_name :name
-      %th= Venue.human_attribute_name :address
-      %th= Venue.human_attribute_name :city
-      %th= Venue.human_attribute_name :url
-      %th= Venue.human_attribute_name :description
-      %th{:colspan => 3}= 'actions'
-  
+      %th.name= Venue.human_attribute_name :name
+      %th.address= Venue.human_attribute_name :address
+      %th.description= Venue.human_attribute_name :description
+      %th.link Website Link
+
   %tbody
     - for venue in @venues
       %tr{ :class => cycle(:odd, :even) }
-        %td= venue.name
-        %td= venue.address
-        %td= venue.city
-        %td
-          %a{href: venue.url} website
-        %td= truncate strip_tags(venue.description), length: 50
-        %td.action= link_to 'show', venue
-        %td.action= link_to 'edit', edit_venue_path(venue)
+        %td.name= link_to venue.name, venue
+        %td.address
+          = venue.address
+          %br/
+          = venue.city
+        %td.description= truncate strip_tags(venue.description), length: 50
+        - unless venue.url.blank?
+          %td.link= link_to venue.url, venue.url
 

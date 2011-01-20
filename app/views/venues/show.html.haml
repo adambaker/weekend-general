@@ -1,20 +1,20 @@
 - content_for :title do
   %title= @venue.name
 
-%h1= link_to @venue.name, @venue.url
+.sidebar
+  %dl
+    %dt Address:
+    %dd
+      = @venue.address
+      %br/
+      = @venue.city
+    - unless @venue.url.blank?
+      %dt Website:
+      %dd= link_to @venue.url, @venue.url
 
-%dl
-  %dt= Venue.human_attribute_name :address
-  %dd
-    = @venue.address
-    %br/
-    = @venue.city
-    %br/
-    = link_to 'website', @venue.url
-  %dt= Venue.human_attribute_name :description
-  %dd= display_format(@venue.description)
-  
-%p
-  = link_to 'back', venues_path
-  = link_to 'edit', edit_venue_path(@venue)
+= render 'shared/heading', title: link_to(@venue.name, @venue.url), 
+  object: @venue, edit_text: "Edit this venue", allow_edit: true
+
+%h3 Venue intel:
+= display_format(@venue.description)
 

@@ -19,7 +19,7 @@ class User < ActiveRecord::Base
   end
   
   def hosting
-    events_by_kind 'host'
+    events_by_kind('host')
   end
   
   def attending
@@ -37,6 +37,7 @@ class User < ActiveRecord::Base
   
   def events_by_kind(kind)
     rsvps.where(kind: kind).map{|rsvp| rsvp.event}
+      .sort{|a, b| a.date <=> b.date}
   end
   
   def host(event)

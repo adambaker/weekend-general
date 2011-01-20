@@ -4,7 +4,7 @@ class Event < ActiveRecord::Base
 
   scope :future, lambda {where("date >= ?", Time.zone.today)}
   scope :past, lambda {where("date < ?", Time.zone.today)}
-  scope :today, lambda {where("date = ?", Time.zone.today)}
+  scope :today, lambda {future.where("date < ?", Time.zone.now.end_of_day)}
   scope :this_week, lambda {future.where("date < ?", 1.week.from_now)}
   scope :this_month, lambda {future.where("date < ?", 1.month.from_now)}
   
@@ -44,6 +44,17 @@ class Event < ActiveRecord::Base
         ).round
     rescue Exception
       self.price = nil
+    end
+  end
+  
+  def price
+    price_int = read_attribute(:price)
+    if price_int && price_int > 10
+      price_int.to_s.insert(-3, '.')
+    elsif price_int
+      price_int.to_s.insert(0, '0.0')
+    else
+      nil
     end
   end
   

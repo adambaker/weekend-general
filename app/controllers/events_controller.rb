@@ -6,7 +6,7 @@ class EventsController < ApplicationController
   # GET /events
   # GET /events.xml
   def index
-    @events = Event.all
+    @events = Event.future
     respond_with @events
   end
 

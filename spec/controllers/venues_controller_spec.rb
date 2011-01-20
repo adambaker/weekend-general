@@ -27,7 +27,7 @@ describe VenuesController do
     
     it "should have a link to the site's webpage." do
       get :index
-      response.should have_selector(:a, href: @venue.url, content: 'website')
+      response.should have_selector(:a, href: @venue.url)
     end
     
     it "should display all the venues." do
@@ -52,7 +52,7 @@ describe VenuesController do
     
     it "should have a link to the site's webpage." do
       get :show, id: @venue
-      response.should have_selector(:a, href: @venue.url, content: 'website')
+      response.should have_selector(:a, href: @venue.url)
     end
     
     it "should have a sanitized, formatted description." do
