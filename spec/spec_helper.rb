@@ -91,9 +91,19 @@ Cover for events ranges from free to about $1200, so be prepared. Typically host
     }
   end
   
-  def test_flash(type, controller, message)
+  def set_rank( user, rank )
+    user.rank = rank
+    user.save
+  end
+  
+  def test_flash(type, controller, message = nil)
     flash[type].should_not be_nil
     flash[type].should == Themes::current_theme[controller][message]
+  end
+  
+  def test_rank_flash
+    flash[:error].should_not be_nil
+    flash[:error].should == Themes::current_theme['rank']
   end
   
   def test_sanitized_description
@@ -104,5 +114,12 @@ Cover for events ranges from free to about $1200, so be prepared. Typically host
     response.should have_selector 'p', content: 'Red Eye'
     response.should have_selector 'p', content: paragraphs[2]
     response.should_not have_selector 'p script'
+  end
+  
+  def test_attrs_equal(object, attrs)
+    object.reload
+    attrs.each do |key, value|
+      object.send(key).should == value
+    end 
   end
 end

@@ -1,7 +1,12 @@
 - content_for :title do
   %title Revise venue intel
 %h1= "Edit #{@venue.name}"
-%p
-  = link_to 'back', venues_path
-  = link_to 'show', @venue
+
 = render 'form'
+
+%p
+  %br/
+  = button_to('Remove Venue', {id: @venue.id, action: :destroy},
+    confirm: 'Really discard this venue?', method: :delete)
+%br/
+= link_to "Back", :back

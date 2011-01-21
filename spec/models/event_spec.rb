@@ -112,6 +112,10 @@ describe Event do
     links.each { |link| Link.find_by_id(link.id).should be_nil }
   end
   
+  it 'should have a created by attribute.' do
+    Event.create(@with_venue_attr).should respond_to :created_by
+  end
+  
   describe "users attending" do
     before :each do
       @event = Event.create(@with_venue_attr)

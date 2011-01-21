@@ -187,6 +187,11 @@ describe UsersController do
         response.should have_selector :input, type: 'text', value: @user.name
         response.should have_selector :input, type: 'text', value: @user.email
       end
+      
+      it "should have a delete button." do
+        get :edit, id: @user
+        response.should have_selector :input, name: '_method', value: 'delete'
+      end
     end
     
     describe "when signed in as a different user" do

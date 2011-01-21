@@ -7,4 +7,5 @@ module Settings
     ['adam.durandal@gmail.com']
   end
   
+  #Time.zone = 'Central Time (US & Canada)'
 end

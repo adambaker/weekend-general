@@ -1,5 +1,10 @@
-%h1 Revise Sortie Briefing
-%p
-  = link_to 'back', events_path
-  = link_to 'show', @event
+%h1 Revise #{@event.name} Briefing
+
 = render 'form'
+
+%p
+  %br/
+  = button_to('Remove Event', {id: @event.id, action: :destroy},
+    confirm: 'Really discard event info?', method: :delete)
+%br/
+= link_to "Back", :back

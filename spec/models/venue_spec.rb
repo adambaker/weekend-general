@@ -61,4 +61,8 @@ describe Venue do
       venue_id: venue.id, name: Factory.next(:name)) }
     venue.events.should == events
   end
+  
+  it "should have a created_by attribute." do
+    Venue.create(@attr).should respond_to :created_by
+  end
 end

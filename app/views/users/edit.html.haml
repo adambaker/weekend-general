@@ -10,6 +10,9 @@
  
 %h3 Cancel my account
 %p
-  Unhappy? #{link_to Themes::current_theme['users']['cancel_account'], |
-    @user , confirm: "Are you sure?", method: :delete}.                |
+  Unhappy?
+  %br/
+  = button_to('Honoralble Discharge', {id: @user.id, action: :destroy},
+    confirm: current_theme('cancel_account'), method: :delete)
+%br/
 = link_to "Back", :back

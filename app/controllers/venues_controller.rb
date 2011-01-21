@@ -2,6 +2,8 @@ class VenuesController < ApplicationController
   respond_to :html #, :xml, :json
   
   before_filter :authenticate, except: [:index, :show]
+  before_filter :fetch_venue, except: [:index, :new, :create]
+  before_filter :check_rank, only: [:edit, :update, :destroy]
   
   # GET /venues
   # GET /venues.xml
@@ -13,7 +15,6 @@ class VenuesController < ApplicationController
   # GET /venues/1
   # GET /venues/1.xml
   def show
-    @venue = Venue.find(params[:id])   
     respond_with @venue
   end
 
@@ -24,16 +25,12 @@ class VenuesController < ApplicationController
     respond_with @venue
   end
 
-  # GET /venues/1/edit
-  def edit
-    @venue = Venue.find(params[:id])
-  end
-
   # POST /venues
   # POST /venues.xml
   def create
     @venue = Venue.new(params[:venue])
-
+    @venue.created_by = current_user.id
+    
     respond_to do |format|
       if @venue.save
         flash[:success] = current_theme 'new'
@@ -51,8 +48,6 @@ class VenuesController < ApplicationController
   # PUT /venues/1
   # PUT /venues/1.xml
   def update
-    @venue = Venue.find(params[:id])
-
     respond_to do |format|
       if @venue.update_attributes(params[:venue])
         flash[:success] = current_theme 'updated'
@@ -69,7 +64,6 @@ class VenuesController < ApplicationController
   # DELETE /venues/1
   # DELETE /venues/1.xml
   def destroy
-    @venue = Venue.find(params[:id])
     @venue.destroy
 
     respond_to do |format|
@@ -77,6 +71,17 @@ class VenuesController < ApplicationController
       format.html { redirect_to(venues_url) }
       #format.xml  { head :ok }
     end
+  end
+  
+  def check_rank
+    unless can_alter? @venue
+      flash[:error] = rank_message
+      redirect_to @venue
+    end
+  end
+  
+  def fetch_venue
+    @venue = Venue.find(params[:id])
   end
   
   helper_method :current_theme

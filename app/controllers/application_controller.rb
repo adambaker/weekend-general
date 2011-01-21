@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
   
-  helper_method :current_user, :current_theme
+  helper_method :current_user, :current_theme, :can_alter?
 
   def current_user
     @current_user ||= User.find(session[:user_id]) if session[:user_id]
@@ -18,7 +18,16 @@ class ApplicationController < ActionController::Base
     end
   end
   
+  def rank_message
+    Themes::current_theme['rank']
+  end
+  
   def current_theme(controller, message)
     Themes::current_theme[controller][message]
   end
+  
+  def can_alter?(object)
+    object.created_by == current_user.id || current_user.rank > 1 
+  end
+  
 end

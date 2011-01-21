@@ -17,10 +17,12 @@ generic:
     edit_not_you: "You can't edit someone else's profile."
     edit_uid: "YOu can't edit your authentication information."
     
+    cancel_account: "You sure you want to cancel? We just want to be sure."
     destroyed: "So sorry you don't want to stay. Come back any time and we'll have a place for you."
     destroy_not_you: "Why are you trying to delete someone else's account? That doesn't seem ethical."
     admin_destroy: "That user must have done something awful, I'm sure."
 
+  rank: "You don't have permission to edit that."
     
   venues:
     new: "Another favorite place added to the list."
@@ -54,10 +56,13 @@ general:
     edit_not_you: "You can't edit someone else's profile!"
     edit_uid: "The office uses that to verify your identity. You can't change it!"
 
+    cancel_acount: "If this outfit doesn't work for you, I can get you an honorable discarge. You sure that's what you want?"
     destroyed: "You have your discharge. You know where the recruiter is if you want back in."
     destroy_not_you: "You don't have clearence to discharge another recruit!"
     admin_destroy: "That worthless cadet deserves a dishonorable discharge."
     
+  rank: "You don't have clearance alter those documents!"
+  
   venues:
     new: "We got your intel on this new location."
     updated: "Revising our intel on this theater... Good thinking."

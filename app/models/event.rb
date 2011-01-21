@@ -4,7 +4,7 @@ class Event < ActiveRecord::Base
 
   scope :future, lambda {where("date >= ?", Time.zone.today)}
   scope :past, lambda {where("date < ?", Time.zone.today)}
-  scope :today, lambda {future.where("date < ?", Time.zone.now.end_of_day)}
+  scope :today, lambda {future.where("date <= ?", Time.zone.now.end_of_day)}
   scope :this_week, lambda {future.where("date < ?", 1.week.from_now)}
   scope :this_month, lambda {future.where("date < ?", 1.month.from_now)}
   

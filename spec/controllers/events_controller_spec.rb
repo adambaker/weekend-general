@@ -237,7 +237,12 @@ describe EventsController do
         response.should have_selector :input, type: 'text', 
           name: 'event[links_attributes][1][url]',
           value: 'http://gorby.ru'
-      end   
+      end
+      
+      it "should have a delete button." do
+        get :edit, id: @event
+        response.should have_selector :input, name: '_method', value: 'delete'
+      end
     end
     
     describe 'create and update' do
@@ -258,6 +263,11 @@ describe EventsController do
           it 'should create a new event.' do
             lambda {post :create, event: @valid_attr}
               .should change(Event, :count).by 1
+          end
+          
+          it 'should assign the right id to created_by.' do
+            post :create, event: @valid_attr
+            Event.find_by_name(@valid_attr[:name]).created_by.should == @user.id
           end
         end
 
