@@ -16,8 +16,8 @@
       - @event.links.each do |link|
         %li.event_link= link_to link.text, link.url
         
-= render 'shared/heading', object: @event, allow_edit: true,
-    title: @event.name, edit_text: "Edit this event"
+= render 'shared/heading', object: @event, title: @event.name,
+  edit_text: "Edit this event", allow_edit: current_user&&can_alter?(@event)
 
 
 %h3= @event.date.strftime('%A %B %d, %Y')

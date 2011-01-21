@@ -95,6 +95,7 @@ describe EventsController do
                                         content: 'A Happy Place'
       response.should have_selector :em, content: 'hate'
     end
+    
     describe "rsvp display." do
       before :each do
         @users = [Factory(:user)]
@@ -121,9 +122,11 @@ describe EventsController do
         end
       end
     end
+    
     describe 'with a signed in user.' do
       before :each do
         @user = test_sign_in Factory :user
+        set_rank @user, 1
       end
       
       it 'should have rsvp buttons.' do
@@ -136,15 +139,34 @@ describe EventsController do
           value: "I'm going", type: 'submit'
       end
       
-      it "should change rsvp buttons if you've already rsvp'd" do
+      it "should change rsvp buttons if you've already rsvp'd." do
         @user.attend @event
-        get :show, id: @event.id
+        get :show, id: @event
         response.should have_selector 'input',
           value: 'Maybe...', type: 'submit'
         response.should have_selector 'input',
           value: "I'm hosting/organizing"
         response.should have_selector 'input',
           value: "I won't be there", type: 'submit'
+      end
+      
+      it "should not have an edit button." do
+        get :show, id: @event
+        response.should_not have_selector :a, href: edit_event_path(@event)
+      end
+      
+      it "should have the edit button if the user created the event." do
+        set_creator @event, @user
+        get :show, id: @event
+        response.should have_selector :a, href: edit_event_path(@event)
+      end
+      
+      [2, 3, 4].each do |i|
+        it "should have an edit button for rank #{i}." do
+          set_rank @user, i
+          get :show, id: @event
+          response.should have_selector :a, href: edit_event_path(@event)
+        end
       end
     end
   end
@@ -179,6 +201,7 @@ describe EventsController do
   describe 'when signed in' do
     before :each do
       @user = test_sign_in Factory(:user)
+      set_rank @user, 2
     end
     
     describe "GET new" do
@@ -243,6 +266,28 @@ describe EventsController do
         get :edit, id: @event
         response.should have_selector :input, name: '_method', value: 'delete'
       end
+      
+      it "should redirect rank 1 users." do
+        set_rank @user, 1
+        get :edit, id: @event
+        response.should redirect_to @event
+        test_rank_flash
+      end
+      
+      it "should succeed for rank 1 user who created the event." do
+        set_rank @user, 1
+        set_creator @event, @user
+        get :edit, id: @event
+        response.should be_success
+      end
+      
+      [3, 4].each do |i|
+        it "should succeed for rank #{i} users." do
+          set_rank @user, i
+          get :edit, id: @event
+          response.should be_success
+        end
+      end
     end
     
     describe 'create and update' do
@@ -299,6 +344,35 @@ describe EventsController do
             @event.name.should == @valid_attr[:name]
             @event.address.should == @valid_attr[:address]
           end
+          
+          it "should redirect rank 1 users without updating." do
+            name, address = @event.name, @event.address
+            set_rank @user, 1
+            put :update, id: @event, event: @valid_attr
+            response.should redirect_to @event
+            test_rank_flash
+            @event.name.should == name
+            @event.address.should == address
+          end
+          
+          it "should succeed for rank 1 user who created the event." do
+            set_rank @user, 1
+            set_creator @event, @user
+            put :update, id: @event, event: @valid_attr
+            @event.reload
+            @event.name.should == @valid_attr[:name]
+            @event.address.should == @valid_attr[:address]
+          end
+          
+          [3, 4].each do |i|
+            it "should succeed for rank #{i} users." do
+              set_rank @user, i
+              put :update, id: @event, event: @valid_attr
+              @event.reload
+              @event.name.should == @valid_attr[:name]
+              @event.address.should == @valid_attr[:address]
+            end
+          end
         end
 
         describe "with invalid params" do
@@ -328,6 +402,28 @@ describe EventsController do
       it "should delete the event." do
         lambda {delete :destroy, id: @event.id}.should change(Event, :count)
           .by -1
+      end
+      
+      it "should redirect rank 1 users without deleting the event." do
+        set_rank @user, 1
+        lambda do
+          delete :destroy, id: @event
+          response.should redirect_to @event
+          test_rank_flash
+        end.should_not change(Event, :count)
+      end
+      
+      it "should succeed for rank 1 user who created the event." do
+        set_rank @user, 1
+        set_creator @event, @user
+        lambda{delete :destroy, id: @event}.should change(Event, :count).by -1
+      end
+      
+      [3, 4].each do |i|
+        it "should succeed for rank #{i} users." do
+          set_rank @user, i
+          lambda{delete :destroy, id: @event}.should change(Event, :count).by -1
+        end
       end
     end
   end

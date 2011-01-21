@@ -1,5 +1,7 @@
 class EventsController < ApplicationController
   before_filter :authenticate, except: [:index, :show]
+  before_filter :fetch_event, except: [:index, :new, :create]
+  before_filter :check_rank, only: [:edit, :update, :destroy]
   
   respond_to :html#, :xml, :json
   
@@ -13,7 +15,6 @@ class EventsController < ApplicationController
   # GET /events/1
   # GET /events/1.xml
   def show
-    @event = Event.find(params[:id])
     respond_with @events
   end
 
@@ -27,7 +28,6 @@ class EventsController < ApplicationController
 
   # GET /events/1/edit
   def edit
-    @event = Event.find(params[:id])
     @event.links.build
   end
 
@@ -52,8 +52,6 @@ class EventsController < ApplicationController
   # PUT /events/1
   # PUT /events/1.xml
   def update
-    @event = Event.find(params[:id])
-
     respond_to do |format|
       if @event.update_attributes(params[:event])
         flash[:success] = current_theme 'events', 'updated'
@@ -69,13 +67,23 @@ class EventsController < ApplicationController
   # DELETE /events/1
   # DELETE /events/1.xml
   def destroy
-    @event = Event.find(params[:id])
     @event.destroy
 
     respond_to do |format|
       flash[:success] = current_theme 'events', 'deleted'
       format.html { redirect_to(events_url) }
       #format.xml  { head :ok }
+    end
+  end
+  
+  def fetch_event
+    @event = Event.find(params[:id])
+  end
+  
+  def check_rank
+    unless can_alter? @event
+      flash[:error] = Themes::current_theme['rank']
+      redirect_to @event
     end
   end
 end

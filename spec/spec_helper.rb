@@ -96,6 +96,11 @@ Cover for events ranges from free to about $1200, so be prepared. Typically host
     user.save
   end
   
+  def set_creator(object, user)
+    object.created_by = user
+    object.save
+  end
+  
   def test_flash(type, controller, message = nil)
     flash[type].should_not be_nil
     flash[type].should == Themes::current_theme[controller][message]
