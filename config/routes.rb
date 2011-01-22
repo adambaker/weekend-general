@@ -69,6 +69,4 @@ WeekendGeneral::Application.routes.draw do
   #     # (app/controllers/admin/products_controller.rb)
   #     resources :products
   #   end
-
-  # See how all your routes lay out with "rake routes"
 end

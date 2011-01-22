@@ -2,17 +2,11 @@ require 'yaml'
 module Themes
   THEMES = YAML.load_file(File.join(Rails.root, "config", "themes.yaml"))
   
-  @@current_theme = THEMES["general"]
-  
-  def self.current_theme
-    @@current_theme
+  def self.default_theme
+    THEMES["general"]
   end
   
-  def self.current_theme=( theme_name )
-    @@current_theme = THEMES[theme_name]
-  end
-  
-  def self.is_general?
-    @@current_theme == THEMES["general"]
+  def self.not_signed_in
+    THEMES["generic"]
   end
 end

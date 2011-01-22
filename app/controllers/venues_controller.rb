@@ -33,7 +33,7 @@ class VenuesController < ApplicationController
     
     respond_to do |format|
       if @venue.save
-        flash[:success] = current_theme 'new'
+        flash[:success] = current_theme 'venues', 'new'
         format.html { redirect_to @venue }
         #format.xml  { render :xml => @venue, 
           #:status => :created, :location => @venue }
@@ -50,7 +50,7 @@ class VenuesController < ApplicationController
   def update
     respond_to do |format|
       if @venue.update_attributes(params[:venue])
-        flash[:success] = current_theme 'updated'
+        flash[:success] = current_theme 'venues', 'updated'
         format.html { redirect_to @venue }
         #format.xml  { head :ok }
       else
@@ -67,7 +67,7 @@ class VenuesController < ApplicationController
     @venue.destroy
 
     respond_to do |format|
-      flash[:success] = current_theme 'deleted'
+      flash[:success] = current_theme 'venues', 'deleted'
       format.html { redirect_to(venues_url) }
       #format.xml  { head :ok }
     end
@@ -75,7 +75,7 @@ class VenuesController < ApplicationController
   
   def check_rank
     unless can_alter? @venue
-      flash[:error] = rank_message
+      flash[:error] = theme['rank']
       redirect_to @venue
     end
   end
@@ -84,9 +84,4 @@ class VenuesController < ApplicationController
     @venue = Venue.find(params[:id])
   end
   
-  helper_method :current_theme
-  
-  def current_theme(message)
-    Themes::current_theme['venues'][message]
-  end
 end

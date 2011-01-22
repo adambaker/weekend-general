@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110120143002) do
+ActiveRecord::Schema.define(:version => 20110122021902) do
 
   create_table "events", :force => true do |t|
     t.string   "name"
@@ -59,6 +59,7 @@ ActiveRecord::Schema.define(:version => 20110120143002) do
     t.datetime "updated_at"
     t.text     "description"
     t.integer  "rank",        :default => 1
+    t.string   "theme"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
@@ -74,5 +75,7 @@ ActiveRecord::Schema.define(:version => 20110120143002) do
     t.datetime "updated_at"
     t.integer  "created_by"
   end
+
+  add_index "venues", ["name"], :name => "index_venues_on_name"
 
 end

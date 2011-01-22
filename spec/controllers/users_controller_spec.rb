@@ -10,7 +10,8 @@ describe UsersController do
                    uid:         @user.uid,
                    name:        @user.name,
                    email:       @user.email, 
-                   description: @user.description}
+                   description: @user.description,
+                   theme:       @user.theme}
   end
   
   describe "GET index" do
@@ -124,6 +125,12 @@ describe UsersController do
             @other_user.attend @events[1]
             @other_user.attend @events[2]
             @other_user.maybe @events[3]
+            @past_events = []
+            3.times{@past_events << Factory(:event, name: Factory.next(:name), 
+              date: 3.days.ago)}
+            @other_user.host @past_events[2]
+            @other_user.attend @past_events[1]
+            @other_user.maybe @past_events[0]
           end
           
           it "should list the events that the user has RSVP'd to." do
@@ -133,6 +140,11 @@ describe UsersController do
             response.should contain 'Considering'
             @events.each {|e| response.should contain e.name}
           end
+          
+          it "should not list the past events." do
+            get :show, id: @other_user
+            @past_events.each{|e| response.should_not contain e.name}
+          end
         end
       end
     end
@@ -140,7 +152,7 @@ describe UsersController do
 
   describe "GET new" do
     it "should be successful w/ 'enlistment' in the title." do
-      get :new
+      get :new, user: @user_attr
       response.should be_success
       response.should have_selector :title, content: 'enlistment' 
     end
@@ -159,13 +171,19 @@ describe UsersController do
       response.should have_selector :input, type: 'text', value: @user.name
       response.should have_selector :input, type: 'text', value: @user.email
     end
+    
+    it "should have a theme radio button with 'general'." do
+      get :new, user: @user_attr
+      response.should have_selector :input, type: 'radio', name: 'user[theme]',
+        value: 'general'
+    end
   end
 
   describe "GET edit" do
     describe "when not signed in" do
       it "should redirect to /auth/google." do
         get :edit, id: @user
-        response.should redirect_to '/auth/google'
+        response.should redirect_to sign_in_path
       end 
     end
     

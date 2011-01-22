@@ -1,7 +1,7 @@
 class User < ActiveRecord::Base
   email_regex = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
 
-  attr_accessible :email, :name, :provider, :uid, :description
+  attr_accessible :email, :name, :provider, :uid, :description, :theme
   
   has_many :rsvps, dependent: :destroy
   has_many :events, through: :rsvps
@@ -12,8 +12,10 @@ class User < ActiveRecord::Base
   validates :provider, presence:   true
   validates :uid,      presence:   true,
                        uniqueness: {scope: :provider}
+  validates_inclusion_of :theme, in: Themes::THEMES.keys
   
-  def initialize(attr={}, &block)
+  def initialize(attrs={}, &block)
+    attrs[:theme] = Themes::default_theme['name'] if attrs[:theme].nil?
     super
     self.rank = 4 if Settings::majors.include? email 
   end
@@ -36,8 +38,7 @@ class User < ActiveRecord::Base
   end
   
   def events_by_kind(kind)
-    rsvps.where(kind: kind).map{|rsvp| rsvp.event}
-      .sort{|a, b| a.date <=> b.date}
+    events.future.joins(:rsvps).where(rsvps: {kind: kind}).order(:date)
   end
   
   def host(event)

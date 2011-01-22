@@ -82,7 +82,7 @@ class EventsController < ApplicationController
   
   def check_rank
     unless can_alter? @event
-      flash[:error] = Themes::current_theme['rank']
+      flash[:error] = theme['rank']
       redirect_to @event
     end
   end

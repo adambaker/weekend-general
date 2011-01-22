@@ -65,6 +65,17 @@ describe VenuesController do
       response.should_not have_selector(:a, href: edit_venue_path(@venue))
     end
     
+    it "should list its events." do
+      events = [Factory(:event, venue: @venue)]
+      3.times{events << Factory(:event, name: Factory.next(:name),
+        venue: @venue)}
+      get :show, id: @venue
+      events.each do |e|
+        response.should have_selector :a, href: event_path(e), 
+          content: e.name
+      end
+    end
+    
     describe "when signed in" do
       before :each do
         @user = test_sign_in(Factory :user)

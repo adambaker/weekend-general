@@ -11,6 +11,18 @@
   %br/
   = f.text_field :email 
 .field
-  = f.label :description 
+  = f.label :description
+  %br/
+  %span.instructions Write whatever you're willing to share about yourself. 
   %br/
   = f.text_area :description 
+.field
+  %span.instructions Do you want to let the general yell at you?
+  %br/
+  = radio_button(:user, "theme", "general")
+  = label :user_theme, :general, "Let the general yell at me"
+  %br/
+  = radio_button(:user, "theme", "generic")
+  = label :user_theme, :generic, "I prefer more civil messages"
+  
+

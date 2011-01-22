@@ -103,12 +103,12 @@ Cover for events ranges from free to about $1200, so be prepared. Typically host
   
   def test_flash(type, controller, message = nil)
     flash[type].should_not be_nil
-    flash[type].should == Themes::current_theme[controller][message]
+    flash[type].should == Themes::default_theme[controller][message]
   end
   
   def test_rank_flash
     flash[:error].should_not be_nil
-    flash[:error].should == Themes::current_theme['rank']
+    flash[:error].should == Themes::default_theme['rank']
   end
   
   def test_sanitized_description

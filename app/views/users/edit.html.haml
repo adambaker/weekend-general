@@ -1,7 +1,7 @@
 - content_for :title do
   %title= "Editing #{@user.name}'s dossier."
   
-%h1= "Edit #{@user.name}'s dossier."
+%h1= "Edit #{@user.name}'s dossier"
 
 = form_for(@user) do |f| 
   = render 'fields', :f => f
@@ -12,7 +12,7 @@
 %p
   Unhappy?
   %br/
-  = button_to('Honoralble Discharge', {id: @user.id, action: :destroy},
-    confirm: current_theme('cancel_account'), method: :delete)
+  = button_to('Honorable Discharge', {id: @user.id, action: :destroy},
+    confirm: current_theme('users', 'cancel_account'), method: :delete)
 %br/
 = link_to "Back", :back

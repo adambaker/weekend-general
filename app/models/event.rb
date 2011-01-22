@@ -49,12 +49,14 @@ class Event < ActiveRecord::Base
   
   def price
     price_int = read_attribute(:price)
-    if price_int && price_int > 10
-      price_int.to_s.insert(-3, '.')
+    if price_int == 0
+      "free"
+    elsif price_int && price_int > 10
+      price_int.to_s.insert(-3, '.').insert(0, '$')
     elsif price_int
-      price_int.to_s.insert(0, '0.0')
+      price_int.to_s.insert(0, '0.0').insert(0, '$')
     else
-      nil
+      'no price information'
     end
   end
   

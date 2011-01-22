@@ -66,17 +66,17 @@ describe Event do
   
   it 'should return the same price specified.' do
     event = Event.create(@with_venue_attr)
-    event.price.should == @with_venue_attr[:price]
+    event.price.should == '$'+@with_venue_attr[:price]
   end
   
-  it 'should store a price that is not a number as nil.' do
+  it 'should present no price info as "no price information".' do
     event = Event.create(@with_address_attr)
-    event.price.should  be_nil
+    event.price.should =~ /no price info/
   end
   
   it 'should handle numbers with commas and dollars.' do
     event = Event.create(@with_venue_attr.merge(price: '$1,024'))
-    event.price.should == '1024.00'
+    event.price.should == '$1024.00'
   end
   
   it 'should have the appropriate date.' do

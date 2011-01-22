@@ -13,7 +13,9 @@ h1, h2, h3, h4, h5, h6
 
 td {padding: 5px;}
 
-.sidebar ul, ul.rsvp{ list-style: none; padding: 0px; }
+td.date { width: 100px; }
+
+.sidebar ul, ul.rsvp, #footer ul{ list-style: none; padding: 0px; }
 
 #container{ width: 800px; margin-top: 10px; margin-left: 160px; }
 

@@ -37,7 +37,7 @@ class UsersController < ApplicationController
     respond_to do |format|
       if @user.save
         session[:user_id] = @user.id
-        flash[:success] = current_theme 'signed_up'
+        flash[:success] = current_theme 'users', 'signed_up'
         format.html { redirect_to(@user)}
         #format.xml  { render :xml      => @user, 
         #                     :status   => :created, 
@@ -55,7 +55,8 @@ class UsersController < ApplicationController
   def update
     respond_to do |format|
       if @user.update_attributes(params[:user])
-        flash[:success] = current_theme 'updated'
+        flash[:success] = 
+          Themes::THEMES[params[:user][:theme]]['users']['updated']
         format.html { redirect_to(@user) }
         #format.xml  { head :ok }
       else
@@ -70,12 +71,12 @@ class UsersController < ApplicationController
   # DELETE /users/1.xml
   def destroy
     if current_user == @user
+      flash[:success] = current_theme 'users', 'destroyed'
       sign_out
       @user.destroy
       
       respond_to do |format|
         format.html do
-          flash[:success] = current_theme 'destroyed'
           redirect_to root_path
         end
         #format.xml  { head :ok }
@@ -85,21 +86,15 @@ class UsersController < ApplicationController
     #  flash[:success] = current_theme 'admin_destroy'
     #  redirect_to users_path
     else
-      flash[:error] = current_theme 'destroy_not_you'
+      flash[:error] = current_theme 'users', 'destroy_not_you'
       redirect_to @user
     end
-  end
-  
-  helper_method :current_theme
-  
-  def current_theme(message)
-    Themes::current_theme['users'][message]
   end
   
   private
     def not_logged_in
       if current_user
-        flash[:error] = current_theme 'already_signed_in'
+        flash[:error] = current_theme 'users', 'already_signed_in'
         redirect_to root_path
       end
     end
@@ -110,7 +105,7 @@ class UsersController < ApplicationController
     
     def edit_authorize
       if @user != current_user
-        flash[:error] = current_theme 'edit_not_you'
+        flash[:error] = current_theme 'users', 'edit_not_you'
         redirect_to @user
       end
     end
@@ -118,7 +113,7 @@ class UsersController < ApplicationController
     def check_uid_provider
       unless params[:user][:uid] == @user.uid and 
           params[:user][:provider] == @user.provider
-        flash[:error] = current_theme 'edit_uid'
+        flash[:error] = current_theme 'users', 'edit_uid'
         redirect_to @user
       end
     end  

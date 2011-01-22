@@ -8,7 +8,8 @@ describe User do
       email: 'user@example.com',
       uid: 'foobar',
       provider: 'google',
-      description: venue_attr[:description]
+      description: venue_attr[:description],
+      theme: 'general'
     }
   end
 
@@ -83,12 +84,33 @@ describe User do
   it "should have a description." do
     User.create!(@attr).should respond_to(:description)
   end
-
+  
+  it "should have a theme." do
+    User.create!(@attr).should respond_to(:theme)
+  end
+  
+  it "should default to 'general' theme." do
+    User.new.theme.should == 'general'
+  end
+  
+  it "should accept themes in Themes::THEMES." do
+    Themes::THEMES.keys.each do |theme|
+      User.new(@attr.merge(theme: theme)).should be_valid
+    end
+  end
+  
+  it "should reject any themes not in Themes::THEMES." do
+    ['//aioeu', ' ', 'not a theme name', "Don't name a theme this"].each do |w|
+      User.new(@attr.merge(theme: w)).should_not be_valid
+    end
+  end
+  
   describe "event attendance" do
     before :each do
       @user = User.create(@attr)
       @events = [Factory(:event)]
       5.times { @events << Factory(:event, name: Factory.next(:name)) }
+      @past_event = Factory(:event, name: Factory.next(:name), date: 1.day.ago)
     end
     
     describe "hosting" do
@@ -105,6 +127,11 @@ describe User do
       it "should let a user unhost an event." do
         @user.unattend @events[0]
         @user.hosting.should_not include(@events[0])
+      end
+      
+      it "should not show past events." do
+        @user.host @past_event
+        @user.hosting.should_not include(@past_event)
       end
     end
     
@@ -123,6 +150,11 @@ describe User do
         @user.unattend @events[0]
         @user.attending.should_not include(@events[0])
       end
+      
+      it "should not show past events." do
+        @user.attend @past_event
+        @user.attending.should_not include(@past_event)
+      end
     end
 
     describe "maybe" do
@@ -139,6 +171,11 @@ describe User do
       it "should let a user unmaybe an event." do
         @user.unattend @events[0]
         @user.maybes.should_not include(@events[0])
+      end
+      
+      it "should not show past events." do
+        @user.maybe @past_event
+        @user.maybes.should_not include(@past_event)
       end
     end
     

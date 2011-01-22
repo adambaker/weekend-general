@@ -32,7 +32,7 @@ generic:
 
   events:
     new: "You've posted a new event. Here's hoping it's all you hope for and more."
-    update: "The event information's been updated."
+    updated: "The event information's been updated."
     deleted: "I guess nobody wanted that event info anyway. It's gone."
     submit: "Submit"
     

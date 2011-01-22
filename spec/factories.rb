@@ -10,6 +10,7 @@ Factory.define :user do |user|
   user.provider    "google"
   user.uid         "foobar"
   user.description @@generic_description
+  user.theme       Themes::default_theme['name']
 end
 
 Factory.sequence :email do |n|

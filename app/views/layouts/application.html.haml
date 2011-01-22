@@ -3,7 +3,7 @@
   %head
     = yield :title
     = stylesheet_link_tag 'site_style'
-    = stylesheet_link_tag Themes::current_theme['name']
+    = stylesheet_link_tag theme['name']
     = javascript_include_tag :defaults 
     = csrf_meta_tag 
 

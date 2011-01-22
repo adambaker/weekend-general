@@ -1,7 +1,7 @@
 module ApplicationHelper
   
   def include_flash_images
-    if Themes::is_general?
+    if theme['name'] == 'general'
       tag('img', src: "/images/general.png", id: 'general_img') +
       tag('img', src: "/images/bubbles.png", id: 'speech_img')
     end
@@ -17,4 +17,9 @@ module ApplicationHelper
       .html_safe
   end
   
+  def event_date(event)
+    date_format = '%a, %b %d'
+    date_format += ' %Y' unless event.date.year == Time.zone.now.year
+    event.date.strftime(date_format)
+  end
 end
