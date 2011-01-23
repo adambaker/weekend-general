@@ -68,7 +68,8 @@ Cover for events ranges from free to about $1200, so be prepared. Typically host
     [ 'http://foo.bar.com', 'www.go-here-now.il', 'find.us/',
       'punch.com/users/1/get?foo=1&bar=2', 'http://go.co?goo=foo',
       'am.de/pan_da+all/man?squill=seminal', 'foo.co?e=foo%40goo.co', '',
-      'http://aurgasm.us/music/michelle/warpaint-undertow.mp3' ]
+      'http://aurgasm.us/music/michelle/warpaint-undertow.mp3',
+      'https://www.etix.com/ticket/servlet/onlineSale%3bjsessionid=A2BE74614CD1D727A56F2C2B790178BC?action=selectPerformance&cobrand=metrochicago&performance_id=1356571' ]
   end
   
   def invalid_urls

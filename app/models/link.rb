@@ -1,6 +1,6 @@
 class Link < ActiveRecord::Base
   URL_REGEX = 
-    /^(([a-z]+:\/\/)?[a-z0-9\-\.]+\.[a-z]{2,3}(\/[a-z0-9\-_+ .%]*)*(\?.*)?)?$/i
+    /^(([a-z]+:\/\/)?[a-z0-9\-\.]+\.[a-z]{2,3}(\/[a-z0-9\-_+= .%]*)*(\?.*)?)?$/i
     
   attr_accessible :url, :text
   belongs_to :event
