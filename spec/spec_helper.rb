@@ -67,7 +67,8 @@ Cover for events ranges from free to about $1200, so be prepared. Typically host
   def valid_urls
     [ 'http://foo.bar.com', 'www.go-here-now.il', 'find.us/',
       'punch.com/users/1/get?foo=1&bar=2', 'http://go.co?goo=foo',
-      'am.de/pan_da+all/man?squill=seminal', 'foo.co?e=foo%40goo.co', '' ]
+      'am.de/pan_da+all/man?squill=seminal', 'foo.co?e=foo%40goo.co', '',
+      'http://aurgasm.us/music/michelle/warpaint-undertow.mp3' ]
   end
   
   def invalid_urls
