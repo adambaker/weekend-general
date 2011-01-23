@@ -11,7 +11,7 @@ h1, h2, h3, h4, h5, h6
   font-family: helvetica, arial, sans-serif;
 }
 
-.sidebar ul, ul.rsvp, #footer ul, form ul
+.sidebar ul, ul.rsvp, #footer ul, ul.links
 { 
   list-style: none; padding: 0px; 
 }
@@ -102,21 +102,22 @@ textarea { width: 400px; }
 td {padding: 5px;}
 td.date { width: 100px; font-size: 16px; }
 td.name { width: 150px; font-size: 16px; }
+td.label 
+{ 
+  margin: 0; padding: 0;
+  width: 60px;
+}
 
 table.events_table td
 { 
   vertical-align: top;
   padding-top: 0; padding-bottom: 0;
 }
-  table.events_table tr.entry_head td 
-  {
-    padding-bottom: 5px; padding-top: 10px; 
-  }
-  table.events_table td.label 
-  { 
-    margin: 0; padding: 0;
-    width: 60px;
-  }
+table.events_table tr.entry_head td 
+{
+  padding-bottom: 5px; padding-top: 10px; 
+}
+  
 
 div.field, div.actions 
 {
