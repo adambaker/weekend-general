@@ -262,6 +262,12 @@ describe EventsController do
           value: 'http://gorby.ru'
       end
       
+      it 'should have the correct price in the price field.' do
+        get :edit, id: @event
+        response.should have_selector :input, value: @event.price,
+          name: 'event[price]'
+      end
+      
       it 'should have a delete link for existing links.' do
         link = @event.links.create({url: 'http://terrible.co'})
         get :edit, id: @event

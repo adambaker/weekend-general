@@ -2,14 +2,15 @@
 .hidden
   = f.hidden_field :uid 
   = f.hidden_field :provider
-.field
-  = f.label :name 
-  %br/
-  = f.text_field :name 
-.field
-  = f.label :email 
-  %br/
-  = f.text_field :email 
+.field_pair
+  .field
+    = f.label :name 
+    %br/
+    = f.text_field :name 
+  .field
+    = f.label :email 
+    %br/
+    = f.text_field :email 
 .field
   = f.label :description
   %br/

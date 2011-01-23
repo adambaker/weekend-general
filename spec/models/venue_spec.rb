@@ -19,15 +19,15 @@ describe Venue do
     venue.should_not be_valid
   end
   
-  it "should accept valid URLs." do
-    valid_urls.each do |url|
+  valid_urls.each do |url|
+    it "should accept #{url} as a valid URL." do
       venue = Venue.new @attr.merge(url: url)
       venue.should be_valid
     end
   end
   
-  it "should reject invalid URLs." do
-    invalid_urls.each do |url|
+  invalid_urls.each do |url|
+    it "should reject #{url} as an invalid URL." do
       venue = Venue.new @attr.merge(url: url)
       venue.should_not be_valid
     end

@@ -1,37 +1,42 @@
 = form_for(@event) do |f|
   = render 'shared/error_messages', object: @event 
   
-  .field
-    = f.label :name
-    %br
-    = f.text_field :name
-  .field
-    = f.label :date
-    %br
-    = f.date_select :date, start_year: Time.now.year
-  .field
-    = f.label :time
-    %br
-    = f.text_field :time
-  .field
-    = f.label :price
-    %br
-    = f.text_field :price
-  .field
+  .field_pair
+    .field
+      = f.label :name
+      %br/
+      = f.text_field :name
+    .field
+      = f.label :price
+      %br/
+      = f.text_field :price, value: @event.price
+  .field_pair
+    .field
+      = f.label :date
+      %br/
+      = f.date_select :date, start_year: Time.now.year
+    .field
+      = f.label :time
+      %br/
+      = f.text_field :time
+
+  .field.left
     = f.label :venue
-    %br
+    %br/
     = f.select :venue_id, venue_options
-  .field
-    = f.label :address
-    %br
-    = f.text_field :address
-  .field
-    = f.label :city
-    %br
-    = f.text_field :city
-  .field
+  .instructions.left OR
+  .left
+    .field
+      = f.label :address
+      %br/
+      = f.text_field :address
+    .field
+      = f.label :city
+      %br/
+      = f.text_field :city
+  .field.clear
     = f.label :description
-    %br
+    %br/
     = f.text_area :description
 
   %ul.links

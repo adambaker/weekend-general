@@ -1,22 +1,24 @@
 = form_for(@venue) do |f|
   = render 'shared/error_messages', object: @venue
   
-  .field
-    = f.label :name
-    %br
-    = f.text_field :name
-  .field
-    = f.label :address
-    %br
-    = f.text_field :address
-  .field
-    = f.label :city
-    %br
-    = f.text_field :city
-  .field
-    = f.label :url
-    %br
-    = f.text_field :url
+  .field_pair
+    .field
+      = f.label :name
+      %br
+      = f.text_field :name
+    .field
+      = f.label :address
+      %br
+      = f.text_field :address
+  .field_pair
+    .field
+      = f.label :city
+      %br
+      = f.text_field :city
+    .field
+      = f.label :url
+      %br
+      = f.text_field :url
   .field
     = f.label :description
     %br

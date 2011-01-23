@@ -10,14 +10,14 @@ describe Link do
     @event.links.create!(@attr)
   end
   
-  it "should reject invalid urls." do
-    invalid_urls.each do |url|
+  invalid_urls.each do |url|
+    it "should reject #{url} as an invalid URL." do
       @event.links.build(url: url, text: 'foo').should_not be_valid
     end
   end
   
-  it "should accept valid urls." do
-    valid_urls.each do |url|
+  valid_urls.each do |url|
+    it "should accept #{url} as a valid URL." do
       @event.links.build(url: url, text: 'foo').should be_valid
     end
   end

@@ -9,6 +9,6 @@
     %th Rank
   - @users.each do |user|
     %tr
-      %td= link_to user.name, user
+      %td.name= link_to user.name, user
       %td= image_tag(rank_title(user)+'.png', title: rank_title(user))
 
