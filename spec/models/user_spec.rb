@@ -179,6 +179,18 @@ describe User do
       end
     end
     
+    it "should not duplicate an rsvp when multiple users RSVP to an event." do
+      @user.maybe @events[0]
+      other_user = Factory(:user, name: Factory.next(:name), 
+        email: Factory.next(:email), uid: Factory.next(:uid))
+      other_user.maybe @events[0]
+      
+      @user.maybes.all.map{|e| e.name}.should == 
+        [@events[0]].map{|e| e.name}
+      other_user.maybes.all.map{|e| e.name}.should == 
+        [@events[0]].map{|e| e.name}
+    end
+    
     describe "combinations" do
       before :each do
         @user.host @events[0]

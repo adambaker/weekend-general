@@ -38,7 +38,7 @@ class User < ActiveRecord::Base
   end
   
   def events_by_kind(kind)
-    events.future.joins(:rsvps).where(rsvps: {kind: kind}).order(:date)
+    events.future.includes(:rsvps).where(rsvps: {kind: kind}).order(:date)
   end
   
   def host(event)
