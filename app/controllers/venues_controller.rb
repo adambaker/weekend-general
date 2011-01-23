@@ -8,7 +8,7 @@ class VenuesController < ApplicationController
   # GET /venues
   # GET /venues.xml
   def index
-    @venues = Venue.all  
+    @venues = Venue.order :name  
     respond_with @venues
   end
 

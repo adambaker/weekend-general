@@ -27,10 +27,10 @@ describe EventsController do
         content: venue.name
     end
     
-    it "should strip tags and truncate description to 50 characters." do
+    it "should strip tags and truncate description." do
       get :index
       response.should have_selector(:td, 
-        content: stripped_description[0...47]+'...')
+        content: stripped_description[0...47])
     end
     
     it "should not display past events in the." do
@@ -262,9 +262,16 @@ describe EventsController do
           value: 'http://gorby.ru'
       end
       
-      it "should have a delete button." do
+      it 'should have a delete link for existing links.' do
+        link = @event.links.create({url: 'http://terrible.co'})
         get :edit, id: @event
-        response.should have_selector :input, name: '_method', value: 'delete'
+        response.should have_selector :a, content: 'Remove link',
+          href: "/events/#{@event.id}/links/#{link.id}"
+      end
+      
+      it "should have a delete link." do
+        get :edit, id: @event
+        response.should have_selector :a, content: 'Remove this event',
       end
       
       it "should redirect rank 1 users." do

@@ -19,8 +19,8 @@ class SessionsController < ApplicationController
   def destroy
     if current_user
       flash[:notice] = current_theme 'sessions', 'sign_out'
+      redirect_to controller: :pages, action: :home, theme: theme['name']
       session[:user_id] = nil
-      redirect_to controller: :pages, action: :home
     else
       session[:user_id] = nil
       flash[:error] = current_theme 'sessions', 'already_signed_out'

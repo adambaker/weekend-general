@@ -70,7 +70,7 @@ describe SessionsController do
       
       it "should redirect to root." do
         delete :destroy
-        response.should redirect_to root_path
+        response.should be_redirect
       end
       
       it "should have an appropriate flash message." do

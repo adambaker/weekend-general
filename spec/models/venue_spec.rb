@@ -14,6 +14,11 @@ describe Venue do
     venue.should_not be_valid
   end
   
+  it 'should require an address.' do
+    venue = Venue.new @attr.merge(address: '')
+    venue.should_not be_valid
+  end
+  
   it "should accept valid URLs." do
     valid_urls.each do |url|
       venue = Venue.new @attr.merge(url: url)

@@ -1,12 +1,11 @@
 - content_for :title do
   %title Revise venue intel
-%h1= "Edit #{@venue.name}"
+%h1.title= "Revise #{@venue.name}"
+.edit
+  = link_to 'Remove this venue', {id: @venue.id, action: :destroy},
+      method: :delete, confirm: 'Really discard this venue?'
 
 = render 'form'
 
-%p
-  %br/
-  = button_to('Remove Venue', {id: @venue.id, action: :destroy},
-    confirm: 'Really discard this venue?', method: :delete)
 %br/
 = link_to "Back", :back

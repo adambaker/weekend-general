@@ -5,13 +5,6 @@
 %p= link_to 'Add a new venue', new_venue_path
 
 %table
-  %thead
-    %tr
-      %th.name= Venue.human_attribute_name :name
-      %th.address= Venue.human_attribute_name :address
-      %th.description= Venue.human_attribute_name :description
-      %th.link Website Link
-
   %tbody
     - for venue in @venues
       %tr{ :class => cycle(:odd, :even) }
@@ -20,7 +13,10 @@
           = venue.address
           %br/
           = venue.city
-        %td.description= truncate strip_tags(venue.description), length: 50
-        - unless venue.url.blank?
-          %td.link= link_to venue.url, venue.url
+        %td.link= link_to(venue.url, venue.url) unless venue.url.blank?
+      %tr
+        %td
+        %td.description(colspan=2)
+          = truncate strip_tags(venue.description), length: 180
+        
 

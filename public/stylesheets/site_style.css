@@ -11,13 +11,12 @@ h1, h2, h3, h4, h5, h6
   font-family: helvetica, arial, sans-serif;
 }
 
-td {padding: 5px;}
+.sidebar ul, ul.rsvp, #footer ul, form ul
+{ 
+  list-style: none; padding: 0px; 
+}
 
-td.date { width: 100px; }
-
-.sidebar ul, ul.rsvp, #footer ul{ list-style: none; padding: 0px; }
-
-#container{ width: 800px; margin-top: 10px; margin-left: 160px; }
+#container{ width: 730px; margin-top: 10px; margin-left: 160px; }
 
 #header{height: 40px; position: relative;}
 
@@ -32,13 +31,13 @@ td.date { width: 100px; }
   }
   #navi li
   {
-    display: inline-block; width: 125px;
+    display: inline-block; width: 110px;
     font-size: 16px; font-family: helvetica, arial, sans-serif;
     margin-left: 10px; padding: 0px;
   }
     #navi li a
     {
-      width: 115px; display: block;
+      width: 100px; display: block;
       padding: 7px 5px 3px 5px;
       border-top-left-radius: 5px; -moz-border-radius-topleft: 5px;
       border-top-right-radius: 5px; -moz-border-radius-topright: 5px;
@@ -50,19 +49,25 @@ td.date { width: 100px; }
 {
   background-image: url('../images/papmust.gif'); 
   color: #333;
-  padding: 20px; 
+  padding: 30px; min-height: 500px;
 }
 
 .links li .field{ display: inline-block; }
 
-h1.title { display: inline-block; }
+h1.title{ display: inline-block; }
+
+#footer ul
+{ 
+  display: inline-block; 
+  margin-right: 50px; margin-left: 50px; 
+}
 
 .edit { display: inline-block; margin-left: 10px; }
 
 .sidebar
 {
   float: right;
-  width: 200px; margin: 20px;
+  width: 200px; margin: 70px 10px 20px 20px;
 }
   .sidebar .rank { display: block; margin: auto }
 
@@ -89,7 +94,32 @@ a { color: #487700; text-decoration: none; font-weight: bold;}
 a:visited { color: #598810; }
 a:hover { color: #77a628; }
 
-div.field, div.actions {
+input[type=text] { width: 250px; }
+input.link_text {width: 200px;}
+textarea { width: 400px; }
+
+
+td {padding: 5px;}
+td.date { width: 100px; font-size: 16px; }
+td.name { width: 150px; font-size: 16px; }
+
+table.events_table td
+{ 
+  vertical-align: top;
+  padding-top: 0; padding-bottom: 0;
+}
+  table.events_table tr.entry_head td 
+  {
+    padding-bottom: 5px; padding-top: 10px; 
+  }
+  table.events_table td.label 
+  { 
+    margin: 0; padding: 0;
+    width: 60px;
+  }
+
+div.field, div.actions 
+{
   margin-bottom: 10px;
 }
 

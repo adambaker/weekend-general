@@ -1,10 +1,9 @@
-%h1 Revise #{@event.name} Briefing
+%h1.title Revise #{@event.name}
+.edit
+  = link_to 'Remove this event', {id: @event.id, action: :destroy},
+      method: :delete, confirm: 'Really discard event info?'
 
 = render 'form'
 
-%p
-  %br/
-  = button_to('Remove Event', {id: @event.id, action: :destroy},
-    confirm: 'Really discard event info?', method: :delete)
 %br/
 = link_to "Back", :back

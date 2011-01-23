@@ -30,13 +30,18 @@
     %br
     = f.text_field :city
   .field
-    %ul.links
-      %h3 Event links
-      %span.instructions
-        Put links for this event. If you need to buy tickets, add a link to 
-        a web page to purchase tickets. For a concert, link to songs
-        or videos by the artist.
-      = f.fields_for :links do |linkf|
+    = f.label :description
+    %br
+    = f.text_area :description
+
+  %ul.links
+    %h3 Event links
+    %span.instructions
+      Put links for this event. If you need to buy tickets, add a link to 
+      a web page to purchase tickets. For a concert, link to songs
+      or videos by the artist.
+    - @event.links.each do |link|
+      = f.fields_for :links, link do |linkf|
         %li
           .field
             = linkf.label :url
@@ -45,11 +50,11 @@
           .field
             = linkf.label :text
             %br/
-            = linkf.text_field :text
-  .field
-    = f.label :description
-    %br
-    = f.text_area :description
+            = linkf.text_field :text, class: 'link_text'
+          - unless link.new_record?
+            - url = {action: :destroy, controller: :links, event_id: @event,
+                      id: link}
+            = link_to 'Remove link', url, method: :delete 
 
   .actions
     = f.submit

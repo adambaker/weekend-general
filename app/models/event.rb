@@ -56,7 +56,7 @@ class Event < ActiveRecord::Base
     elsif price_int
       price_int.to_s.insert(0, '0.0').insert(0, '$')
     else
-      'no price information'
+      'no price info'
     end
   end
   

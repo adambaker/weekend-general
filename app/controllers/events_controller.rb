@@ -8,7 +8,7 @@ class EventsController < ApplicationController
   # GET /events
   # GET /events.xml
   def index
-    @events = Event.future
+    @events = Event.future.order :date
     respond_with @events
   end
 

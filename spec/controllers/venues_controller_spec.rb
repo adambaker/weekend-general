@@ -19,10 +19,10 @@ describe VenuesController do
       response.should_not have_selector :a, content: 'destroy'
     end
     
-    it "should strip tags truncate description to 50 characters." do
+    it "should strip tags truncate description." do
       get :index
       response.should have_selector(:td, 
-        content: stripped_description[0...47]+'...')
+        content: stripped_description[0...47])
     end
     
     it "should have a link to the site's webpage." do
@@ -145,7 +145,7 @@ describe VenuesController do
       
       it "should have a delete button." do
         get :edit, id: @venue
-        response.should have_selector :input, name: '_method', value: 'delete'
+        response.should have_selector :a, content: 'Remove this venue'
       end
       
       it "should not allow edit if the user is rank 1." do
