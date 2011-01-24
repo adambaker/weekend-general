@@ -1,6 +1,10 @@
 - content_for :title do
   %title= @venue.name
 
+= render('shared/heading', title: link_to(@venue.name, @venue.url), 
+  object: @venue, edit_text: "Edit this venue", 
+  allow_edit: (current_user&&can_alter?(@venue)))
+  
 .sidebar
   %dl
     %dt Address:
@@ -11,10 +15,6 @@
     - unless @venue.url.blank?
       %dt Website:
       %dd= link_to @venue.name, @venue.url
-
-= render('shared/heading', title: link_to(@venue.name, @venue.url), 
-  object: @venue, edit_text: "Edit this venue", 
-  allow_edit: (current_user&&can_alter?(@venue)))
 
 %h3 Venue intel:
 = display_format(@venue.description)

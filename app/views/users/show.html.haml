@@ -1,6 +1,9 @@
 - content_for :title do
   %title= @user.name + "'s dossier"
 
+= render 'shared/heading', title: @user.name, edit_text: 'Edit your profile',
+  allow_edit: (@user == current_user), object: @user
+  
 .sidebar 
   %dl
     %dt Name:
@@ -12,8 +15,6 @@
     %dd= image_tag rank_title(@user)+'.png', title: rank_title(@user),
       class: 'rank'
 
-= render 'shared/heading', title: @user.name, edit_text: 'Edit your profile',
-  allow_edit: (@user == current_user), object: @user
 
 = display_format @user.description
   

@@ -1,6 +1,9 @@
 - content_for :title do
   %title= "Mission intel: #{@event.name}"
 
+= render 'shared/heading', object: @event, title: @event.name,
+  edit_text: "Edit this event", allow_edit: current_user&&can_alter?(@event)
+
 .sidebar
   - unless @event.venue.nil?
     %dt Venue:
@@ -16,9 +19,6 @@
       - @event.links.each do |link|
         %li.event_link= link_to link.text, link.url
         
-= render 'shared/heading', object: @event, title: @event.name,
-  edit_text: "Edit this event", allow_edit: current_user&&can_alter?(@event)
-
 
 %h3= @event.date.strftime('%A %B %d, %Y')
 %dl

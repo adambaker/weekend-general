@@ -3,7 +3,6 @@ body { background-color: #fff; }
 body, p, ol, ul, td {
   font-family: palatino, times, serif;
   font-size:   13px;
-  line-height: 18px;
 }
 
 h1, h2, h3, h4, h5, h6
@@ -56,7 +55,7 @@ h1, h2, h3, h4, h5, h6
   padding: 30px; min-height: 500px;
 }
 
-h1.title{ display: inline-block; }
+h1.title{ display: inline; }
 .edit { display: inline-block; margin-left: 10px; }
 
 #footer ul
@@ -64,8 +63,6 @@ h1.title{ display: inline-block; }
   display: inline-block; 
   margin-right: 50px; margin-left: 50px; 
 }
-
-
 
 .sidebar
 {
@@ -115,8 +112,6 @@ table.events_table tr.entry_head td
 {
   padding-bottom: 5px; padding-top: 10px; 
 }
-
-
 
 div.field, div.actions 
 {
