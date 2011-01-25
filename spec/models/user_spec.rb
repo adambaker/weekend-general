@@ -235,4 +235,18 @@ describe User do
       User.create(@attr.merge(email: Settings::majors[0])).rank.should == 4
     end
   end
+  
+  describe "notification proferences" do
+    it "should have attend_reminder default to true." do
+      User.create(@attr).attend_reminder.should == true
+    end
+      
+    it "should have maybe_reminder default to false." do
+      User.create(@attr).maybe_reminder.should == false
+    end
+    
+    it "should have host reminder default to false." do
+      User.create(@attr).maybe_reminder.should == false
+    end
+  end
 end

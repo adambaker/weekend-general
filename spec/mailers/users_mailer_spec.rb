@@ -66,14 +66,67 @@ describe UsersMailer do
         end
       end
       
-      it "should not include events that are not today." do
+      it "should not include events that are not today or the user is not attending." do
         body = UsersMailer.event_reminder(@user).body
         
         body.should_not contain @not_today.name
         body.should_not contain @not_attending.name
       end
+      
+      describe "maybe and hosting events" do
+        before :each do 
+          @user.maybe @event
+          @user.host @events[-1]
+        end
+        
+        it "should not include events the user has rsvp'd maybe or host to." do
+          body = UsersMailer.event_reminder(@user).body
+          
+          body.should_not contain @event.name
+          body.should_not contain @events[-1].name
+        end
+        
+        it "should include maybe events if user.maybe_reminder is set." do
+          @user.maybe_reminder = true
+          @user.save
+          body = UsersMailer.event_reminder(@user).body
+          
+          body.should contain @event.name
+          body.should_not contain @events[-1].name
+        end
+        
+        it "should include host events if user.host_reminder is set." do
+          @user.host_reminder = true
+          @user.save
+          body = UsersMailer.event_reminder(@user).body
+          
+          body.should contain @events[-1].name
+          body.should_not contain @event.name
+        end
+        
+        it "should not include attended events if user.attend_reminder is false." do
+          @user.attend_reminder = false
+          @user.save
+          body = UsersMailer.event_reminder(@user).body
+          
+          @events[1...-1].each do |event|
+            body.should_not contain event.name
+          end
+        end
+      end
     end
     
-    
+    describe "delivery" do
+      it "should deliver the message." do
+        -> {UsersMailer.event_reminder(@user)}
+          .should change(ActionMailer::Base.deliveries, :size).by 1
+      end
+      
+      it "should not deliver any message if there are no events." do
+        @user.host @event
+        -> {UsersMailer.event_reminder(@user)}
+          .should_not change(ActionMailer::Base.deliveries, :size)
+      end
+    end
   end
 end
