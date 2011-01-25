@@ -1,6 +1,6 @@
 Hello <%= @user.name %>,
 
-Our schedule has you participating in <%= pluralize @events.size, 'Operation' %> today.
+Our schedule has you participating in <%= pluralize @events.size, 'operation' %> today.
 
 <% @events.each do |event| %>
   <%= event.name %>
@@ -16,3 +16,8 @@ Our schedule has you participating in <%= pluralize @events.size, 'Operation' %>
               <%= event.city %>
 
 <% end %>
+
+--
+To stop receiving these emails, change your notification preferences at:
+
+<%= edit_user_url(@user) %>

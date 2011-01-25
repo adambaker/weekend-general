@@ -46,5 +46,8 @@ module WeekendGeneral
     config.generators do |g|
       g.template_engine :haml
     end
+    
+    config.action_mailer.default_url_options = 
+      {host: "weekend-general.heroku.com"}
   end
 end
