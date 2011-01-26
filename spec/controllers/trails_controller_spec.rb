@@ -18,7 +18,8 @@ describe TrailsController do
 
     before(:each) do
       @user = test_sign_in(Factory(:user))
-      @target = Factory(:user, Factory.next(:email), Factory.next(:uid))
+      @target = Factory(:user, email: Factory.next(:email), 
+        uid: Factory.next(:uid))
     end
 
     it "should blaze a trail" do
@@ -29,11 +30,12 @@ describe TrailsController do
       @user.should be_tracking @target
     end
     
-    #it "should create an rsvp using Ajax" do
+    #it "should create a trail using Ajax" do
     #  lambda do
-    #    xhr :post, :create, event_id: event.id, kind: 'host'
+    #    xhr :post, :create, user_id: @target.id
     #    response.should be_success
-    #  end.should change(Rsvp, :count).by(1)
+    #  end.should change(Trail, :count).by(1)
+    #  @user.should be_tracking @target
     #end
   end
 
@@ -41,24 +43,27 @@ describe TrailsController do
 
     before(:each) do
       @user = test_sign_in(Factory(:user))
-      @event = Factory(:event)
-      @user.host @event
-      @rsvp = @user.rsvps.find_by_event_id(@event)
+      @target = Factory(:user, email: Factory.next(:email),
+        uid: Factory.next(:uid))
+      @user.track @target
+      @trail = @user.trails.find_by_target_id(@target.id)
     end
 
-    it "should destroy an rsvp" do
+    it "should destroy a trail" do
       -> do
-        delete :destroy, event_id: @event.id, kind: 'host', id: @rsvp.id
-        response.should redirect_to @event
-      end.should change(Rsvp, :count).by(-1)
+        delete :destroy, user_id: @target.id, id: @trail.id
+        response.should redirect_to @target
+      end.should change(Trail, :count).by(-1)
+      @user.should_not be_tracking @target
     end
     
     
-    #it "should destroy an rsvp using Ajax" do
-    #  lambda do
-    #    xhr :delete, :destroy, id: @rsvp
+    #it "should destroy a trail using Ajax" do
+    #  -> do
+    #    xhr :delete, :destroy, id: @trail, user_id: @target.id
     #    response.should be_success
-    #  end.should change(Rsvp, :count).by(-1)
+    #  end.should change(Trail, :count).by(-1)
+    #  @user.should_not be_tracking @target
     #end
   end
 end
