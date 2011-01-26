@@ -212,11 +212,12 @@ describe Event do
       @today_event = Factory(:event, 
         name: Factory.next(:name), date: Time.zone.today.beginning_of_day,
         price: 3000)
-      @this_week_events = 
-        [ Factory(:event, date: 2.days.from_now.beginning_of_day), 
-          Factory(:event, name: Factory.next(:name)), 
-          date: 2.days.from_now.beginning_of_day
-        ] + [@today_event]
+      @this_week_events = [ 
+        Factory(:event, date: 2.days.from_now.beginning_of_day), 
+        Factory(:event, name: Factory.next(:name), 
+          date: 2.days.from_now.beginning_of_day),
+        @today_event
+      ]
       @past_events = [
         Factory(:event, name: Factory.next(:name), 
           date: 2.days.ago.beginning_of_day),
@@ -236,8 +237,7 @@ describe Event do
         Factory(:event, name: Factory.next(:name), 
           date: 2.weeks.from_now.beginning_of_day, price: 0)
       ] + @this_week_events
-      @future_events = [@today_event]+@this_week_events+@this_month_events+
-        @far_future_events
+      @future_events = @this_month_events + @far_future_events
       @free_events = [@far_future_events[1], @this_month_events[1]]
       @cheap_events = @free_events + [@far_future_events[0]]
     end
@@ -245,8 +245,8 @@ describe Event do
     #below events are mapped to sets of id, date pairs to make failure
     #messages easy to read and informative
     it "should have future events in 'future'." do
-      Event.future.all.map{|e| [e.id, e.date.day]}.to_set.should == 
-        @future_events.map{|e| [e.id, e.date.day]}.to_set
+      id_date_set(Event.future.all).should == 
+        id_date_set(@future_events)
     end
     
     it "should have past events in 'past'." do

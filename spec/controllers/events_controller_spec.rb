@@ -33,8 +33,9 @@ describe EventsController do
         content: stripped_description[0...47])
     end
     
-    it "should not display past events in the." do
-      other_event = Factory(:event, name: Factory.next(:name), date: 1.day.ago)
+    it "should not display past events." do
+      other_event = Factory(:event, name: Factory.next(:name), 
+        date: 1.day.ago.beginning_of_day)
       get :index
       response.should_not contain other_event.name
     end

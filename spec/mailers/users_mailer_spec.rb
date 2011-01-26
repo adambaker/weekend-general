@@ -180,6 +180,5 @@ describe UsersMailer do
       end
     end
   end
-  
-  def 
+   
 end

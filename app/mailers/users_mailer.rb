@@ -21,5 +21,5 @@ class UsersMailer < ActionMailer::Base
         UsersMailer.event_reminder(u)
       end
     end
-  end   
+  end
 end

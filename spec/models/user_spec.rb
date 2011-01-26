@@ -110,7 +110,8 @@ describe User do
       @user = User.create(@attr)
       @events = [Factory(:event)]
       5.times { @events << Factory(:event, name: Factory.next(:name)) }
-      @past_event = Factory(:event, name: Factory.next(:name), date: 1.day.ago)
+      @past_event = Factory(:event, name: Factory.next(:name), 
+        date: 1.day.ago.beginning_of_day)
     end
     
     describe "hosting" do
