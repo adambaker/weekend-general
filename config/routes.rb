@@ -1,5 +1,9 @@
 WeekendGeneral::Application.routes.draw do
   
+  get "trails_controller/create"
+
+  get "trails_controller/destroy"
+
   resources :events do
     resources :links, only: [:create, :update, :destroy]
     resources :rsvps, only: [:create, :destroy]
@@ -13,8 +17,11 @@ WeekendGeneral::Application.routes.draw do
       only: [:create, :destroy]  
   end
 
+  resources :users do
+    resources :trails, only: [:create, :destroy]
+  end
+
   resources :venues
-  resources :users
   resources :sessions, only: [:create, :destroy]
   
   match "/auth/:provider/callback" => "sessions#create"

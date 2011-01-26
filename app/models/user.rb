@@ -7,6 +7,13 @@ class User < ActiveRecord::Base
   has_many :rsvps, dependent: :destroy
   has_many :events, through: :rsvps
   
+  has_many :trails, foreign_key: :tracker_id, dependent: :destroy
+  has_many :targets, through: :trails
+  
+  has_many :breadcrumbs, foreign_key: :target_id, class_name: 'Trail',
+    dependent: :destroy
+  has_many :trackers, through: :breadcrumbs
+  
   validates :name,     presence:   true
   validates :email,    uniqueness: {case_sensitive: false},
                        format:     {with: email_regex}
@@ -24,46 +31,51 @@ class User < ActiveRecord::Base
   def hosting
     events_by_kind('host')
   end
-  
   def attending
     events_by_kind 'attend'
   end
-  
   def maybes
     events_by_kind 'maybe'
   end
-  
-  def attendance(event)
-    rsvp = rsvps.find_by_event_id(event.id)
-    rsvp and rsvp.kind
-  end
-  
   def events_by_kind(kind)
     events.future.includes(:rsvps).where(rsvps: {kind: kind}).order(:date)
   end
   
+  def attendance(event)
+    rsvp = rsvps.find_by_event_id(event.id)
+    rsvp.kind if rsvp
+  end  
+
   def host(event)
     unattend event
     rsvps.create!(event_id: event.id, kind: 'host')
-  end
-  
+  end  
   def attend(event)
     unattend event
     rsvps.create!(event_id: event.id, kind: 'attend')
   end
-  
-  def unattend(event)
-    rsvp = rsvps.find_by_event_id(event)
-    rsvp.destroy unless rsvp.nil?
-  end
-  
   def maybe(event)
     unattend event
     rsvps.create!(event_id: event.id, kind: 'maybe')
+  end
+  def unattend(event)
+    rsvp = rsvps.find_by_event_id(event)
+    rsvp.destroy if rsvp
   end
   
   def promote
     self.rank += 1
     self.save
+  end
+  
+  def tracking?(user)
+    trails.find_by_target_id(user.id)
+  end
+  def track(user)
+    trails.create!(target_id: user.id)
+  end
+  def untrack(user)
+    trail = trails.find_by_target_id(user.id)
+    trail.destroy if trail
   end
 end

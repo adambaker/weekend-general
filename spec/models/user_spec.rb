@@ -5,8 +5,8 @@ describe User do
   before(:each) do
     @attr = {
       name: 'Example User',
-      email: 'user@example.com',
-      uid: 'foobar',
+      email: 'fake@example.com',
+      uid: 'punchbucket',
       provider: 'google',
       description: venue_attr[:description],
       theme: 'general'
@@ -251,4 +251,62 @@ describe User do
     end
   end
   
+  describe "tracking" do
+
+    before(:each) do
+      @user = User.create!(@attr)
+      @target = Factory(:user)
+    end
+
+    it "should have a trails method" do
+      @user.should respond_to :trails
+    end
+    
+    it "should have a targets method" do
+      @user.should respond_to :targets
+    end
+    
+    it "should track another user" do
+      @user.track @target
+      @user.should be_tracking @target
+    end
+
+    it "should include the targeted user in the targets array" do
+      @user.track @target
+      @user.targets.should include @target
+    end
+
+    it "should untrack a user" do
+      @user.track @target
+      @user.untrack @target
+      @user.should_not be_tracking @target
+    end
+    
+    it "should have a breadcrumbs method" do
+      @user.should respond_to :breadcrumbs
+    end
+
+    it "should have a trackers method" do
+      @user.should respond_to :trackers
+    end
+
+    it "should include the follower in the followers array" do
+      @user.track @target
+      @target.trackers.should include(@user)
+    end
+    
+    it "should destroy the user's trails when the user is destroyed." do
+      @user.track @target
+      id = @user.id
+      @user.destroy
+      Trail.find_by_tracker_id(id).should be_nil
+    end
+    
+    it "should destroy the user's breadcrumbs when the user is destroyed." do
+      @user.track @target
+      id = @target.id
+      @target.destroy
+      Trail.find_by_target_id(id).should be_nil
+    end
+  end
 end

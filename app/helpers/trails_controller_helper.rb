@@ -1,0 +1,2 @@
+module TrailsControllerHelper
+end

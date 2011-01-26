@@ -1,15 +1,15 @@
 require 'spec_helper'
 
-describe RsvpsController do
+describe TrailsController do
+
   describe "access control" do
-  
     it "should require signin for create" do
-      post :create, event_id: 1
+      post :create, user_id: 1
       response.should redirect_to(sign_in_path)
     end
 
     it "should require signin for destroy" do
-      delete :destroy, event_id: 1, id: 1
+      delete :destroy, user_id: 1, id: 1
       response.should redirect_to(sign_in_path)
     end
   end
@@ -18,14 +18,15 @@ describe RsvpsController do
 
     before(:each) do
       @user = test_sign_in(Factory(:user))
-      @event = Factory(:event)
+      @target = Factory(:user, Factory.next(:email), Factory.next(:uid))
     end
 
-    it "should create an rsvp" do
+    it "should blaze a trail" do
       -> do
-        post :create, event_id: @event.id, kind: 'host'
-        response.should redirect_to @event
-      end.should change(Rsvp, :count).by(1)
+        post :create, user_id: @target.id
+        response.should redirect_to @target
+      end.should change(Trail, :count).by(1)
+      @user.should be_tracking @target
     end
     
     #it "should create an rsvp using Ajax" do

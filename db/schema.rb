@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110125192517) do
+ActiveRecord::Schema.define(:version => 20110126075953) do
 
   create_table "events", :force => true do |t|
     t.string   "name"
@@ -49,6 +49,16 @@ ActiveRecord::Schema.define(:version => 20110125192517) do
   add_index "rsvps", ["event_id"], :name => "index_rsvps_on_event_id"
   add_index "rsvps", ["user_id", "kind"], :name => "index_rsvps_on_user_id_and_kind"
   add_index "rsvps", ["user_id"], :name => "index_rsvps_on_user_id"
+
+  create_table "trails", :force => true do |t|
+    t.integer  "tracker_id"
+    t.integer  "target_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "trails", ["target_id"], :name => "index_trails_on_target_id"
+  add_index "trails", ["tracker_id"], :name => "index_trails_on_tracker_id"
 
   create_table "users", :force => true do |t|
     t.string   "name"
