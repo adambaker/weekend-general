@@ -210,25 +210,31 @@ describe Event do
     
     before :each do
       @today_event = Factory(:event, 
-        name: Factory.next(:name), date: Time.zone.today, price: 3000)
-      @this_week_events = [Factory(:event), 
-        Factory(:event, name: Factory.next(:name))] + [@today_event]
+        name: Factory.next(:name), date: Time.zone.today.beginning_of_day,
+        price: 3000)
+      @this_week_events = 
+        [ Factory(:event, date: 2.days.from_now.beginning_of_day), 
+          Factory(:event, name: Factory.next(:name)), 
+          date: 2.days.from_now.beginning_of_day
+        ] + [@today_event]
       @past_events = [
-        Factory(:event, name: Factory.next(:name), date: 2.days.ago),
-        Factory(:event, name: Factory.next(:name), date: 1.days.ago)
+        Factory(:event, name: Factory.next(:name), 
+          date: 2.days.ago.beginning_of_day),
+        Factory(:event, name: Factory.next(:name), 
+          date: 1.day.ago.beginning_of_day)
       ]
       @past_events.reverse!
       @far_future_events = [
-        Factory(:event, name: Factory.next(:name), date: 2.months.from_now,
-          price: 1000),
-        Factory(:event, name: Factory.next(:name), date: 2.months.from_now,
-          price: 0)
+        Factory(:event, name: Factory.next(:name), 
+          date: 2.months.from_now.beginning_of_day, price: 1000),
+        Factory(:event, name: Factory.next(:name), 
+          date: 2.months.from_now.beginning_of_day, price: 0)
       ]
       @this_month_events = [
-        Factory(:event, name: Factory.next(:name), date: 2.weeks.from_now,
-          price: 2000),
-        Factory(:event, name: Factory.next(:name), date: 2.weeks.from_now,
-          price: 0)
+        Factory(:event, name: Factory.next(:name), 
+          date: 2.weeks.from_now.beginning_of_day, price: 2000),
+        Factory(:event, name: Factory.next(:name), 
+          date: 2.weeks.from_now.beginning_of_day, price: 0)
       ] + @this_week_events
       @future_events = [@today_event]+@this_week_events+@this_month_events+
         @far_future_events

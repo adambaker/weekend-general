@@ -5,15 +5,15 @@ Our schedule has you participating in <%= pluralize @events.size, 'operation' %>
 <% @events.each do |event| %>
   <%= event.name %>
   <% unless event.time.blank? %>
-    time:     <%= event.time %>
+    time:      <%= event.time %>
   <% end %>
   <% if event.venue %>
     location: <%= event.venue.name %>
-              <%= event.address %> 
+                 <%= event.address %> 
   <% else %>
     location: <%= event.address %>
   <% end %>
-              <%= event.city %>
+                 <%= event.city %>
 
 <% end %>
 

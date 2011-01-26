@@ -129,4 +129,57 @@ describe UsersMailer do
       end
     end
   end
+  
+  describe "send_all_reminders" do
+    before :each do
+      @users = [@user]
+      4.times{@users << Factory(:user, name: Factory.next(:name), 
+        uid: Factory.next(:uid), email: Factory.next(:email))}
+      @events = [Factory(:event, date: Date.today)]         
+      2.times{@events << Factory(:event, name: Factory.next(:name), 
+        date: Date.today)}
+      @not_today = Factory(:event, name: Factory.next(:name))
+      
+      #@user should not get an email
+      @user.host @events[0]
+      @user.maybe @events[1]
+      @user.attend @not_today
+      
+      #@users[1] should get an email
+      @users[1].maybe @events[0]
+      @users[1].attend @events[1]
+      
+      #@users[2] should not get an email
+      @users[2].attend_reminder = false
+      @users[2].save
+      @users[2].attend @events[0]
+      @users[2].host @events[1]
+      @users[2].maybe @events[2]
+      
+      #@users[3] should not get an email because he's not doing anything
+      
+      #@users[4] should get an email
+      @users[4].maybe @events[0]
+      @users[4].maybe_reminder = true
+      @users[4].save
+    end
+    
+    it "should only send out 2 emails." do
+      ->{UsersMailer.send_all_reminders}
+        .should change(ActionMailer::Base.deliveries, :size).by 2
+    end
+    
+    it "should send those emails to the right users." do
+      UsersMailer.send_all_reminders
+      first, second = ActionMailer::Base.deliveries
+      if first.to[0] =~ /#{@users[1].email}/
+        second.to[0].should =~ /#{@users[4].email}/
+      else
+        first.to[0].should =~ /#{@users[4].email}/
+        second.to[0].should =~ /#{@users[1].email}/
+      end
+    end
+  end
+  
+  def 
 end

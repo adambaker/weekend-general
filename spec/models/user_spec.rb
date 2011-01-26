@@ -249,4 +249,5 @@ describe User do
       User.create(@attr).maybe_reminder.should == false
     end
   end
+  
 end

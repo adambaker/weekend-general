@@ -64,5 +64,6 @@ class User < ActiveRecord::Base
   
   def promote
     self.rank += 1
+    self.save
   end
 end
