@@ -1,4 +1,5 @@
 require "spec_helper"
+require 'set'
 
 describe UsersMailer do
   before :each do
@@ -223,6 +224,111 @@ describe UsersMailer do
       body.should contain @user.name
       body.should contain edit_user_url(@user)
     end
+    
+    describe "delivery" do
+      it "should deliver the message." do
+        -> {UsersMailer.tracked_rsvp(@user, @target, @event)}
+          .should change(ActionMailer::Base.deliveries, :size).by 1
+      end
+    end
   end
   
+  describe "notify_trackers" do
+    before :each do
+      @target = Factory(:user, email: Factory.next(:email), 
+        uid: Factory.next(:uid), name: Factory.next(:name))
+      @user.track @target
+      @trackers = [@user]
+      4.times do
+        @trackers << Factory(:user, email: Factory.next(:email), 
+          uid: Factory.next(:uid))
+        @trackers[-1].track @target
+      end
+      
+      @trackers[0].track_host = true
+      @trackers[0].track_attend = true
+      @trackers[0].track_maybe = true
+      
+      @trackers[1].track_host = true
+      @trackers[1].track_attend = false
+      @trackers[1].track_maybe = false
+      
+      @trackers[2].track_host = false
+      @trackers[2].track_attend = true
+      @trackers[2].track_maybe = false
+      
+      @trackers[3].track_host = false
+      @trackers[3].track_attend = false
+      @trackers[3].track_maybe = true
+      
+      @trackers[4].track_host = false
+      @trackers[4].track_attend = true
+      @trackers[4].track_maybe = true
+      
+      @trackers.each{|u| u.save}
+      @event = Factory(:event)
+    end
+    
+    describe "host rsvp" do
+      before :each do
+        @target.host @event
+      end
+      
+      it "should send 2 emails for a host rsvp." do
+        -> {UsersMailer.notify_trackers(@target, @event, 'host')}
+          .should change(ActionMailer::Base.deliveries, :size).by 2
+      end
+      
+      it "should send those mails to trackers 0 and 1." do
+        UsersMailer.notify_trackers(@target, @event, 'host')
+        first, second = ActionMailer::Base.deliveries
+        if first.to[0] =~ /#{@trackers[1].email}/
+          second.to[0].should =~ /#{@trackers[0].email}/
+        else
+          first.to[0].should =~ /#{@trackers[0].email}/
+          second.to[0].should =~ /#{@trackers[1].email}/
+        end
+      end
+    end
+    
+    describe "attend rsvp" do
+      before :each do
+        @target.attend @event
+      end
+      
+      it "should send 3 emails." do
+        -> {UsersMailer.notify_trackers(@target, @event, 'attend')}
+          .should change(ActionMailer::Base.deliveries, :size).by 3
+      end
+      
+      it "should send emails to users 0, 2, and 4" do
+        UsersMailer.notify_trackers(@target, @event, 'attend')
+        addresses = ActionMailer::Base.deliveries.map{|m| m.to[0]}.to_set
+        tracker_addresses = [@trackers[0].email, @trackers[2].email,
+          @trackers[4].email].to_set
+          
+        addresses.should == tracker_addresses
+      end
+    end
+    
+    describe "maybe rsvp" do
+      before :each do
+        @target.maybe @event
+      end
+      
+      it "should send 3 emails." do
+        -> {UsersMailer.notify_trackers(@target, @event, 'maybe')}
+          .should change(ActionMailer::Base.deliveries, :size).by 3
+      end
+      
+      it "should send emails to users 0, 3, and 4" do
+        UsersMailer.notify_trackers(@target, @event, 'maybe')
+        addresses = ActionMailer::Base.deliveries.map{|m| m.to[0]}.to_set
+        tracker_addresses = [@trackers[0].email, @trackers[3].email,
+          @trackers[4].email].to_set
+          
+        addresses.should == tracker_addresses
+      end
+    end
+  end
 end

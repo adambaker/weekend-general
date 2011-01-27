@@ -60,4 +60,47 @@ describe RsvpsController do
     #  end.should change(Rsvp, :count).by(-1)
     #end
   end
+  
+  describe 'user notifications' do
+    before :each do
+      @user = test_sign_in(Factory(:user))
+      @event = Factory :event
+      
+      @host_tracker = Factory(:user, uid: Factory.next(:uid), 
+        email: Factory.next(:email), track_host: true, track_attend: false,
+        track_maybe: false)
+      @attend_tracker = Factory(:user, uid: Factory.next(:uid), 
+        email: Factory.next(:email), track_host: false, track_attend: true,
+        track_maybe: false)
+      @maybe_tracker = Factory(:user, uid: Factory.next(:uid), 
+        email: Factory.next(:email), track_host: false, track_attend: false,
+        track_maybe: true)
+        
+      @host_tracker.track @user
+      @attend_tracker.track @user
+      @maybe_tracker.track @user
+      @deliveries = ActionMailer::Base.deliveries = []
+    end
+    
+    it "should send host tracker an email when user hosts" do
+      post :create, event_id: @event.id, kind: 'host'
+      @deliveries.size.should == 1
+      @deliveries[0].to.size.should == 1
+      @deliveries[0].to[0].should =~ /#{@host_tracker.email}/
+    end
+    
+    it "should send attend tracker an email when user attends" do
+      post :create, event_id: @event.id, kind: 'attend'
+      @deliveries.size.should == 1
+      @deliveries[0].to.size.should == 1
+      @deliveries[0].to[0].should =~ /#{@attend_tracker.email}/
+    end
+    
+    it "should send maybe tracker an email when user says maybe" do
+      post :create, event_id: @event.id, kind: 'maybe'
+      @deliveries.size.should == 1
+      @deliveries[0].to.size.should == 1
+      @deliveries[0].to[0].should =~ /#{@maybe_tracker.email}/
+    end
+  end
 end

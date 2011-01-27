@@ -8,6 +8,17 @@ class UsersMailer < ActionMailer::Base
     @event = event
     
     mail(to: @user.email, subject: "#{target.name} has rsvp'd to an event.")
+      .deliver
+  end
+  
+  def self.notify_trackers(target, event, rsvp_kind)
+    target.trackers.each do |tracker|
+      if (rsvp_kind == 'host' && tracker.track_host) ||
+         (rsvp_kind == 'attend' && tracker.track_attend) ||
+         (rsvp_kind == 'maybe' && tracker.track_maybe)
+        UsersMailer.tracked_rsvp(tracker, target, event)
+      end
+    end
   end
   
   def event_reminder(user)

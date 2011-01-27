@@ -1,16 +1,19 @@
 class RsvpsController < ApplicationController
   before_filter :authenticate
+  before_filter :fetch_event
 
   def create
-    event = Event.find_by_id params['event_id']
-    current_user.send params['kind'], event
-    redirect_to event
+    current_user.send params['kind'], @event
+    UsersMailer.notify_trackers(current_user, @event, params['kind'])
+    redirect_to @event
   end
   
   def destroy
-    event = Event.find_by_id params['event_id']
-    current_user.unattend event
-    redirect_to event
+    current_user.unattend @event
+    redirect_to @event
   end
   
+  def fetch_event
+    @event = Event.find_by_id params['event_id']
+  end
 end
