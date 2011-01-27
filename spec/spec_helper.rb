@@ -129,4 +129,10 @@ Cover for events ranges from free to about $1200, so be prepared. Typically host
       object.send(key).should == value
     end 
   end
+  
+  def mail_event_date(event)
+    date_format = '%A, %B %d'
+    date_format += ' %Y' unless event.date.year == Time.zone.now.year
+    event.date.strftime(date_format)
+  end
 end

@@ -18,8 +18,16 @@ module ApplicationHelper
   end
   
   def event_date(event)
-    date_format = '%a, %b %d'
-    date_format += ' %Y' unless event.date.year == Time.zone.now.year
-    event.date.strftime(date_format)
+    date_string '%a, %b %d', event
   end
+  
+  def mail_event_date(event)
+    date_string '%A, %B %d', event
+  end
+  
+  private
+    def date_string(date_format, event)
+      date_format += ' %Y' unless event.date.year == Time.zone.now.year
+      event.date.strftime(date_format)
+    end
 end

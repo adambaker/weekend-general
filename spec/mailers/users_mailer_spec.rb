@@ -180,5 +180,49 @@ describe UsersMailer do
       end
     end
   end
-   
+  
+  describe 'tracked_rsvp' do
+    before :each do
+      @target = Factory(:user, email: Factory.next(:email), 
+        uid: Factory.next(:uid), name: Factory.next(:name))
+      @event = Factory(:event)
+      @user.track @target
+      @target.host @event
+    end
+    
+    it "should create an email." do
+      UsersMailer.tracked_rsvp(@user, @target, @event).should_not be_nil
+    end
+    
+    it "should be from 'weekend.general@gmail.com'" do
+      UsersMailer.tracked_rsvp(@user, @target, @event).from.should ==
+        ['weekend.general@gmail.com']
+    end
+    
+    it "should be to @user and @another_tracker." do
+      UsersMailer.tracked_rsvp(@user, @target, @event).to.should ==
+        [@user.email]
+    end
+    
+    it "should have the tracked user's name in the subject" do
+      UsersMailer.tracked_rsvp(@user, @target, @event).subject.should =~ 
+        /#{@target.name}/
+    end
+    
+    it "should have the event's information in the body." do
+      body = UsersMailer.tracked_rsvp(@user, @target, @event).body
+      body.should contain @target.name
+      body.should contain @event.name
+      body.should contain mail_event_date @event
+      body.should contain @event.address
+      body.should contain @event.city
+    end
+    
+    it "should have an edit preferences link and user greeting." do
+      body = UsersMailer.tracked_rsvp(@user, @target, @event).body
+      body.should contain @user.name
+      body.should contain edit_user_url(@user)
+    end
+  end
+  
 end

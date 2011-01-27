@@ -5,7 +5,7 @@ Cover for events ranges from free to about $1200, so be prepared. Typically host
 all_good_strings
 
 Factory.define :user do |user|
-  user.name        "user"
+  user.name        "aliennavigation"
   user.email       "user@example.com"
   user.provider    "google"
   user.uid         "foobar"

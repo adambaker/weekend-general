@@ -1,23 +1,8 @@
-Hello <%= @user.name %>,
-
 Our schedule has you participating in <%= pluralize @events.size, 'operation' %> today.
 
 <% @events.each do |event| %>
-  <%= event.name %>
-  <% unless event.time.blank? %>
-    time:      <%= event.time %>
-  <% end %>
-  <% if event.venue %>
-    location: <%= event.venue.name %>
-                 <%= event.address %> 
-  <% else %>
-    location: <%= event.address %>
-  <% end %>
-                 <%= event.city %>
+<%= render "event_info_text", date: false, event: event %>
 
 <% end %>
 
---
-To stop receiving these emails, change your notification preferences at:
-
-<%= edit_user_url(@user) %>
+You have your orders.

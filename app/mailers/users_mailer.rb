@@ -1,6 +1,14 @@
 class UsersMailer < ActionMailer::Base
   default from: "weekend.general@gmail.com"
+  helper :application
   
+  def tracked_rsvp(tracker, target, event)
+    @user = tracker
+    @target = target
+    @event = event
+    
+    mail(to: @user.email, subject: "#{target.name} has rsvp'd to an event.")
+  end
   
   def event_reminder(user)
     @user = user
