@@ -251,6 +251,14 @@ describe UsersController do
         controller.current_user.email.should == @attr[:email]
       end
       
+      it "should send an email to the new user." do
+        deliveries = ActionMailer::Base.deliveries = []
+        post :create, user: @attr
+        deliveries.size.should == 1
+        deliveries[0].to.size.should == 1
+        deliveries[0].to[0].should == @attr[:email]
+      end
+      
       describe "with a user signed in" do
         before :each do
           test_sign_in @user

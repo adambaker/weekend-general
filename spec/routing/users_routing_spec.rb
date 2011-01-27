@@ -46,5 +46,11 @@ describe UsersController do
           action: "destroy", user_id: '1', id: "2")
       end
     end
+    
+    it "recognizes and generates #officers" do
+      {get: "/users/officers"}.should route_to(controller: "users", 
+        action: "officers")
+    end
+
   end
 end

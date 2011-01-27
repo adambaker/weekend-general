@@ -232,8 +232,23 @@ describe User do
       user.rank.should == 2
     end
     
-    it "should promote users in the majors list to rank 4" do
+    it "should promote users in the majors list to rank 4." do
       User.create(@attr.merge(email: Settings::majors[0])).rank.should == 4
+    end
+    
+    it "should have rank 3 and 4 users in officers." do
+      users = []
+      4.times do |i|
+        users << Factory(:user, email: Factory.next(:email), 
+          uid: Factory.next(:uid))
+        users[i].rank = i+1
+        users[i].save
+      end
+      officers = User.officers
+      officers.should include(users[3])
+      officers.should include(users[2])
+      officers.should_not include(users[1])
+      officers.should_not include(users[0])
     end
   end
     

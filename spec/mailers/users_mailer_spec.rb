@@ -331,4 +331,23 @@ describe UsersMailer do
       end
     end
   end
+  
+  describe 'enlist' do
+    it "should create an email." do
+      UsersMailer.enlist(@user).should_not be_nil
+    end
+    
+    it "should have the the user's email as the to address." do
+      UsersMailer.enlist(@user).to.should == [@user.email]
+    end
+    
+    it "should have the event's name in the subject." do
+      UsersMailer.enlist(@user).subject.should =~ /new recruit orientation/i
+    end
+    
+    it "should deliver the email" do
+      -> {UsersMailer.enlist @user}
+        .should change(ActionMailer::Base.deliveries, :size).by 1
+    end
+  end
 end

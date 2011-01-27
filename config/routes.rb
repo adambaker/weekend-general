@@ -1,8 +1,4 @@
 WeekendGeneral::Application.routes.draw do
-  
-  get "trails_controller/create"
-
-  get "trails_controller/destroy"
 
   resources :events do
     resources :links, only: [:create, :update, :destroy]
@@ -19,6 +15,9 @@ WeekendGeneral::Application.routes.draw do
 
   resources :users do
     resources :trails, only: [:create, :destroy]
+    collection do
+      get 'officers'
+    end
   end
 
   resources :venues

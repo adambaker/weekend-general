@@ -1,0 +1,21 @@
+So you've enlisted. Lovely. There are several things you need to know about how things work around here.
+
+First, I'll be sending you orders. If you say you'll be in an operation, you'll receive a briefing on the day of the operation to remind you. You can set your notification options on your profile edit page:
+
+<%= edit_user_url(@user) %>
+
+Second, the Commanding Officers of your unit are:
+
+<% User.officers.each do |officer| %>
+  <%=officer.name%>: <%=officer.email%>, acting rank: <%= officer.rank == 4 ? 'Major' : 'Lieutenant' %>
+<% end %>
+  
+They have the power to give you a dishonerable discharge and to reinstate you if you've been wrongly discharged. They also have the power to promote you to Sergeant, and the Majors can promote you up to Lieutenant.
+
+Third, you won't be able to edit or delete the intel submitted by other recruits unless you are promoted to at least Sergeant. If you want that privilege , I suggest you start kissing your CO's ass now.
+
+Any questions? Ask a CO, or look here:
+
+<%= help_url %>
+
+Now move out!

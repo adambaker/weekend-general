@@ -6,6 +6,10 @@ class UsersController < ApplicationController
   before_filter :check_uid_provider, only: :update
   
   respond_to :html #, :xml, :json
+  
+  def officers
+  end
+  
   # GET /users
   # GET /users.xml
   def index
@@ -37,6 +41,7 @@ class UsersController < ApplicationController
     respond_to do |format|
       if @user.save
         session[:user_id] = @user.id
+        UsersMailer.enlist @user
         flash[:success] = current_theme 'users', 'signed_up'
         format.html { redirect_to(@user)}
         #format.xml  { render :xml      => @user, 

@@ -1,4 +1,6 @@
 class User < ActiveRecord::Base
+  scope :officers, where('rank > 2')
+  
   email_regex = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
 
   attr_accessible :email, :name, :provider, :uid, :description, :theme,

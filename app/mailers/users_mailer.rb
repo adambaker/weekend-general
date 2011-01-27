@@ -2,6 +2,11 @@ class UsersMailer < ActionMailer::Base
   default from: "weekend.general@gmail.com"
   helper :application
   
+  def enlist(user)
+    @user = user
+    mail(to: @user.email, subject: 'New recruit orientation').deliver
+  end
+  
   def tracked_rsvp(tracker, target, event)
     @user = tracker
     @target = target

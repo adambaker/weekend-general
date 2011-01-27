@@ -1,7 +1,7 @@
 Our schedule has you participating in <%= pluralize @events.size, 'operation' %> today.
 
 <% @events.each do |event| %>
-<%= render "event_info_text", date: false, event: event %>
+<%= render "shared/event_info", date: false, event: event %>
 
 <% end %>
 
