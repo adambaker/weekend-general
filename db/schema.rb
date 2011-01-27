@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110126075953) do
+ActiveRecord::Schema.define(:version => 20110127003934) do
 
   create_table "events", :force => true do |t|
     t.string   "name"
@@ -73,6 +73,9 @@ ActiveRecord::Schema.define(:version => 20110126075953) do
     t.boolean  "attend_reminder", :default => true
     t.boolean  "maybe_reminder",  :default => false
     t.boolean  "host_reminder",   :default => false
+    t.boolean  "track_host",      :default => true
+    t.boolean  "track_attend",    :default => true
+    t.boolean  "track_maybe",     :default => false
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

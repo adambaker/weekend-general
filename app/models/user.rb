@@ -2,7 +2,8 @@ class User < ActiveRecord::Base
   email_regex = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
 
   attr_accessible :email, :name, :provider, :uid, :description, :theme,
-    :attend_reminder, :maybe_reminder, :host_reminder
+    :attend_reminder, :maybe_reminder, :host_reminder, :track_host, 
+    :track_attend, :track_maybe
   
   has_many :rsvps, dependent: :destroy
   has_many :events, through: :rsvps

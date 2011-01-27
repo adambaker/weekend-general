@@ -236,21 +236,7 @@ describe User do
       User.create(@attr.merge(email: Settings::majors[0])).rank.should == 4
     end
   end
-  
-  describe "notification proferences" do
-    it "should have attend_reminder default to true." do
-      User.create(@attr).attend_reminder.should == true
-    end
-      
-    it "should have maybe_reminder default to false." do
-      User.create(@attr).maybe_reminder.should == false
-    end
     
-    it "should have host reminder default to false." do
-      User.create(@attr).maybe_reminder.should == false
-    end
-  end
-  
   describe "tracking" do
 
     before(:each) do
@@ -309,4 +295,37 @@ describe User do
       Trail.find_by_target_id(id).should be_nil
     end
   end
+  
+  describe "notification proferences" do
+  
+    describe "rsvp reminders" do
+      it "should have attend_reminder default to true." do
+        User.create(@attr).attend_reminder.should == true
+      end
+        
+      it "should have maybe_reminder default to false." do
+        User.create(@attr).maybe_reminder.should == false
+      end
+      
+      it "should have host reminder default to false." do
+        User.create(@attr).maybe_reminder.should == false
+      end
+    end
+    
+    describe 'tracked user rsvps' do
+      it 'should have track host default to true.' do
+        User.create(@attr).track_host.should == true
+      end
+      
+      it 'should have track_attend default to true.' do
+        User.create(@attr).track_attend.should == true
+      end
+      
+      it 'should have track_maybe default to false.' do
+        User.create(@attr).track_maybe.should == false
+      end
+    end
+    
+  end
+
 end
