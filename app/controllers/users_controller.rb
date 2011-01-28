@@ -1,13 +1,15 @@
 class UsersController < ApplicationController
   before_filter :authenticate, only: [:update, :destroy, :edit]
   before_filter :not_logged_in, only: [:new, :create]
-  before_filter :fetch_user, except: [:index, :new, :create]
+  before_filter :fetch_user, except: [:index, :new, :create, :officers]
   before_filter :edit_authorize, only: [:edit, :update]
   before_filter :check_uid_provider, only: :update
   
   respond_to :html #, :xml, :json
   
   def officers
+    @officers = User.officers
+    respond_with @officers
   end
   
   # GET /users

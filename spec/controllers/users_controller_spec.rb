@@ -71,7 +71,30 @@ describe UsersController do
   describe "GET index.json" do
     it "should have an element for each user."
   end
-
+  
+  describe "GET officers" do
+    before :each do
+      @officer0 = Factory(:user, uid: Factory.next(:uid), rank: 4,
+        email: Factory.next(:email), name: Factory.next(:name))
+      @officer1 = Factory(:user, uid: Factory.next(:uid), rank: 3,
+        email: Factory.next(:email), name: Factory.next(:name))
+    end
+    
+    it "should list all the officers and their emails." do
+      get :officers
+      response.should contain @officer0.name
+      response.should contain @officer0.email
+      response.should contain @officer1.name
+      response.should contain @officer1.email
+    end
+    
+    it "should not list non-officers." do
+      get :officers
+      response.should_not contain @user.name
+      response.should_not contain @user.email
+    end
+  end
+  
   describe "GET show" do
     it "should be successful w/ the user's name in the title." do
       get :show, id: @user

@@ -1,14 +1,16 @@
 - content_for :title do
   %title Warrior muster
 
-%h1 Listing users
+%h1 Officers
 
 %table
   %tr
     %th Name
+    %th Email
     %th Rank
-  - @users.each do |user|
+  - @officers.each do |user|
     %tr
       %td.name= link_to user.name, user
+      %td.email= user.email
       %td= image_tag(rank_title(user)+'.png', title: rank_title(user))
 

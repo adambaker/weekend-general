@@ -81,10 +81,10 @@ form.button_to { display: inline-block; }
 
 #description { min-height: 150px; }
 
-ul.rsvp 
+ul.rsvp, ul.track
 {
-  display: inline-block; vertical-align: top;
-  width: 150px; margin: 10px;
+  display: inline-block; vertical-align: top; 
+  margin-right: 10px; width: 180px;
 }
 
 pre {

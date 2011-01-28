@@ -1,5 +1,5 @@
 - if @user.send(kind).any?
   %ul.track
-    %h3= "#{title} #{@user.send(kind).size.to_s}"
+    %h3= title+' '+pluralize(@user.send(kind).size, 'user')
     - @user.send(kind).each do |t|
       %li= link_to t.name, t
