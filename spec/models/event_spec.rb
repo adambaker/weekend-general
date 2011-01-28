@@ -48,7 +48,7 @@ describe Event do
     event.city.should == @venue.city
   end
   
-  it 'should require a name unique name.' do
+  it 'should require a unique name.' do
     Event.new(@with_venue_attr.merge(name: '')).should_not be_valid
     Event.create(@with_venue_attr)
     Event.new(@with_venue_attr).should_not be_valid
@@ -69,7 +69,7 @@ describe Event do
     event.price.should == '$'+@with_venue_attr[:price]
   end
   
-  it 'should present no price info as "no price information".' do
+  it 'should present no price info as "no price info".' do
     event = Event.create(@with_address_attr)
     event.price.should =~ /no price info/
   end
@@ -77,6 +77,11 @@ describe Event do
   it 'should handle numbers with commas and dollars.' do
     event = Event.create(@with_venue_attr.merge(price: '$1,024'))
     event.price.should == '$1024.00'
+  end
+  
+  it 'should return "free" when free is specified.' do
+    event = Event.create(@with_venue_attr.merge(price: 'free'))
+    event.price.should == 'free'
   end
   
   it 'should have the appropriate date.' do

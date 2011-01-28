@@ -43,7 +43,11 @@ class Event < ActiveRecord::Base
           price_before_type_cast.strip.gsub('$','').gsub(',',''))*100
         ).round
     rescue Exception
-      self.price = nil
+      if price_before_type_cast =~ /free/
+        self.price = 0
+      else
+        self.price = nil
+      end
     end
   end
   

@@ -17,7 +17,7 @@
       %dd= link_to @venue.name, @venue.url
 
 %h3 Venue intel:
-= display_format(@venue.description)
+#description= display_format(@venue.description)
 
 -if @venue.events.any?
   %h2 Missions in this theater:

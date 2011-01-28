@@ -28,7 +28,7 @@
   %dt Price:
   %dd= @event.price || 'No price information.' 
   %dt Detail:
-  %dd= display_format @event.description
+  %dd#description= display_format @event.description
 
 - if current_user
   %h2 RSVPs

@@ -14,7 +14,7 @@ h1, h2, h3, h4, h5, h6
 .right { float: right }
 .clear { clear: both }
 
-.sidebar ul, ul.rsvp, #footer ul, ul.links
+.sidebar ul, ul.rsvp, #footer ul, ul.links, ul.track
 { 
   list-style: none; padding: 0px; 
 }
@@ -70,6 +70,7 @@ h1.title{ display: inline; }
   width: 200px; margin: 70px 10px 20px 20px;
 }
   .sidebar .rank { display: block; margin: auto }
+  .sidebar .button_to{ display:block; text-align: center; }
 
 dt { font-weight: bold; }
 
@@ -77,6 +78,8 @@ dd { margin-left: 25px; }
   dd ul { margin: 0px; }
 
 form.button_to { display: inline-block; }
+
+#description { min-height: 150px; }
 
 ul.rsvp 
 {
@@ -99,7 +102,7 @@ td.date { width: 100px; font-size: 16px; }
 td.name { width: 150px; font-size: 16px; }
 td.label 
 { 
-  margin: 0; padding: 0;
+  margin-right: 0; padding-right: 0;
   width: 60px;
 }
 

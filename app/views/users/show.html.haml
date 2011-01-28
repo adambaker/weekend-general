@@ -20,7 +20,7 @@
     - else
       = button_to 'Track', user_trails_path(@user)
 
-= display_format @user.description
+#description= display_format @user.description
 
 = render "track", kind: :trackers, title: 'Tracked by'
 = render "track", kind: :targets, title: 'Tracking'
