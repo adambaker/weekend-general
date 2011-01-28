@@ -341,6 +341,23 @@ describe User do
       end
     end
     
+    describe 'event rsvp notifications' do
+      it 'should have host rsvp default to true.' do
+        User.create(@attr).host_rsvp.should == true
+      end
+      
+      it 'should have attend rsvp default to false.' do
+        User.create(@attr).attend_rsvp.should == false
+      end
+
+      it 'should have maybe rsvp default to false.' do
+        User.create(@attr).maybe_rsvp.should == false
+      end
+    end
+    
+    it "should have new_event default to false." do
+      User.create(@attr).new_event.should == false
+    end
   end
 
 end

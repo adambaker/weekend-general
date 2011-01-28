@@ -5,6 +5,7 @@ class RsvpsController < ApplicationController
   def create
     current_user.send params['kind'], @event
     UsersMailer.notify_trackers(current_user, @event, params['kind'])
+    EventsMailer.all_new_rsvp(current_user, @event, params['kind'])
     redirect_to @event
   end
   

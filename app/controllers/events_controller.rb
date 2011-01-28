@@ -40,6 +40,7 @@ class EventsController < ApplicationController
     respond_to do |format|
       if @event.save
         flash[:success] = current_theme 'events', 'new'
+        EventsMailer.all_new_event(@event)
         format.html { redirect_to @event }
         #format.xml {render xml: @event, status: :created, location: @event}
       else

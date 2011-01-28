@@ -5,6 +5,7 @@ describe EventsController do
   
   before :each do
     @event = Factory(:event)
+    @deliveries = ActionMailer::Base.deliveries.clear
   end
   
   describe "GET index" do
@@ -327,6 +328,14 @@ describe EventsController do
           it 'should assign the right id to created_by.' do
             post :create, event: @valid_attr
             Event.find_by_name(@valid_attr[:name]).created_by.should == @user.id
+          end
+          
+          it 'should send an email to users listening for new events.' do
+            other_user = Factory(:user, email: Factory.next(:email), 
+              uid: Factory.next(:uid), new_event: true)
+            post :create, event: @valid_attr
+            @deliveries.size.should == 1
+            @deliveries[0].to[0].should == other_user.email
           end
         end
 

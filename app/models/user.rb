@@ -5,7 +5,7 @@ class User < ActiveRecord::Base
 
   attr_accessible :email, :name, :provider, :uid, :description, :theme,
     :attend_reminder, :maybe_reminder, :host_reminder, :track_host, 
-    :track_attend, :track_maybe
+    :track_attend, :track_maybe, :host_rsvp, :attend_rsvp, :maybe_rsvp
   
   has_many :rsvps, dependent: :destroy
   has_many :events, through: :rsvps
