@@ -73,15 +73,16 @@ class VenuesController < ApplicationController
     end
   end
   
-  def check_rank
-    unless can_alter? @venue
-      flash[:error] = theme['rank']
-      redirect_to @venue
+  private
+    def check_rank
+      unless can_alter? @venue
+        flash[:error] = theme['rank']
+        redirect_to @venue
+      end
     end
-  end
-  
-  def fetch_venue
-    @venue = Venue.find(params[:id])
-  end
+    
+    def fetch_venue
+      @venue = Venue.find(params[:id])
+    end
   
 end

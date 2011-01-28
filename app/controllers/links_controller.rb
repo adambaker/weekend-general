@@ -21,7 +21,9 @@ class LinksController < ApplicationController
     redirect_to edit_event_path @event
   end
   
-  def fetch_event
-    @event = Event.find_by_id params[:event_id]
-  end
+  private
+  
+    def fetch_event
+      @event = Event.find_by_id params[:event_id]
+    end
 end

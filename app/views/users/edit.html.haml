@@ -2,9 +2,48 @@
   %title= "Editing #{@user.name}'s dossier."
   
 %h1= "Edit #{@user.name}'s dossier"
+.edit= link_to "Back to user", @user
 
 = form_for(@user) do |f| 
   = render 'fields', :f => f
+  %h3 Email notification options
+  %span.instructions I would like the Weekend General to notify me when...
+  .field
+    = f.check_box :new_event
+    = f.label :new_event, '... a new event is posted.'
+  .field
+    %span.instructions ... an event is coming up today that I am ...
+    %br/
+    = f.check_box :host_reminder
+    = f.label :host_reminder, '... hosting.'
+    %br/
+    = f.check_box :attend_reminder
+    = f.label :attend_reminder, '... attending.'
+    %br/
+    = f.check_box :maybe_reminder
+    = f.label :maybe_reminder, '... considering attending.'
+  .field
+    %span.instructions ... a user I am tracking rsvps and says they're ...
+    %br/
+    = f.check_box :track_host
+    = f.label :track_host, '... hosting an event.'
+    %br/
+    = f.check_box :track_attend
+    = f.label :track_attend, '... attending an event.'
+    %br/
+    = f.check_box :track_maybe
+    = f.label :track_maybe, '... considering attending an event.'
+  .field
+    %span.instructions ... a user rsvps to an event that I am ...
+    %br/
+    = f.check_box :host_rsvp
+    = f.label :host_rsvp, '... hosting.'
+    %br/
+    = f.check_box :attend_rsvp
+    = f.label :attend_rsvp, '... attending.'
+    %br/
+    = f.check_box :maybe_rsvp
+    = f.label :maybe_rsvp, '... considering attending.'
   .actions
     = f.submit "Save changes"
  
@@ -14,5 +53,4 @@
   %br/
   = button_to('Honorable Discharge', {id: @user.id, action: :destroy},
     confirm: current_theme('users', 'cancel_account'), method: :delete)
-%br/
-= link_to "Back", :back
+

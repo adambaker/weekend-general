@@ -14,10 +14,17 @@
     %dt Rank:
     %dd= image_tag rank_title(@user)+'.png', title: rank_title(@user),
       class: 'rank'
-
+  - if current_user && current_user != @user
+    - if current_user.tracking? @user
+      = button_to 'Untrack', user_trail_path(@user), method: :delete
+    - else
+      = button_to 'Track', user_trails_path(@user)
 
 = display_format @user.description
-  
+
+= render "track", kind: :trackers, title: 'Tracked by'
+= render "track", kind: :targets, title: 'Tracking'
+
 - if current_user
   %h2 RSVPs
   - [ {title: 'Orchestrating', method: :hosting},

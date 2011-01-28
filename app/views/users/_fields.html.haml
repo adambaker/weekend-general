@@ -4,18 +4,17 @@
   = f.hidden_field :provider
 .field_pair
   .field
-    = f.label :name 
+    = f.label :name, "Name (it doesn't have to be unique, but it helps)"
     %br/
     = f.text_field :name 
   .field
-    = f.label :email 
+    = f.label :email,                                           |
+      ('Email (only '+link_to('officers', officers_users_path)+ |
+      ' can see this)').html_safe                               |
     %br/
-    = f.text_field :email 
+    = f.text_field :email
 .field
-  = f.label :description
-  %br/
-  %span.instructions Write whatever you're willing to share about yourself. 
-  %br/
+  = f.label :description, "Write whatever you want to share about yourself"
   = f.text_area :description 
 .field
   %span.instructions Do you want to let the general yell at you?

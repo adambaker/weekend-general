@@ -14,7 +14,8 @@ class RsvpsController < ApplicationController
     redirect_to @event
   end
   
-  def fetch_event
-    @event = Event.find_by_id params['event_id']
-  end
+  private
+    def fetch_event
+      @event = Event.find_by_id params['event_id']
+    end
 end

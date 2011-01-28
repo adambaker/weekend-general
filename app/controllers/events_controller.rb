@@ -77,14 +77,16 @@ class EventsController < ApplicationController
     end
   end
   
-  def fetch_event
-    @event = Event.find(params[:id])
-  end
+  private
   
-  def check_rank
-    unless can_alter? @event
-      flash[:error] = theme['rank']
-      redirect_to @event
+    def fetch_event
+      @event = Event.find(params[:id])
     end
-  end
+    
+    def check_rank
+      unless can_alter? @event
+        flash[:error] = theme['rank']
+        redirect_to @event
+      end
+    end
 end

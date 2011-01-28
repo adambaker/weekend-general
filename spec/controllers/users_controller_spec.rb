@@ -104,10 +104,40 @@ describe UsersController do
         response.should have_selector :a, href: "/users/#{@user.id}/edit"
       end
       
+      
       describe "as another user" do
         before :each do
           @other_user = Factory(:user, 
             email: 'fake@phony.lie', uid: 'laughing-man')
+        end
+        
+        it "should have a tracking button." do
+          get :show, id: @other_user
+          response.should have_selector :input,
+            value: 'Track', type: 'submit'
+        end
+
+        it "should have an untrack button when already tracking user." do
+          @user.track @other_user
+          get :show, id: @other_user
+          response.should have_selector :input,
+            value: 'Untrack', type: 'submit'
+        end
+        
+        it "should have a list of trackers." do
+          @user.track @other_user
+          get :show, id: @other_user
+          response.should contain 'Tracked by'
+          response.should have_selector 'ul li a', href: user_path(@user),
+            content: @user.name
+        end
+        
+        it "should have a list of tracking users." do
+          @other_user.track @user
+          get :show, id: @other_user
+          response.should contain 'Tracking'
+          response.should have_selector 'ul li a', href: user_path(@user),
+            content: @user.name
         end
         
         it "should not have edit or email address" do
