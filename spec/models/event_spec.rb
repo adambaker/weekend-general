@@ -215,10 +215,9 @@ describe Event do
     
     before :each do
       @today_event = Factory(:event, 
-        name: Factory.next(:name), date: Time.zone.today.beginning_of_day,
-        price: 3000)
+        name: Factory.next(:name), date: Time.zone.today, price: 3000)
       @this_week_events = [ 
-        Factory(:event, date: 2.days.from_now.beginning_of_day), 
+        Factory(:event, date: Time.zone.today + 1.day), 
         Factory(:event, name: Factory.next(:name), 
           date: 2.days.from_now.beginning_of_day),
         @today_event

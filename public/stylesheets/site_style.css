@@ -61,9 +61,11 @@ h1.title{ display: inline; }
 #footer ul
 { 
   display: inline-block; 
-  margin-right: 50px; margin-left: 50px; 
+  margin-right: 70px; margin-left: 70px; 
 }
-
+#rails { float: right; }
+  #rails img{ float: right; }
+ 
 .sidebar
 {
   float: right;

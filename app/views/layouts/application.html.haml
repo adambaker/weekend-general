@@ -37,11 +37,13 @@
         %ul
           %li= link_to 'What the hell is this?', '/about'
           %li= link_to "I don't know what to do", '/help'
-        %ul
           %li= link_to "Can the General do...?", '#'
-          %li= link_to "Upcoming features", '/roadmap' 
         %ul
           %li= link_to "Contact an officer", '/users/officers'
           %li= link_to "Who made this?", '#'
-          
+          %li= link_to "Upcoming features", '/roadmap' 
+        #rails
+          Powered by
+          %br/
+          %img(src='/images/rails.png')
       %p= debug(params) if Rails.env.development?
