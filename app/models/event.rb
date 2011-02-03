@@ -8,6 +8,11 @@ class Event < ActiveRecord::Base
   scope :this_week, lambda {future.where("date < ?", 1.week.from_now)}
   scope :this_month, lambda {future.where("date < ?", 1.month.from_now)}
   
+  def self.search(term)
+    where('events.name LIKE :term OR events.description LIKE :term', 
+      term: "%#{term}%")
+  end
+  
   belongs_to :venue
   has_many :links, dependent: :destroy
   
@@ -18,9 +23,9 @@ class Event < ActiveRecord::Base
   accepts_nested_attributes_for :links,
     reject_if: proc {|attr| attr[:url].blank?}
   
-  validates :name, presence: true, uniqueness: {case_sensitive: false}
+  validates :name,    presence: true, uniqueness: {case_sensitive: false}
   validates :address, presence: true
-  validates :city, presence: true
+  validates :city,    presence: true
   
   before_validation :venue_address
   before_save :convert_price

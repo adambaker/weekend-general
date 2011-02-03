@@ -221,11 +221,7 @@ describe User do
   end
   
   describe "rank" do
-    
-    it "should default to 1" do
-      User.create(@attr).rank.should == 1
-    end
-    
+   
     it "should allow users to be promoted." do
       user = User.create(@attr)
       user.promote
@@ -311,53 +307,46 @@ describe User do
     end
   end
   
-  describe "notification proferences" do
-  
-    describe "rsvp reminders" do
-      it "should have attend_reminder default to true." do
-        User.create(@attr).attend_reminder.should == true
+  describe "defaults" do
+    {
+      attend_reminder: true, maybe_reminder: false, host_reminder: false,
+      track_host: true, track_attend: true, track_maybe: false,
+      host_rsvp: true, attend_rsvp: false, maybe_rsvp: false,
+      new_event: false, rank: 1
+    }.each do |name, value|
+      it "should have #{name.to_s} default to #{value.to_s}." do
+        User.create(@attr).send(name).should == value
       end
-        
-      it "should have maybe_reminder default to false." do
-        User.create(@attr).maybe_reminder.should == false
-      end
-      
-      it "should have host reminder default to false." do
-        User.create(@attr).maybe_reminder.should == false
-      end
-    end
-    
-    describe 'tracked user rsvps' do
-      it 'should have track host default to true.' do
-        User.create(@attr).track_host.should == true
-      end
-      
-      it 'should have track_attend default to true.' do
-        User.create(@attr).track_attend.should == true
-      end
-      
-      it 'should have track_maybe default to false.' do
-        User.create(@attr).track_maybe.should == false
-      end
-    end
-    
-    describe 'event rsvp notifications' do
-      it 'should have host rsvp default to true.' do
-        User.create(@attr).host_rsvp.should == true
-      end
-      
-      it 'should have attend rsvp default to false.' do
-        User.create(@attr).attend_rsvp.should == false
-      end
-
-      it 'should have maybe rsvp default to false.' do
-        User.create(@attr).maybe_rsvp.should == false
-      end
-    end
-    
-    it "should have new_event default to false." do
-      User.create(@attr).new_event.should == false
     end
   end
-
+  
+  describe "search" do
+    before :each do
+      @user = Factory :user
+      @poop = Factory(:user, name: 'poopyface', uid: Factory.next(:uid), 
+        email: Factory.next(:email))
+      @nincompoop = Factory(:user, name: 'John Nincompoop', 
+        uid: Factory.next(:uid), email: Factory.next(:email))
+      @cellar = Factory(:user, uid: Factory.next(:uid),
+        email: Factory.next(:email), description: 'Help me escape the cellar!')
+    end
+    
+    it "should not contain @user or @cellar." do
+      User.search('poop').should_not include(@user)
+      User.search('poop').should_not include(@cellar)
+    end
+    
+    it "should contain @poop and @nincompoop." do
+      poop = User.search('poop')
+      poop.should include(@poop)
+      poop.should include(@nincompoop)
+      poop.size.should == 2
+    end
+    
+    it "should contain @cellar when searching 'cellar'" do
+      cellar = User.search('cellar')
+      cellar.should include(@cellar)
+      cellar.size.should == 1
+    end
+  end
 end

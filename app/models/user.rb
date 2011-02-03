@@ -1,6 +1,11 @@
 class User < ActiveRecord::Base
   scope :officers, where('rank > 2')
   
+  def self.search(term) 
+    where("users.name LIKE :term OR users.description LIKE :term", 
+      term: "%#{term}%")
+  end
+  
   email_regex = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
 
   attr_accessible :email, :name, :provider, :uid, :description, :theme,

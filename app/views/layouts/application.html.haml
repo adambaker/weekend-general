@@ -13,7 +13,7 @@
       -if flash.any?
         .flash
           = include_flash_images
-          -flash.each do |key, value| 
+          - flash.each do |key, value| 
             = content_tag(:div, value, :class => key.to_s)
       #header
         #session_links
@@ -31,7 +31,8 @@
             %li= link_to 'People', users_path
             %li= link_to 'Events', events_path
       #content
-        
+        .search_form
+          
         = yield
       #footer
         %ul

@@ -70,4 +70,32 @@ describe Venue do
   it "should have a created_by attribute." do
     Venue.create(@attr).should respond_to :created_by
   end
+  
+  describe "search" do
+    before :each do
+      @venue = Factory :venue
+      @poop = Factory(:venue, name: 'poopyface')
+      @nincompoop = Factory(:venue, name: 'Nincompoop Hangout')
+      @cellar = Factory(:venue, name: Factory.next(:name),
+        description: 'The best part is the demon in the cellar!')
+    end
+    
+    it "should not contain @event or @cellar." do
+      Venue.search('poop').should_not include(@venue)
+      Venue.search('poop').should_not include(@cellar)
+    end
+    
+    it "should contain @poop and @nincompoop." do
+      poop = Venue.search('poop')
+      poop.should include(@poop)
+      poop.should include(@nincompoop)
+      poop.size.should == 2
+    end
+    
+    it "should contain @cellar when searching 'cellar'" do
+      cellar = Venue.search('cellar')
+      cellar.should include(@cellar)
+      cellar.size.should == 1
+    end
+  end
 end

@@ -31,6 +31,7 @@ WeekendGeneral::Application.routes.draw do
   match '/about',   to: 'pages#about'
   match '/help',    to: 'pages#help'
   match '/roadmap', to: 'pages#roadmap'
+  match '/search',  to: 'pages#search'
   
   # The priority is based upon order of creation:
   # first created -> highest priority.

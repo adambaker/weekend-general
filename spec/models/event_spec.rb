@@ -271,4 +271,32 @@ describe Event do
         id_date_set(@this_month_events)
     end
   end
+  
+  describe "search" do
+    before :each do
+      @event = Factory :event
+      @poop = Factory(:event, name: 'poopyface')
+      @nincompoop = Factory(:event, name: 'Nincompoop Bonanza')
+      @cellar = Factory(:event, name: Factory.next(:name), 
+        description: 'Help me escape the cellar!')
+    end
+    
+    it "should not contain @event or @cellar." do
+      Event.search('poop').should_not include(@event)
+      Event.search('poop').should_not include(@cellar)
+    end
+    
+    it "should contain @poop and @nincompoop." do
+      poop = Event.search('poop')
+      poop.should include(@poop)
+      poop.should include(@nincompoop)
+      poop.size.should == 2
+    end
+    
+    it "should contain @cellar when searching 'cellar'" do
+      cellar = Event.search('cellar')
+      cellar.should include(@cellar)
+      cellar.size.should == 1
+    end
+  end
 end

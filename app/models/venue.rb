@@ -12,4 +12,9 @@ class Venue < ActiveRecord::Base
   def url=(new_url)
     write_attribute :url, Link.add_http(new_url)
   end
+  
+  def self.search(term)
+    where('venues.name LIKE :term OR venues.description LIKE :term', 
+      term: "%#{term}%")
+  end
 end
