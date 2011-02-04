@@ -8,6 +8,12 @@ class Event < ActiveRecord::Base
   scope :this_week, lambda {future.where("date < ?", 1.week.from_now)}
   scope :this_month, lambda {future.where("date < ?", 1.month.from_now)}
   
+  scope :free, where("price = 0")
+  
+  def self.cheaper_than(price)
+    where("price <= ?", price.gsub('$','').gsub(',','').to_f*100)
+  end
+  
   def self.search(term)
     where('events.name LIKE :term OR events.description LIKE :term', 
       term: "%#{term}%")

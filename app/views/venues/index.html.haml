@@ -7,7 +7,7 @@
 %table
   %tbody
     - for venue in @venues
-      %tr{ :class => cycle(:odd, :even) }
+      %tr.entry_head{ class: cycle(:odd, :even) }
         %td.name= link_to venue.name, venue
         %td.address
           = venue.address

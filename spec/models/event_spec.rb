@@ -215,7 +215,7 @@ describe Event do
     
     before :each do
       @today_event = Factory(:event, 
-        name: Factory.next(:name), date: Time.zone.today, price: 3000)
+        name: Factory.next(:name), date: Time.zone.today, price: '30')
       @this_week_events = [ 
         Factory(:event, date: Time.zone.today + 1.day), 
         Factory(:event, name: Factory.next(:name), 
@@ -231,15 +231,15 @@ describe Event do
       @past_events.reverse!
       @far_future_events = [
         Factory(:event, name: Factory.next(:name), 
-          date: 2.months.from_now.beginning_of_day, price: 1000),
+          date: 2.months.from_now.beginning_of_day, price: '10'),
         Factory(:event, name: Factory.next(:name), 
-          date: 2.months.from_now.beginning_of_day, price: 0)
+          date: 2.months.from_now.beginning_of_day, price: '0')
       ]
       @this_month_events = [
         Factory(:event, name: Factory.next(:name), 
-          date: 2.weeks.from_now.beginning_of_day, price: 2000),
+          date: 2.weeks.from_now.beginning_of_day, price: "20"),
         Factory(:event, name: Factory.next(:name), 
-          date: 2.weeks.from_now.beginning_of_day, price: 0)
+          date: 2.weeks.from_now.beginning_of_day, price: '0')
       ] + @this_week_events
       @future_events = @this_month_events + @far_future_events
       @free_events = [@far_future_events[1], @this_month_events[1]]
@@ -269,6 +269,14 @@ describe Event do
     it "should have this month's events in 'this_month." do
       id_date_set(Event.this_month.all).should == 
         id_date_set(@this_month_events)
+    end
+    
+    it "should have free events in 'free'." do
+      Event.free.to_set.should == @free_events.to_set
+    end
+    
+    it "should have cheap events in 'cheaper_than(10)." do
+      Event.cheaper_than('10').to_set.should == @cheap_events.to_set
     end
   end
   

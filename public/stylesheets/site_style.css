@@ -21,10 +21,13 @@ h1, h2, h3, h4, h5, h6
 
 #container{ width: 730px; margin-top: 10px; margin-left: 160px; }
 
-#header{height: 40px; position: relative;}
+#header{height: 60px; position: relative;}
 
 #session_links{ position: relative; float: right; text-align: right; }
   #session_links a{ font-weight: bold; }
+
+#small_search_form { clear: right; } 
+  #small_search { width: 150px; color: #666; } /*hail satan*/
 
 #navi{ position: absolute; bottom: 0px; float: left; }
   #navi ul
@@ -51,7 +54,7 @@ h1, h2, h3, h4, h5, h6
 #content
 {
   background-image: url('../images/papmust.gif'); 
-  color: #333;
+  color: #222;
   padding: 30px; min-height: 500px;
 }
 
@@ -99,29 +102,25 @@ a { color: #487700; text-decoration: none; font-weight: bold;}
 a:visited { color: #598810; }
 a:hover { color: #77a628; }
 
-td {padding: 5px;}
+td
+{
+  padding: 0, 5px, 0, 5px;
+  vertical-align: top;
+}
+tr.entry_head td 
+{
+  padding-bottom: 5px; padding-top: 10px; 
+}
 td.date { width: 100px; font-size: 16px; }
 td.name { width: 150px; font-size: 16px; }
+td.description { color: #454545; }
 td.label 
 { 
   margin-right: 0; padding-right: 0;
   width: 60px;
 }
 
-table.events_table td
-{ 
-  vertical-align: top;
-  padding-top: 0; padding-bottom: 0;
-}
-table.events_table tr.entry_head td 
-{
-  padding-bottom: 5px; padding-top: 10px; 
-}
-
-div.field, div.actions 
-{
-  margin-bottom: 5px;
-}
+div.field, div.actions { margin-bottom: 5px; }
 
 div.field_pair { margin-bottom: 5px; }
   div.field_pair div.field { width: 320px; display: inline-block; }
@@ -138,6 +137,8 @@ select { max-width: 250px; }
 input[type=text] { width: 250px; }
 input.link_text {width: 200px;}
 textarea { width: 573px; height: 150px; }
+input#search { width: 300px; }
+input#price_text { width: 50px; }
 
 .flash
 {

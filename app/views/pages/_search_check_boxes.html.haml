@@ -1,0 +1,4 @@
+- tags.each do |name, label|
+  - checked = send(name.to_s+'s?')
+  = check_box_tag name, '1', checked
+  = label_tag name, label

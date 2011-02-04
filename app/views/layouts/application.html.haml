@@ -30,9 +30,10 @@
             %li= link_to 'Venues', venues_path
             %li= link_to 'People', users_path
             %li= link_to 'Events', events_path
+        #small_search_form.right
+          = form_tag(search_path, method: 'get') do
+            = text_field_tag :search, 'search', id: 'small_search'
       #content
-        .search_form
-          
         = yield
       #footer
         %ul

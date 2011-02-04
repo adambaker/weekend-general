@@ -1,3 +1,26 @@
+#main_search_form
+  = form_tag search_path, method: 'get' do
+    .form_row
+      = text_field_tag :search, params[:search]
+      %span.instructions Include:
+      - tags = {event: 'Events ', user: 'Users ', venue: 'Venues'}
+      = render "search_check_boxes", tags: tags
+    .form_row
+      %span.instructions Filter events by date:
+      %br/
+      - tags = {future: 'the future ', today: 'just today ',
+          week: 'just this week ', past: 'the past'}
+      = render "search_radio_buttons", name: :when, tags: tags
+    .form_row
+      %span.instructions Filter events by price:
+      %br/
+      - tags = {any: 'any price ', free: 'free ', less: 'less than $'}
+      = render 'search_radio_buttons', name: :price, tags: tags
+      = text_field_tag :price_text, params[:price_text]
+    .form_row
+      = submit_tag :search
+      
+
 = render "search_results", objects: @events
 = render "search_results", objects: @users
 = render "search_results", objects: @venues

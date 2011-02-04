@@ -1,0 +1,8 @@
+- tags.each do |value, label|
+  - if value == :any
+    - checked = any_price?
+  - else
+    - checked = send(value.to_s+'?')
+  = radio_button_tag name, value, checked
+  = label_tag((name.to_s+'_'+value.to_s).to_sym, label)
+
