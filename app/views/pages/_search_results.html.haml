@@ -1,9 +1,0 @@
-- if objects.any?
-  - class_name = objects[0].class.to_s
-  %h2= pluralize(objects.size, class_name)
-  %table{id: class_name.downcase}
-    - objects.each do |object|
-      %tr
-        %td.name= link_to object.name, object
-        - if object.description
-          %td.description= search_display object.description, @terms

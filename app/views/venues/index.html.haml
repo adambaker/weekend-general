@@ -4,19 +4,4 @@
 %h1.title Venues
 .edit= link_to 'Add a new venue', new_venue_path
 
-%table
-  %tbody
-    - for venue in @venues
-      %tr.entry_head{ class: cycle(:odd, :even) }
-        %td.name= link_to venue.name, venue
-        %td.address
-          = venue.address
-          %br/
-          = venue.city
-        %td.link= link_to(venue.url, venue.url) unless venue.url.blank?
-      %tr
-        %td
-        %td.description(colspan=2)
-          = truncate strip_tags(venue.description), length: 160
-        
-
+= render "all_venues"

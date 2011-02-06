@@ -2,13 +2,18 @@ class EventsController < ApplicationController
   before_filter :authenticate, except: [:index, :show]
   before_filter :fetch_event, except: [:index, :new, :create]
   before_filter :check_rank, only: [:edit, :update, :destroy]
+  before_filter :fetch_events, only: [:index]
   
   respond_to :html#, :xml, :json
   
   # GET /events
   # GET /events.xml
   def index
-    @events = Event.future.order :date
+    if past?
+      @events = @events.order 'date DESC'
+    else
+      @events = @events.order :date
+    end
     respond_with @events
   end
 
@@ -88,5 +93,21 @@ class EventsController < ApplicationController
         flash[:error] = theme['rank']
         redirect_to @event
       end
+    end
+    
+    def future?
+      params[:commit] =~ /future/i
+    end
+    def today?
+      params[:commit] =~ /today/i
+    end
+    def week?
+      params[:commit] =~ /week/i
+    end
+    def month?
+      params[:commit] =~ /month/i
+    end
+    def past?
+      params[:commit] =~ /past/i
     end
 end

@@ -4,28 +4,22 @@
 %h1.title Upcoming Missions
 .edit= link_to 'Post a new event', new_event_path
 
-%table.events_table
-  %tbody
-    - for event in @events
-      %tr.entry_head{ :class => cycle(:odd, :even) }
-        %td.date= event_date event
-        %td.name(colspan=4)= link_to event.name, event
-      %tr
-        %td
-        %td.label
-          %b Price:
-        %td.price
-          = event.price
-        %td.label
-          %b Location:
-        %td.location
-          - if event.venue
-            = link_to event.venue.name, event.venue
-            %br/
-          = event.address
-          %br/
-          = event.city
-      %tr
-        %td
-        %td.description(colspan=4)
-          = truncate strip_tags(event.description), length: 160
+= form_tag events_path, method: 'get', id: 'event_filter' do
+  .form_row
+    = submit_tag 'All upcoming events'
+    = submit_tag "Today's events"
+    = submit_tag "This week's events"
+    = submit_tag "This month's events"
+    = submit_tag "Past events"
+  .form_row
+    - tags = {any: 'any price ', free: 'free ', less: 'less than $'}
+    = render 'pages/search_radio_buttons', name: :price, tags: tags
+    = text_field_tag :price_text, params[:price_text]
+  .form_row
+    %span.instructions 
+      Order by:
+    - tags = {date: 'date', price: 'price', created: 'recently added', 
+      updated: 'recently updated'}
+    = render 'pages/search_radio_buttons', name: :order, tags: tags
+
+= render "all_events"

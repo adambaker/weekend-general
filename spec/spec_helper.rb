@@ -135,4 +135,22 @@ Cover for events ranges from free to about $1200, so be prepared. Typically host
     date_format += ' %Y' unless event.date.year == Time.zone.now.year
     event.date.strftime(date_format)
   end
+  
+  def contains_names(items, contains=true)
+    items.each do |item|
+      if contains
+        response.should contain item.name
+      else
+        response.should_not contain item.name
+      end
+    end
+  end
+  
+  def integration_new_user(attr)
+    visit "/users/new?user[uid]=#{attr[:uid]}&user[provider]=#{attr[:provider]}"
+    fill_in "Name", with: attr[:name]
+    fill_in "Email", with: attr[:email]
+    fill_in "user[description]", with: attr[:description]
+    click_button
+  end
 end

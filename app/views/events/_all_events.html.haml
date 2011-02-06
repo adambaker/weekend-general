@@ -1,0 +1,25 @@
+%table.clear
+  %tbody
+    - for event in @events
+      %tr.entry_head{ :class => cycle(:odd, :even) }
+        %td.date= event_date event
+        %td.name(colspan=4)= link_to event.name, event
+      %tr
+        %td
+        %td.label
+          %b Price:
+        %td.price
+          = event.price
+        %td.label
+          %b Location:
+        %td.location
+          - if event.venue
+            = link_to event.venue.name, event.venue
+            %br/
+          = event.address
+          %br/
+          = event.city
+      %tr
+        %td
+        %td.description(colspan=4)
+          = search_display event.description, @terms || []

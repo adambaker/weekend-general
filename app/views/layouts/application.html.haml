@@ -30,9 +30,13 @@
             %li= link_to 'Venues', venues_path
             %li= link_to 'People', users_path
             %li= link_to 'Events', events_path
-        #small_search_form.right
-          = form_tag(search_path, method: 'get') do
-            = text_field_tag :search, 'search', id: 'small_search'
+        #small_search.right
+          = form_tag(search_path, method: 'get', id: 'small_search_form') do
+            - {event: '1', user: '1', venue: '1', when: 'future', 
+                price: 'any', order: 'date'}.each do |name, value|
+              = hidden_field_tag name, value
+
+            = text_field_tag :search, 'search', id: 'small_search_text'
       #content
         = yield
       #footer
@@ -45,7 +49,8 @@
           %li= link_to "Who made this?", '#'
           %li= link_to "Upcoming features", '/roadmap' 
         #rails
-          Powered by
-          %br/
-          %img(src='/images/rails.png')
+          %a(href='http://rubyonrails.org/')
+            Powered by
+            %br/
+            %img(src='/images/rails.png')
       %p= debug(params) if Rails.env.development?

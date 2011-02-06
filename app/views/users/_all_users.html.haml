@@ -1,0 +1,12 @@
+%table
+  - @users.each do |user|
+    %tr.entry_head
+      %td.name= link_to user.name, user
+      - if officer?
+        %td.email= user.email
+      %td= image_tag(rank_title(user)+'.png', title: rank_title(user))
+    %tr
+      %td
+      %td.description(colspan=2)
+        = search_display user.description, @terms || []
+

@@ -18,9 +18,22 @@
       = render 'search_radio_buttons', name: :price, tags: tags
       = text_field_tag :price_text, params[:price_text]
     .form_row
+      %span.instructions 
+        Order events by (<i>ordering by price filters out results with no price
+        info</i>):
+      %br/
+      - tags = {date: 'date', price: 'price', created: 'recently added', 
+        updated: 'recently updated'}
+      = render 'search_radio_buttons', name: :order, tags: tags
+    .form_row
       = submit_tag :search
-      
 
-= render "search_results", objects: @events
-= render "search_results", objects: @users
-= render "search_results", objects: @venues
+- if @events.any?
+  %h2= pluralize(@events.size, 'Event')
+  = render "events/all_events"
+- if @users.any?
+  %h2= pluralize(@users.size, 'User')
+  = render "users/all_users"
+- if @venues.any?
+  %h2= pluralize(@venues.size, 'Venue')
+  = render "venues/all_venues"

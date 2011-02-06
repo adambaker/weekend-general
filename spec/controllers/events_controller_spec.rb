@@ -41,6 +41,65 @@ describe EventsController do
       response.should_not contain other_event.name
     end
     
+    it 'should have time and price filter form.' do
+      get :index
+      response.should have_selector :input, type: 'submit'
+      response.should have_selector :input, type: 'radio', name: 'price',
+        value: 'any'
+      response.should have_selector :input, type: 'radio', name: 'price',
+        value: 'free'
+      response.should have_selector :input, type: 'radio', name: 'price', 
+        value: 'less'
+      response.should have_selector :input, type: 'text', name: 'price_text'
+    end
+    
+    describe 'event filters' do
+      before :each do
+        @today = Factory(:event, name: Factory.next(:name), 
+          date: Time.zone.today, price: '10')
+        @next_week = Factory(:event, name: Factory.next(:name), 
+          date: 10.days.from_now, price: '0')
+        @past = Factory(:event, name: Factory.next(:name), date: 2.days.ago)
+      end
+      
+      it 'should have all but past in all future.' do
+        get :index, commit: 'All upcoming events', price: 'any'
+        contains_names [@today, @next_week, @event]
+        contains_names [@past], false
+      end
+      
+      it 'should have only past in past events.' do
+        get :index, commit: 'Past events', price: 'any'
+        contains_names [@today, @next_week, @event], false
+        contains_names [@past]
+      end
+      
+      it "should have this week's events when this week is specified." do
+        get :index, commit: "This week's events", price: 'any'
+        contains_names [@today, @event]
+        contains_names [@past, @next_week], false
+      end
+      
+      it "should have today's events when today is requested." do
+        get :index, commit: "Today's events", price: 'any'
+        contains_names [@today]
+        contains_names [@past, @event, @next_week], false
+      end
+      
+      it "should only have free events when free is specified." do
+        get :index, commit: 'All upcoming events', price: 'free'
+        contains_names [@next_week]
+        contains_names [@today, @event, @past], false
+      end
+      
+      it "should only have cheap events when < 10 is chosen." do
+        get :index, commit: 'All upcoming events', price: 'less', 
+          price_text: '10'
+        contains_names [@today, @next_week] #yes, less should mean <=
+        contains_names [@event, @past], false
+      end
+    end
+    
     describe 'with many events' do
       before :each do 
         @events = [@event]

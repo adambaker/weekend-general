@@ -14,6 +14,8 @@ h1, h2, h3, h4, h5, h6
 .right { float: right }
 .clear { clear: both }
 
+a img { border: none }
+
 .sidebar ul, ul.rsvp, #footer ul, ul.links, ul.track
 { 
   list-style: none; padding: 0px; 
@@ -26,8 +28,10 @@ h1, h2, h3, h4, h5, h6
 #session_links{ position: relative; float: right; text-align: right; }
   #session_links a{ font-weight: bold; }
 
-#small_search_form { clear: right; } 
-  #small_search { width: 150px; color: #666; } /*hail satan*/
+#small_search { clear: right; } 
+  #small_search_text { width: 150px; color: #666; } /*hail satan*/
+
+span.search_term { color: #388D81; font-weight: bold; }
 
 #navi{ position: absolute; bottom: 0px; float: left; }
   #navi ul
@@ -92,6 +96,17 @@ ul.rsvp, ul.track
   margin-right: 10px; width: 180px;
 }
 
+#event_filter { margin: 8px 0 8px 0; }
+  #event_filter input[type=submit]
+  {
+    background: transparent; 
+    border: none; padding: 0; margin-right: 10px;
+    color: #487700;
+    cursor: pointer;
+  }
+  #event_filter input[type=radio]{ margin: 0px; }
+  #event_filter label { margin-right: 8px; }
+  
 pre {
   background-color: #eee;
   padding: 10px;
@@ -135,6 +150,7 @@ div.instructions
 
 select { max-width: 250px; }
 input[type=text] { width: 250px; }
+input[type=radio] { margin: 0 0 0 8px; }
 input.link_text {width: 200px;}
 textarea { width: 573px; height: 150px; }
 input#search { width: 300px; }

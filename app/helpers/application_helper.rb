@@ -1,5 +1,19 @@
 module ApplicationHelper
   
+  def search_display(description, terms)
+    terms = terms.reject{|t| t.blank?}
+    description = truncate strip_tags(description), length: 250
+    
+    return nil if description.blank?
+    return description if terms.empty?
+    
+    regex = terms.reduce(''){|acc, term| acc + term + '|'}
+    regex = Regexp.new(regex[0...-1], true)
+    
+    description.gsub! regex, '<span class="search_term">\0</span>'
+    description.html_safe
+  end
+  
   def include_flash_images
     if theme['name'] == 'general'
       tag('img', src: "/images/general.png", id: 'general_img') +

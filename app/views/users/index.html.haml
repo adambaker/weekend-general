@@ -3,12 +3,4 @@
 
 %h1 Company muster
 
-%table
-  %tr
-    %th Name
-    %th Rank
-  - @users.each do |user|
-    %tr.entry_head
-      %td.name= link_to user.name, user
-      %td= image_tag(rank_title(user)+'.png', title: rank_title(user))
-
+= render "all_users"
