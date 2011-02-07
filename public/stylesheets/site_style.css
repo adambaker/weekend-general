@@ -16,6 +16,8 @@ h1, h2, h3, h4, h5, h6
 
 a img { border: none }
 
+img.thumb { max-width: 200px; max-height: 300px; }
+
 .sidebar ul, ul.rsvp, #footer ul, ul.links, ul.track
 { 
   list-style: none; padding: 0px; 
