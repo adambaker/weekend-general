@@ -29,12 +29,12 @@ describe RsvpsController do
       end.should change(Rsvp, :count).by(1)
     end
     
-    #it "should create an rsvp using Ajax" do
-    #  lambda do
-    #    xhr :post, :create, event_id: event.id, kind: 'host'
-    #    response.should be_success
-    #  end.should change(Rsvp, :count).by(1)
-    #end
+    it "should create an rsvp using Ajax" do
+      lambda do
+        xhr :post, :create, format: :js, event_id: @event.id, kind: 'host'
+        response.should be_success
+      end.should change(Rsvp, :count).by(1)
+    end
   end
 
   describe "DELETE 'destroy'" do
