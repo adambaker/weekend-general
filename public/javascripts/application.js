@@ -4,7 +4,12 @@
 $(document).ready( function()
   {
     var $search_bar = $("#small_search_text");
-    $search_bar.focus(function(){ $search_bar.attr("value", "");})
+    $search_bar.focus(function()
+      { 
+        if($search_bar.attr('value') == "search")
+          $search_bar.attr("value", "");
+      }
+    );
     $search_bar.blur( function()
       {
         if($search_bar.attr('value') == "") 
@@ -13,3 +18,4 @@ $(document).ready( function()
     );
   }
 );
+
