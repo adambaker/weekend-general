@@ -1,5 +1,5 @@
-- if @event.send(method).any?
-  %ul{:class => "rsvp #{method}"}
-    %h3= pluralize(@event.send(method).size, title)
-    - for user in @event.send(method)
-      %li= link_to user.name, user_path(user)
+- rsvp_count = @event.send(method).size
+%ul{:class => "rsvp #{method}#{ rsvp_count==0 ? ' hidden' : ''}"}
+  %h3= pluralize(rsvp_count, title)
+  - for user in @event.send(method)
+    %li= link_to user.name, user_path(user)

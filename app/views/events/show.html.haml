@@ -1,5 +1,7 @@
 - content_for :title do
   %title= "Mission intel: #{@event.name}"
+- content_for :js do
+  = javascript_include_tag 'rsvp' 
 
 = render 'shared/heading', object: @event, title: @event.name,
   edit_text: "Edit this event", allow_edit: current_user&&can_alter?(@event)
@@ -37,14 +39,13 @@
       {title: 'Prospective', method: :maybes} ].each do |locals|
     = render 'rsvp', locals
 
-
   %h2 What about you?
   - attendance = current_user.attendance(@event)
-  - unless attendance == 'host'
-    = button_to "I'm hosting/organizing", event_hosts_path(@event)
-  - unless attendance == 'attend'
-    = button_to "I'm going", event_attendees_path(@event)
-  - unless attendance == 'maybe'
-    = button_to "Maybe...", event_maybes_path(@event)
-  - if attendance
-    = button_to "I won't be there", event_rsvp_path(@event), method: :delete
+  = button_to "I'm organizing", event_hosts_path(@event),
+    class: "rsvp host#{attendance == 'host' ? ' hidden' : ''}"
+  = button_to "I'm going", event_attendees_path(@event),
+    class: "rsvp attend#{attendance == 'attend' ? ' hidden' : ''}"
+  = button_to "Maybe...", event_maybes_path(@event),
+    class: "rsvp maybe#{attendance == 'maybe' ? ' hidden' : ''}"
+  = button_to "I won't be there", event_rsvp_path(@event), method: :delete,
+    class: "rsvp none#{attendance ? '' : ' hidden'}"

@@ -195,7 +195,7 @@ describe EventsController do
         response.should have_selector 'input',
           value: 'Maybe...', type: 'submit'
         response.should have_selector 'input',
-          value: "I'm hosting/organizing"
+          value: "I'm organizing"
         response.should have_selector 'input',
           value: "I'm going", type: 'submit'
       end
@@ -206,7 +206,7 @@ describe EventsController do
         response.should have_selector 'input',
           value: 'Maybe...', type: 'submit'
         response.should have_selector 'input',
-          value: "I'm hosting/organizing"
+          value: "I'm organizing"
         response.should have_selector 'input',
           value: "I won't be there", type: 'submit'
       end
