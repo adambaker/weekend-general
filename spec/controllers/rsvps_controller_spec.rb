@@ -31,7 +31,7 @@ describe RsvpsController do
     
     it "should create an rsvp using Ajax" do
       lambda do
-        xhr :post, :create, format: :js, event_id: @event.id, kind: 'host'
+        xhr :post, :create, format: :json, event_id: @event.id, kind: 'host'
         response.should be_success
       end.should change(Rsvp, :count).by(1)
     end
@@ -54,12 +54,12 @@ describe RsvpsController do
     end
     
     
-    #it "should destroy an rsvp using Ajax" do
-    #  lambda do
-    #    xhr :delete, :destroy, id: @rsvp
-    #    response.should be_success
-    #  end.should change(Rsvp, :count).by(-1)
-    #end
+    it "should destroy an rsvp using Ajax" do
+      lambda do
+        xhr :delete, :destroy, id: @event.id, event_id: @event.id, format: :json
+        response.should be_success
+      end.should change(Rsvp, :count).by(-1)
+    end
   end
   
   describe 'user notifications' do
