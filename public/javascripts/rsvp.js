@@ -63,21 +63,6 @@ $(function()
   });//each rsvp button
 });//document ready handler
 
-function repluralize(counted_string, change)
-{
-  var parts = counted_string.split(' ');
-  var number = parseInt(parts[0]);
-  var new_number = number + change;
-  var word = parts[1];
-  
-  if(new_number == 1 && change != 0)
-    word = word.slice(0, -1);
-  else if(number == 1 && change != 0)
-    word += 's';
-    
-  return new_number + ' ' + word;
-}
-
 function revise_header(rsvp_class, change)
 {
   var list = $('ul.rsvp.'+rsvp_class);
