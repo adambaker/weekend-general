@@ -53,7 +53,6 @@ describe RsvpsController do
       end.should change(Rsvp, :count).by(-1)
     end
     
-    
     it "should destroy an rsvp using Ajax" do
       lambda do
         xhr :delete, :destroy, id: @event.id, event_id: @event.id, format: :json
