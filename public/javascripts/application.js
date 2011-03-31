@@ -60,13 +60,14 @@ function ajax_submit_button(button_set, ajax_success)
   );//each matching button
 }
 
-function revise_header(list, change)
+function revise_header(list, change, prefix)
 {
+  if(typeof prefix == 'undefined')
+    prefix = '';
   var header = $('h3', list);
-  var new_title = repluralize(header.text(), change);
-  header.html(new_title);
+  var new_title = repluralize(header.text().slice(prefix.length), change);
+  header.html(prefix + new_title);
   
-  console.log('there are '+ new_title.charAt(0) + new_title.slice(1));
   if(new_title.charAt(0) == '0')
     list.addClass('hidden');
 }

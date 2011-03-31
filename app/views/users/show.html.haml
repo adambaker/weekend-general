@@ -1,6 +1,9 @@
 - content_for :title do
   %title= @user.name + "'s dossier"
-
+  
+- content_for :js do
+  = javascript_include_tag 'trail'
+  
 = render 'shared/heading', title: @user.name, edit_text: 'Edit your profile',
   allow_edit: (@user == current_user), object: @user
   
@@ -15,10 +18,10 @@
     %dd= image_tag rank_title(@user)+'.png', title: rank_title(@user),
       class: 'rank'
   - if current_user && current_user != @user
-    - if current_user.tracking? @user
-      = button_to 'Untrack', user_trail_path(@user), method: :delete
-    - else
-      = button_to 'Track', user_trails_path(@user)
+    = button_to('Untrack', user_trail_path(@user), method: :delete,
+      class: "track#{current_user.tracking?(@user) ? '' : ' hidden'}")
+    = button_to('Track', user_trails_path(@user),
+      class: "track#{current_user.tracking?(@user) ? ' hidden' : ''}")
 
 #description= display_format @user.description
 

@@ -30,13 +30,13 @@ describe TrailsController do
       @user.should be_tracking @target
     end
     
-    #it "should create a trail using Ajax" do
-    #  lambda do
-    #    xhr :post, :create, user_id: @target.id
-    #    response.should be_success
-    #  end.should change(Trail, :count).by(1)
-    #  @user.should be_tracking @target
-    #end
+    it "should create a trail using Ajax" do
+      lambda do
+        xhr :post, :create, user_id: @target.id, format: :json
+        response.should be_success
+      end.should change(Trail, :count).by(1)
+      @user.should be_tracking @target
+    end
   end
 
   describe "DELETE 'destroy'" do
@@ -58,12 +58,12 @@ describe TrailsController do
     end
     
     
-    #it "should destroy a trail using Ajax" do
-    #  -> do
-    #    xhr :delete, :destroy, id: @trail, user_id: @target.id
-    #    response.should be_success
-    #  end.should change(Trail, :count).by(-1)
-    #  @user.should_not be_tracking @target
-    #end
+    it "should destroy a trail using Ajax" do
+      -> do
+        xhr :delete, :destroy, id: @trail, user_id: @target.id, format: :json
+        response.should be_success
+      end.should change(Trail, :count).by(-1)
+      @user.should_not be_tracking @target
+    end
   end
 end

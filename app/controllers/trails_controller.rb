@@ -4,12 +4,18 @@ class TrailsController < ApplicationController
   
   def create
     current_user.track @target
-    redirect_to @target
+    respond_to do |format|
+      format.html { redirect_to @target }
+      format.json {}
+    end
   end
 
   def destroy
     current_user.untrack @target
-    redirect_to @target
+    respond_to do |format|
+      format.html { redirect_to @target }
+      format.json {}
+    end
   end
   
   private
