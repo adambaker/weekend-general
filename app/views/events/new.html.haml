@@ -1,6 +1,8 @@
 - content_for :title do
   %title File new mission intel
-
+- content_for :js do
+  = javascript_include_tag 'links'
+  
 %h1 New Mission Briefing
 %p= link_to 'back', events_path
 = render 'form'

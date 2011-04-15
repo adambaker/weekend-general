@@ -1,5 +1,8 @@
 - content_for :title do
   %title Revising #{@event.name}
+- content_for :js do
+  = javascript_include_tag 'links' 
+
 %h1.title Revise #{@event.name}
 .edit
   = link_to 'Remove this event', {id: @event.id, action: :destroy},
