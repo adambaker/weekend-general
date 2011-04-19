@@ -1,7 +1,7 @@
 // Place your application-specific JavaScript functions and classes here
 // This file is automatically included by javascript_include_tag :defaults
 
-$(document).ready( 
+$(
   function()
   {
     var $search_bar = $("#small_search_text");
@@ -17,6 +17,28 @@ $(document).ready(
       {
         if($search_bar.attr('value') == "") 
           $search_bar.attr("value","search");
+      }
+    );
+    
+    $('.extra_options').hide().each(
+      function()
+      {
+        var extra = $(this);
+        $('<a></a>').attr('href', '#').text('show extra options').click(
+          function(event)
+          {
+            var toggle_link = $(this)
+            extra.slideToggle(400, 
+              function()
+              {
+                if(/^show/.test(toggle_link.text()))
+                  toggle_link.text('hide extra options');
+                else
+                  toggle_link.text('show extra options');
+              }
+            );
+          }
+        ).insertAfter(extra);
       }
     );
   }

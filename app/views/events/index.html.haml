@@ -5,21 +5,22 @@
 .edit= link_to 'Post a new event', new_event_path
 
 = form_tag events_path, method: 'get', id: 'event_filter' do
-  .form_row
-    = submit_tag 'All upcoming events'
-    = submit_tag "Today's events"
-    = submit_tag "This week's events"
-    = submit_tag "This month's events"
-    = submit_tag "Past events"
-  .form_row
-    - tags = {any: 'any price ', free: 'free ', less: 'less than $'}
-    = render 'pages/search_radio_buttons', name: :price, tags: tags
-    = text_field_tag :price_text, params[:price_text]
-  .form_row
-    %span.instructions 
-      Order by:
-    - tags = {date: 'date', price: 'price', created: 'recently added', 
-      updated: 'recently updated'}
-    = render 'pages/search_radio_buttons', name: :order, tags: tags
+  .extra_options
+    .form_row
+      = submit_tag 'All upcoming events'
+      = submit_tag "Today's events"
+      = submit_tag "This week's events"
+      = submit_tag "This month's events"
+      = submit_tag "Past events"
+    .form_row
+      - tags = {any: 'any price ', free: 'free ', less: 'less than $'}
+      = render 'pages/search_radio_buttons', name: :price, tags: tags
+      = text_field_tag :price_text, params[:price_text]
+    .form_row
+      %span.instructions 
+        Order by:
+      - tags = {date: 'date', price: 'price', created: 'recently added', 
+        updated: 'recently updated'}
+      = render 'pages/search_radio_buttons', name: :order, tags: tags
 
 = render "all_events"
