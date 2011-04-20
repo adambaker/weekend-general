@@ -3,7 +3,7 @@
     - for event in @events
       %tr.entry_head{ :class => cycle(:odd, :even) }
         %td.date= event_date event
-        %td.name(colspan=4)= link_to event.name, event
+        %td.name(colspan=5)= link_to event.name, event
       %tr
         %td
         %td.label
@@ -19,7 +19,17 @@
           = event.address
           %br/
           = event.city
+        %td.rsvps
+          - if event.hosts.any?
+            = pluralize event.hosts.size, 'Mastermind'
+            %br/
+          - if event.attendees.any?
+            = pluralize event.attendees.size, 'Operative'
+            %br/
+          - if event.maybes.any?
+            = pluralize event.maybes.size, 'Prospective'
+            %br/
       %tr
         %td
-        %td.description(colspan=4)
+        %td.description(colspan=5)
           = search_display event.description, @terms || []
