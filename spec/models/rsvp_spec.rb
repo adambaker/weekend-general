@@ -48,4 +48,28 @@ describe Rsvp do
       end
     end
   end
+  
+  describe 'scopes' do
+    before(:each) do
+      @events  = [];
+      @rsvps = [];
+      4.times do |i|
+        @events << Factory(:event, name: 'event'+i.to_s)
+        @rsvps << @user.rsvps.create(event_id: @events[i], kind: 'host')
+        @rsvps[i].created_at = (5-i).days.ago
+      end
+      @rsvp.created_at = 10.days.ago
+      @rsvp.save
+    end
+    
+    it 'should have only recent rsvps in "recent".' do
+      Rsvp.recent.all.should_not include @rsvp
+      Rsvp.recent.all.size.should == 4
+    end
+    
+    it 'should have recent rsvps sorted by date.' do
+      rsvps = @rsvps.sort {|a,b| b.created_at <=> a.created_at}
+      Rsvp.recent.all.should == rsvps
+    end
+  end
 end
