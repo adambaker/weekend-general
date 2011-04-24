@@ -278,12 +278,63 @@ describe Event do
     it "should have cheap events in 'cheaper_than(10)." do
       Event.cheaper_than('10').to_set.should == @cheap_events.to_set
     end
+    
+    describe "recent activity" do 
+      before :each do
+        @recent = @future_events - [@far_future_events[0], @today_event]
+        @recent.each_index do |i|
+          @recent[i].created_at = i.days.ago
+          @recent[i].save
+        end
+        @far_future_events[0].created_at = 10.days.ago
+        @far_future_events[0].save
+        @today_event.created_at = 10.days.ago
+        @today_event.save
+        
+        @updated = @future_events - @free_events
+        @updated.each_index do |i|
+          @updated[i].updated_at = i.days.ago
+          @updated[i].save
+        end
+        @free_events.each{|e| e.updated_at = 10.days.ago; e.save}
+      end
+      
+      it "should not have past events or events added long ago in " +   
+        "recently_added." do
+        recent = Event.recently_added.all
+        recent.size.should == @recent.size
+        recent.should_not include @today_event
+        recent.should_not include @far_future_events[0]
+        recent.should_not include @past_events[0]
+        recent.should_not include @past_events[1]
+      end
+      
+      it "should sort recently_added most recent first." do
+        Event.recently_added.all.should == 
+          @recent.sort{|a,b| b.created_at <=> a.created_at}
+      end
+      
+      it "should not have past or distantly updated events in" + 
+        " recently updated." do
+        update = Event.recently_updated.all
+        update.size.should == @updated.size
+        update.should_not include @free_events[0]
+        update.should_not include @free_events[1]
+        update.should_not include @past_events[0]
+        update.should_not include @past_events[1]
+      end
+      
+      it "should sort recently updated events most recent first." do
+        Event.recently_updated.all.should == 
+          @updated.sort{|a,b| b.updated_at <=> a.updated_at}
+      end
+    end
   end
   
   describe "search" do
     before :each do
       @event = Factory :event
-      @poop = Factory(:event, name: 'poopyface')
+      @poop = Factory(:event, name: 'Poopyface')
       @nincompoop = Factory(:event, name: 'Nincompoop Bonanza')
       @cellar = Factory(:event, name: Factory.next(:name), 
         description: 'Help me escape the cellar!')

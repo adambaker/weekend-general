@@ -2,23 +2,6 @@ class Event < ActiveRecord::Base
   attr_accessible :name, :date, :time, :price, :venue_id, :address, :city,
     :description, :links_attributes
 
-  scope :future, lambda {where("date >= ?", Time.zone.today)}
-  scope :past, lambda {where("date < ?", Time.zone.today)}
-  scope :today, lambda {where("date = ?", Time.zone.today)}
-  scope :this_week, lambda {future.where("date < ?", 1.week.from_now)}
-  scope :this_month, lambda {future.where("date < ?", 1.month.from_now)}
-  
-  scope :free, where("price = 0")
-  
-  def self.cheaper_than(price)
-    where("price <= ?", price.gsub('$','').gsub(',','').to_f*100)
-  end
-  
-  def self.search(term)
-    where('events.name LIKE :term OR events.description LIKE :term', 
-      term: "%#{term}%")
-  end
-  
   belongs_to :venue
   has_many :links, dependent: :destroy
   
@@ -32,6 +15,27 @@ class Event < ActiveRecord::Base
   validates :name,    presence: true, uniqueness: {case_sensitive: false}
   validates :address, presence: true
   validates :city,    presence: true
+  
+  scope :future, lambda {where("date >= ?", Time.zone.today)}
+  scope :past, lambda {where("date < ?", Time.zone.today)}
+  scope :today, lambda {where("date = ?", Time.zone.today)}
+  scope :this_week, lambda {future.where("date < ?", 1.week.from_now)}
+  scope :this_month, lambda {future.where("date < ?", 1.month.from_now)}
+  
+  scope :free, where("price = 0")
+  scope :recently_added, 
+    ->{ future.where('created_at > ?', 1.week.ago).order('created_at DESC') }
+  scope :recently_updated, 
+    ->{ future.where('updated_at > ?', 1.week.ago).order('updated_at DESC') }
+  
+  def self.cheaper_than(price)
+    where("price <= ?", price.gsub('$','').gsub(',','').to_f*100)
+  end
+  
+  def self.search(term)
+    where('events.name LIKE :term OR events.description LIKE :term', 
+      term: "%#{term}%")
+  end
   
   before_validation :venue_address
   before_save :convert_price
