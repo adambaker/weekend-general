@@ -133,6 +133,7 @@ tr.entry_head td
 td.date { width: 100px; font-size: 16px; }
 td.name { width: 150px; font-size: 16px; }
 td.description { color: #454545; }
+td.rsvps { min-width: 85px; }
 td.label 
 { 
   margin-right: 0; padding-right: 0;
