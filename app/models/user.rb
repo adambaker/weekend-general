@@ -87,4 +87,8 @@ class User < ActiveRecord::Base
     trail = trails.find_by_target_id(user.id)
     trail.destroy if trail
   end
+  
+  def target_rsvps
+    targets.reduce([]){|rsvps, target| rsvps << target.rsvps.recent}.flatten
+  end
 end

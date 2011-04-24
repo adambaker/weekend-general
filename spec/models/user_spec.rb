@@ -349,4 +349,35 @@ describe User do
       cellar.size.should == 1
     end
   end
+  
+  describe "target_rsvps" do
+    before :each do
+      @user = Factory :user
+      @target1 = User.create! @attr
+      @target2 = Factory(:user, uid: Factory.next(:uid), 
+        email: Factory.next(:email))
+      @non_target = Factory(:user, uid: Factory.next(:uid), 
+        email: Factory.next(:email))
+      @user.track @target1
+      @user.track @target2
+      @event = Factory :event
+      @event2 = Factory(:event, name: Factory.next(:name))
+      @old_rsvp = @target1.attend @event
+      @old_rsvp.created_at = 10.days.ago
+      @old_rsvp.save
+      @rsvps = []
+      @rsvps << @target1.attend(@event2)
+      @rsvps << @target2.maybe(@event)
+      @rsvps << @target2.host(@event2)
+      @non_target.attend @event
+    end
+    
+    it "should not include old rsvps or untracked users rsvps." do
+      target_rsvps = @user.target_rsvps
+      target_rsvps.size.should == @rsvps.size
+      target_rsvps.each do |rsvp|
+        @rsvps.should include rsvp
+      end
+    end
+  end
 end
