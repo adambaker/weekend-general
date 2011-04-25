@@ -11,37 +11,12 @@
   = mail_to('adam.durandal@gmail.com')+'.'
 
 %ol
-  %h3 
-    %strike v0.1.0
-  %li
-    %strike Notifications:
-    %ol
-      %li 
-        %strike Event rsvp reminders.
-      %li 
-        %strike User tracking: tracked user RSVP
-      %li 
-        %strike Tracked event: user RSVP
-      %li 
-        %strike New event added
-  %h3
-    %strike v0.2.0
-  %li
-    %strike Search and sort options
-  %h3 v0.3.0
-  %li 
-    AJAX interface
-    %ol
-      %li Event links
-      %li RSVPs, tracking
-      %li Event, Venue, User editing
-      %li Javascript validations
   %h3 v0.4.0
   %li Additional rank privileges, promotions
   %li New home page with upcoming and newly added events
-  %li RSS feeds
   %h2 v1.0.0
-  %li XML and JSON APIs
+  %li RSS feeds
+  %li JSON APIs
   %h3 v1.1.0
   %li Tags
   %h3 v1.2.0
@@ -49,7 +24,56 @@
   %li User gravatar
   %h3 v1.3.0
   %h3 In the distant future
+  %li More AJAX
+    %li Event, Venue, User editing
+    %li Javascript validations
   %li Regularly recurring events
   %li Comments
   %li custom layouts/"skins"
   %li Others TBD
+
+%h1 How can I help?
+%p 
+  I'm glad you asked. Right now, I'd like it if you tried to use Weekend General
+  and let me know of anything you've found that just doesn't work the way you 
+  think it should. I'm also very, very happy to take feature requests. If you 
+  have ideas about how something Weekend General already does could be done 
+  better, I'll also be happy to listen. Send me an email at 
+  = mail_to('adam.durandal@gmail.com') +'.'
+  I'll be glad you did.
+%p
+  Apart from just using the app, I could use your help if you have the 
+  following skills that you'd like to volunteer:
+%ul
+  %li 
+    %strong Design:
+    %p
+      I'm not a designer. Weekend General could look a lot nicer, and if you 
+      have the gumption to sit with me and work to improve the look and 
+      feel of the site, I will love you forever.
+    %p
+      It's low priority, but I'm also planning on eventually making the site
+      skinnable. So if you have a design idea that I don't have the time,
+      knowledge, or interest to take a hand in working out with you, you can
+      always try it on your own, send it to me, and I will include it as a 
+      layout option users can choose.
+  %li
+    %strong Copy/Editing:
+    %p
+      If you can substantially improve the writing on here, I won't pass up on
+      your help.
+  %li
+    %strong Coding:
+    %p
+      Weekend General is a Ruby On Rails app using jQuery for client side 
+      scripting. I'm a web programming newbie, and I wrote Weekend General
+      mainly to teach myself Rails. If you'd like to contribute, you can
+      - git = 'https://github.com/adambaker/weekend-general' #to shorten line
+      = link_to('clone the repository on GitHub', git)+'.'
+    %p
+      If you want to review my code and drop some hints your experience has
+      delivered, I will be grateful. If you want to contribute, all you have to 
+      do is clone the git repository and start adding and editing. Email me 
+      or send me a pull request and I'll go over you changes and we can take 
+      things from there.
+
