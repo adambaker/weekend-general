@@ -1,13 +1,4 @@
-class User < ActiveRecord::Base
-  scope :officers, where('rank > 2')
-  
-  def self.search(term) 
-    where("users.name LIKE :term OR users.description LIKE :term", 
-      term: "%#{term}%")
-  end
-  
-  email_regex = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
-
+class User < ActiveRecord::Base  
   attr_accessible :email, :name, :provider, :uid, :description, :theme,
     :attend_reminder, :maybe_reminder, :host_reminder, :track_host, 
     :track_attend, :track_maybe, :host_rsvp, :attend_rsvp, :maybe_rsvp,
@@ -22,7 +13,8 @@ class User < ActiveRecord::Base
   has_many :breadcrumbs, foreign_key: :target_id, class_name: 'Trail',
     dependent: :destroy
   has_many :trackers, through: :breadcrumbs
-  
+
+  email_regex = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i 
   validates :name,     presence:   true
   validates :email,    uniqueness: {case_sensitive: false},
                        format:     {with: email_regex}
@@ -30,6 +22,13 @@ class User < ActiveRecord::Base
   validates :uid,      presence:   true,
                        uniqueness: {scope: :provider}
   validates_inclusion_of :theme, in: Themes::THEMES.keys
+  
+  scope :officers, where('rank > 2')
+  
+  def self.search(term) 
+    where("users.name LIKE :term OR users.description LIKE :term", 
+      term: "%#{term}%")
+  end
   
   def initialize(attrs={}, &block)
     attrs[:theme] = Themes::default_theme['name'] if attrs[:theme].nil?
