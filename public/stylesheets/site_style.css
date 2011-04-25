@@ -131,7 +131,7 @@ tr.entry_head td
   padding-bottom: 5px; padding-top: 10px; 
 }
 td.date { width: 100px; font-size: 16px; }
-td.name { width: 150px; font-size: 16px; }
+td.name { font-size: 16px; }
 td.description { color: #454545; }
 td.rsvps { min-width: 85px; }
 td.label 
@@ -139,6 +139,7 @@ td.label
   margin-right: 0; padding-right: 0;
   width: 60px;
 }
+#users td.name { width: 150px; }
 
 div.field, div.actions { margin-bottom: 5px; }
 
