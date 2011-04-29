@@ -11,7 +11,7 @@ module ApplicationHelper
     regex = Regexp.new(regex[0...-1], true)
     
     description.gsub! regex, '<span class="search_term">\0</span>'
-    description.html_safe
+    display_format(description)
   end
   
   def include_flash_images
@@ -22,7 +22,7 @@ module ApplicationHelper
   end
   
   def allowed_tags
-    %w[em i strong b code samp tt s strike sup sub a img
+    %w[em i strong b code samp tt s strike sup sub a img span div
         blockquote pre ul ol li table tr td p]
   end
   
