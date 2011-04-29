@@ -88,6 +88,8 @@ class User < ActiveRecord::Base
   end
   
   def target_rsvps
-    targets.reduce([]){|rsvps, target| rsvps << target.rsvps.recent}.flatten
+    targets.reduce([]) {
+      |rsvps, target| rsvps << target.rsvps.recent.limit(3)
+    }.flatten
   end
 end

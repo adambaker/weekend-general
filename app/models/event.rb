@@ -26,7 +26,8 @@ class Event < ActiveRecord::Base
   scope :recently_added, 
     ->{ future.where('created_at > ?', 1.week.ago).order('created_at DESC') }
   scope :recently_updated, 
-    ->{ future.where('updated_at > ?', 1.week.ago).order('updated_at DESC') }
+    ->{ future.where('updated_at > ? AND updated_at <> created_at', 1.week.ago)
+      .order('updated_at DESC') }
   
   def self.cheaper_than(price)
     where("price <= ?", price.gsub('$','').gsub(',','').to_f*100)
