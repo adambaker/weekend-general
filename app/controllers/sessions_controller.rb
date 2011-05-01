@@ -12,7 +12,7 @@ class SessionsController < ApplicationController
     else
       session[:user_id] = user.id
       flash[:notice] = current_theme 'sessions', 'sign_in'
-      redirect_to root_url
+      redirect_to session[:signin_back] || root_url
     end
   end
   
@@ -20,12 +20,11 @@ class SessionsController < ApplicationController
     if current_user
       flash[:notice] = current_theme 'sessions', 'sign_out'
       redirect_to controller: :pages, action: :home, theme: theme['name']
-      session[:user_id] = nil
     else
-      session[:user_id] = nil
       flash[:error] = current_theme 'sessions', 'already_signed_out'
       redirect_to root_url
     end
+    session[:user_id] = nil
   end
 
 end
