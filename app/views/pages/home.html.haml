@@ -2,4 +2,45 @@
   %title The Weekend General's home base
 %h1 The Weekend General 
 
+- if current_user && @rsvps.any?
+  %h2 Tracked user RSVPs
+  %ul#tracked_rsvps
+    - @rsvps.each do |rsvp|
+      %li 
+        = link_to rsvp.user.name, rsvp.user
+        is
+        = rsvp.kind + (rsvp.kind == "maybe" ? " going to " : "ing ")
+        = link_to(rsvp.event.name, rsvp.event) + '.'
+- else
+  New here? Click on the 
+  = link_to "Sign in with Google", '/auth/google'
+  link to start the sign up process. All you have to do is sign in to google
+  and tell them you want to allow the Weekend General to use your account for
+  authentication. You'll be brought back here to a new account page to finish
+  making your account.
 
+- if @new_events.any?
+  %h2 Recently added events
+  %ul#new_events
+    - @new_events.each do |e|
+      %li 
+        = link_to e.name, e
+        happens on 
+        = e.date.strftime('%A, %B %e, %Y')
+        - if e.rsvps.any?
+          and already 
+          = pluralize e.rsvps.size, "Operative"
+          will be dispatched.
+        - else
+          and you can be the first to enlist.
+
+- if @updated_events.any?
+  %h2 Recently updated events
+  %ul#updated_events
+    - @updated_events.each do |e|
+      %li 
+        = link_to e.name, e
+        happening on 
+        = e.date.strftime('%A, %B %e, %Y')
+        has had its intel updated.
+        

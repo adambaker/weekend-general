@@ -1,6 +1,10 @@
 class PagesController < ApplicationController
   before_filter :fetch_events, only: [:search]
+  
   def home
+    @rsvps = current_user.target_rsvps if current_user
+    @new_events = Event.recently_added.limit(5)
+    @updated_events = Event.recently_updated.limit(5)
   end
 
   def about
@@ -17,9 +21,9 @@ class PagesController < ApplicationController
     @users = User.scoped
     @venues = Venue.scoped
     @terms.each do |term|
-      @users = @users.search(term)
-      @events = @events.search(term)
-      @venues = @venues.search(term)
+      @users = @users.search(term) if users?
+      @events = @events.search(term) if events?
+      @venues = @venues.search(term) if venues?
     end
     
     @users = [] unless users?

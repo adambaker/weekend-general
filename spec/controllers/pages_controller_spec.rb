@@ -18,6 +18,11 @@ describe PagesController do
       before(:each) do
         @user = Factory(:user)
         test_sign_in(@user)
+        @event = Factory :event
+        @other_user = Factory(:user, uid: Factory.next(:uid), 
+          email: Factory.next(:email))
+        @user.track @other_user
+        @other_user.host @event
         get 'home'
       end
       
@@ -27,6 +32,15 @@ describe PagesController do
       
       it "should have the current user's name in the header" do
         response.should have_selector(:div, content: @user.name)
+      end
+      
+      it "should have the recently created event displayed" do
+        response.should contain @event.name
+      end
+      
+      it "should have the recent rsvp info displayed" do
+        response.should contain @other_user.name
+        response.should contain 'host'
       end
     end
     

@@ -19,10 +19,16 @@ a img { border: none }
 
 img.thumb { max-width: 200px; max-height: 300px; }
 
-.sidebar ul, ul.rsvp, #footer ul, ul.links, ul.track
+.sidebar ul, ul.rsvp, #footer ul, ul.links, ul.track,
+ul#new_events, ul#tracked_rsvps, ul#updated_events
 { 
   list-style: none; padding: 0px; 
 }
+  #new_events li, #tracked_rsvps li, #updated_events li
+  {
+    font-size: 14px; margin-bottom: 10px;
+    text-indent: -20px; padding-left: 20px;
+  }
 
 #container{ width: 730px; margin-top: 10px; margin-left: 160px; }
 
@@ -126,7 +132,7 @@ td
   padding: 5px 5px 0 5px;
   vertical-align: top;
 }
-tr.entry_head td 
+tr.entry_head td
 {
   padding-bottom: 5px; padding-top: 10px; 
 }
