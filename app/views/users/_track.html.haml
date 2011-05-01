@@ -1,5 +1,4 @@
-- if @user.send(kind).any?
-  %ul{ class: 'track '+kind.to_s }
-    %h3= title+' '+pluralize(@user.send(kind).size, 'user')
-    - @user.send(kind).each do |t|
-      %li= link_to t.name, t
+%ul{ class: 'track '+kind.to_s + (@user.send(kind).any? ? '' : ' hidden') }
+  %h3= title+' '+pluralize(@user.send(kind).size, 'user')
+  - @user.send(kind).each do |t|
+    %li= link_to t.name, t
