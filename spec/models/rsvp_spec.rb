@@ -55,16 +55,14 @@ describe Rsvp do
       @rsvps = [];
       4.times do |i|
         @events << Factory(:event, name: 'event'+i.to_s)
-        @rsvps << @user.rsvps.create(event_id: @events[i], kind: 'host')
+        @rsvps << @user.rsvps.create(event_id: @events[i].id, kind: 'host')
         @rsvps[i].created_at = (5-i).days.ago
       end
       @rsvp.created_at = 10.days.ago
       @rsvp.save
-    end
-    
-    it 'should have only recent rsvps in "recent".' do
-      Rsvp.recent.all.should_not include @rsvp
-      Rsvp.recent.all.size.should == 4
+      past_event = Factory(:event, name: Factory.next(:name), 
+        date: 10.days.ago)
+      @user.rsvps.create(event_id: past_event.id, kind: 'attend')
     end
     
     it 'should have recent rsvps sorted by date.' do

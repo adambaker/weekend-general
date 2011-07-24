@@ -8,6 +8,7 @@ class Rsvp < ActiveRecord::Base
   validates :user_id,  presence: true
   validates_inclusion_of :kind, in: %w(host attend maybe)
   
-  scope :recent, ->{ where('created_at >= ?', 1.week.ago)
-    .order('created_at DESC') }
+  scope :recent, ->{ where('rsvps.created_at >= ?', 1.week.ago)
+    .includes(:event).where('events.date >= ?', Time.zone.today)
+    .order('rsvps.created_at DESC') }
 end
