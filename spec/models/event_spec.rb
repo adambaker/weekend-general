@@ -48,12 +48,16 @@ describe Event do
     event.city.should == @venue.city
   end
   
-  it 'should require a unique name.' do
+  it 'should require a unique name/date combo.' do
     Event.new(@with_venue_attr.merge(name: '')).should_not be_valid
     Event.create(@with_venue_attr)
     Event.new(@with_venue_attr).should_not be_valid
     @with_venue_attr[:name].upcase!
     Event.new(@with_venue_attr).should_not be_valid
+    Event.new(@with_venue_attr.merge(
+        'date(3i)' => 4.days.from_now.day.to_s
+      )
+    ).should be_valid
   end
   
   it 'should require an address.' do

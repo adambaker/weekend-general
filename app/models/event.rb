@@ -12,15 +12,19 @@ class Event < ActiveRecord::Base
   accepts_nested_attributes_for :links,
     reject_if: proc {|attr| attr[:url].blank?}
   
-  validates :name,    presence: true, uniqueness: {case_sensitive: false}
+  validates :name,    presence: true, 
+                      uniqueness: {
+                        case_sensitive: false,
+                        scope: :date,
+                      }
   validates :address, presence: true
   validates :city,    presence: true
   
-  scope :future, lambda {where("date >= ?", Time.zone.today)}
-  scope :past, lambda {where("date < ?", Time.zone.today)}
-  scope :today, lambda {where("date = ?", Time.zone.today)}
-  scope :this_week, lambda {future.where("date < ?", 1.week.from_now)}
-  scope :this_month, lambda {future.where("date < ?", 1.month.from_now)}
+  scope :future, ->{where("date >= ?", Time.zone.today)}
+  scope :past, ->{where("date < ?", Time.zone.today)}
+  scope :today, ->{where("date = ?", Time.zone.today)}
+  scope :this_week, ->{future.where("date < ?", 1.week.from_now)}
+  scope :this_month, ->{future.where("date < ?", 1.month.from_now)}
   
   scope :free, where("price = 0")
   scope :recently_added, 
