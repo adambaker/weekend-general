@@ -19,10 +19,10 @@
 %h3 Venue intel:
 #description= display_format(@venue.description)
 
--if @venue.events.any?
+-if @venue.events.future.any?
   %h2 Missions in this theater:
   %table#events
-    - @venue.events.each do |event|
+    - @venue.events.future.each do |event|
       %tr
         %td.date= event_date event
         %td.name= link_to event.name, event
