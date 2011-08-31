@@ -69,12 +69,13 @@ Cover for events ranges from free to about $1200, so be prepared. Typically host
       'punch.com/users/1/get?foo=1&bar=2', 'http://go.co?goo=foo',
       'am.de/pan_da+all/man?squill=seminal', 'foo.co?e=foo%40goo.co', '',
       'http://aurgasm.us/music/michelle/warpaint-undertow.mp3',
-      'https://www.etix.com/ticket/servlet/onlineSale%3bjsessionid=A2BE74614CD1D727A56F2C2B790178BC?action=selectPerformance&cobrand=metrochicago&performance_id=1356571' ]
+      'https://www.etix.com/ticket/servlet/onlineSale%3bjsessionid=A2BE74614CD1D727A56F2C2B790178BC?action=selectPerformance&cobrand=metrochicago&performance_id=1356571',
+      'http://aurgasm.us/music/Movits!%20-%20Swing%20For%20Hyresgastforeningen.mp3',
+    ]
   end
   
   def invalid_urls
-    ['foo', 'foo?a=12', 'game/tell.us', '1934://punt.me',
-      'sq\\id://foo.bar', 'www.foo.bar.com/seven-tell()/go' ]
+    ['foo', 'foo?a=12', 'game/tell.us', '1934://punt.me', 'sq\\id://foo.bar']
   end
   
   def valid_event_attr
