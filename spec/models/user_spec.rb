@@ -221,11 +221,30 @@ describe User do
   end
   
   describe "rank" do
-   
-    it "should allow users to be promoted." do
+    before(:each) do
+      @users = []
+      4.times do |i|
+        @users << Factory(:user, email: Factory.next(:email), 
+          uid: Factory.next(:uid))
+        @users[i].rank = i+1
+        @users[i].save
+      end
+    end
+    
+    it "should not allow users of the same rank or lower to promote a user." do
       user = User.create(@attr)
-      user.promote
-      user.rank.should == 2
+      @users.each do |other_user|
+        before_rank = other_user.rank
+        user.promote(other_user)
+        other_user.rank.should == before_rank
+      end
+    end
+
+    it "should allow those ranked two levels above to promote lower rank users." do
+      2.times do |i|
+        @users[i+2].promote(@users[i])
+        @users[i].rank.should == i+2
+      end
     end
     
     it "should promote users in the majors list to rank 4." do
@@ -233,18 +252,11 @@ describe User do
     end
     
     it "should have rank 3 and 4 users in officers." do
-      users = []
-      4.times do |i|
-        users << Factory(:user, email: Factory.next(:email), 
-          uid: Factory.next(:uid))
-        users[i].rank = i+1
-        users[i].save
-      end
       officers = User.officers
-      officers.should include(users[3])
-      officers.should include(users[2])
-      officers.should_not include(users[1])
-      officers.should_not include(users[0])
+      officers.should include(@users[3])
+      officers.should include(@users[2])
+      officers.should_not include(@users[1])
+      officers.should_not include(@users[0])
     end
   end
     

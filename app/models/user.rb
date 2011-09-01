@@ -71,9 +71,10 @@ class User < ActiveRecord::Base
     rsvp.destroy if rsvp
   end
   
-  def promote
-    self.rank += 1
-    self.save
+  def promote(user)
+    return if user.rank == 4
+    user.rank += 1 if self.rank == 4 || (self.rank - user.rank) > 1
+    user.save
   end
   
   def tracking?(user)
