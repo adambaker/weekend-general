@@ -9,7 +9,7 @@ group :development do
 end
 
 group :test do
-  gem 'rspec', '2.3.0'
+  gem 'rspec'
   gem 'webrat', '0.7.1'
   gem 'factory_girl_rails'
   gem 'autotest'
