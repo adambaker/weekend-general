@@ -5,11 +5,11 @@ gem 'rails', '3.0.3'
 gem 'sqlite3-ruby', :require => 'sqlite3'
 
 group :development do
-  gem 'rspec-rails', '2.3.0'
+  gem 'rspec-rails', '>= 2.7'
 end
 
 group :test do
-  gem 'rspec'
+  gem 'rspec', '>= 2.7'
   gem 'webrat', '0.7.1'
   gem 'factory_girl_rails'
   gem 'autotest'
@@ -17,6 +17,7 @@ end
 
 gem 'haml'
 gem 'omniauth'
+gem 'omniauth-openid'
 gem 'hpricot', '0.8.3'
 gem 'ruby_parser'
 

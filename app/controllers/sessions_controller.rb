@@ -7,8 +7,8 @@ class SessionsController < ApplicationController
       redirect_to current_user
     elsif user.nil?
       redirect_to controller: :users, action: :new,  
-        user: { provider: auth['provider'], name: auth['user_info']['name'], 
-          uid: auth['uid'], email: auth['user_info']['email']}                
+        user: { provider: auth['provider'], name: auth['info']['name'], 
+          uid: auth['uid'], email: auth['info']['email']}                
     else
       session[:user_id] = user.id
       flash[:notice] = current_theme 'sessions', 'sign_in'
