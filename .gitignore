@@ -4,3 +4,5 @@ log/*.log
 tmp/**/*
 webrat.log
 .*.sw*
+public/javascripts/development-bundle/
+public/javascripts/js
