@@ -190,6 +190,19 @@ describe VenuesController do
           post :create, venue: @new_attr
           Venue.find_by_name(@new_attr[:name]).created_by.should == @user.id
         end
+
+        describe 'with json accept' do
+          it 'should send back a json representation of the new venue' do
+            post :create, venue: @new_attr, format: :json
+            body = JSON.parse(response.body)['venue']
+            body['name'].should    == @new_attr[:name]
+            body['address'].should == @new_attr[:address]
+            body['city'].should    == @new_attr[:city]
+            body['url'].should     == @new_attr[:url]
+            #TODO: need policy for body['description']
+            body['id'].should_not be_nil
+          end
+        end
       end
 
       describe "with invalid params" do
@@ -202,6 +215,13 @@ describe VenuesController do
           lambda do
             post :create, venue: @invalid_attr
           end.should_not change(Venue, :count)
+        end
+
+        it 'should send errors via json too.' do
+          post :create, venue: @invalid_attr, format: :json
+          body = JSON.parse(response.body)
+          body.should include('name')
+          body['name'].should =~ /blank/i
         end
       end
     end

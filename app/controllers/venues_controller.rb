@@ -1,5 +1,5 @@
 class VenuesController < ApplicationController
-  respond_to :html #, :xml, :json
+  respond_to :html, :json
   
   before_filter :authenticate, except: [:index, :show]
   before_filter :fetch_venue, except: [:index, :new, :create]
@@ -35,12 +35,12 @@ class VenuesController < ApplicationController
       if @venue.save
         flash[:success] = current_theme 'venues', 'new'
         format.html { redirect_to @venue }
-        #format.xml  { render :xml => @venue, 
-          #:status => :created, :location => @venue }
+        format.json { render :json => @venue, 
+          :status => :created, :location => @venue }
       else
         format.html { render :action => "new" }
-        #format.xml  { render :xml => @venue.errors, 
-          #:status => :unprocessable_entity }
+        format.json { render :json => @venue.errors, 
+          :status => :unprocessable_entity }
       end
     end
   end
