@@ -204,3 +204,31 @@ input#price_text { width: 50px; }
   font-size: 12px;
   list-style: square;
 }
+
+#overlay_mask
+{
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+
+  background: rgba(0, 0, 0, 0.8);
+
+  z-index: 10;
+}
+
+.overlay
+{ 
+  position:absolute;
+  top:0; left:0;
+  z-index: 100;
+}
+  .overlay #overlay_content
+  { 
+    width: 730px; min-height: 300px;
+    
+    margin-top: 10px; margin-left: 160px;
+    padding: 30px;
+  
+    background-image: url('../images/papmust.gif'); 
+    color: #222;
+  }
