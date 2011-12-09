@@ -67,9 +67,10 @@ span.search_term { color: #388D81; font-weight: bold; }
 #content
 {
   background-image: url('../images/papmust.gif'); 
-  color: #222;
+  color: #222; width: 670px;
   padding: 30px; min-height: 500px;
 }
+  #content table { max-width: 610px; }
 
 h1.title{ display: inline; }
 .edit { display: inline-block; margin-left: 10px; }
@@ -136,8 +137,9 @@ tr.entry_head td
 {
   padding-bottom: 5px; padding-top: 10px; 
 }
-td.date { width: 100px; font-size: 16px; }
-td.name { font-size: 16px; }
+td.date { width:     100px; font-size: 16px; }
+td.name { min-width: 120px; font-size: 16px; }
+td.address { min-width: 100px; }
 td.description { color: #454545; }
 td.rsvps { min-width: 85px; }
 td.label 

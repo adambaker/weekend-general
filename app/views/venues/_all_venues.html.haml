@@ -7,7 +7,7 @@
           = venue.address
           %br/
           = venue.city
-        %td.link= link_to(venue.url, venue.url) unless venue.url.blank?
+        %td.link= link_to(truncate(venue.url, length: 50), venue.url) unless venue.url.blank?
       %tr
         %td
         %td.description(colspan=2)
