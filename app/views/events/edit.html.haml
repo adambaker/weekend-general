@@ -1,8 +1,10 @@
 - content_for :title do
   %title Revising #{@event.name}
 - content_for :js do
-  = javascript_include_tag 'links' 
-
+  = javascript_include_tag 'jquery-ui-1.8.16.custom.min'
+  = javascript_include_tag 'jquery.form'
+  = javascript_include_tag 'links'
+  = javascript_include_tag 'event'
 %h1.title Revise #{@event.name}
 .edit
   = link_to 'Remove this event', {id: @event.id, action: :destroy},
