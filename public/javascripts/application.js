@@ -1,6 +1,11 @@
 // Place your application-specific JavaScript functions and classes here
 // This file is automatically included by javascript_include_tag :defaults
 
+String.prototype.capitalize = function ()
+{
+  return this.charAt(0).toUpperCase() + this.slice(1);
+}
+
 $(
   function()
   {
@@ -108,4 +113,3 @@ function repluralize(counted_string, change)
     
   return new_number + ' ' + word;
 }
-
