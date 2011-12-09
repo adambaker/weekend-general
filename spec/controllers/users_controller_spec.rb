@@ -64,10 +64,7 @@ describe UsersController do
     end
   end
   
-  #just a reminder to go back and implement xml and json APIs
-  describe "GET index.xml" do 
-    it "should have an element for each user."
-  end
+  #just a reminder to go back and implement json API
   describe "GET index.json" do
     it "should have an element for each user."
   end
