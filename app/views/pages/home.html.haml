@@ -2,15 +2,16 @@
   %title The Weekend General's home base
 %h1 The Weekend General 
 
-- if current_user && @rsvps.any?
-  %h2 Tracked user RSVPs
-  %ul#tracked_rsvps
-    - @rsvps.each do |rsvp|
-      %li 
-        = link_to rsvp.user.name, rsvp.user
-        is
-        = rsvp.kind + (rsvp.kind == "maybe" ? " going to " : "ing ")
-        = link_to(rsvp.event.name, rsvp.event) + '.'
+- if current_user 
+  -if @rsvps.any?
+    %h2 Tracked user RSVPs
+    %ul#tracked_rsvps
+      - @rsvps.each do |rsvp|
+        %li 
+          = link_to rsvp.user.name, rsvp.user
+          is
+          = rsvp.kind + (rsvp.kind == "maybe" ? " going to " : "ing ")
+          = link_to(rsvp.event.name, rsvp.event) + '.'
 - else
   New here? Click on the 
   = link_to "Sign in with Google", '/auth/google'
