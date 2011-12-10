@@ -5,7 +5,7 @@ describe SessionsController do
   describe 'POST "create"' do
     before(:each) do
       auth_request_attr = {'provider'=>'google', 'uid'=>'foobar',
-          'user_info'=>{'name'=>"user", 'email'=>"user@example.com"}}
+          'info'=>{'name'=>"user", 'email'=>"user@example.com"}}
       controller.request.env["omniauth.auth"] = auth_request_attr
     end
     

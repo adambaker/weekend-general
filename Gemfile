@@ -16,8 +16,8 @@ group :test do
 end
 
 gem 'haml'
-gem 'omniauth'
-gem 'omniauth-openid'
+gem 'omniauth', '>= 1.0'
+gem 'omniauth-openid', '>= 1.0'
 gem 'hpricot', '0.8.3'
 gem 'ruby_parser'
 
