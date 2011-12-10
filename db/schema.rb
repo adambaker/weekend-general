@@ -10,7 +10,20 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110128013126) do
+ActiveRecord::Schema.define(:version => 20111209085641) do
+
+  create_table "dishonorable_discharges", :force => true do |t|
+    t.string   "email"
+    t.string   "provider"
+    t.string   "uid"
+    t.integer  "officer"
+    t.text     "reason"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "dishonorable_discharges", ["email"], :name => "index_dishonorable_discharges_on_email"
+  add_index "dishonorable_discharges", ["provider", "uid"], :name => "index_dishonorable_discharges_on_provider_and_uid"
 
   create_table "events", :force => true do |t|
     t.string   "name"
