@@ -5,6 +5,11 @@ describe DishonorableDischarge do
     @officer = Factory :user
     @officer.rank = 4
     @officer.save!
+    @other_user = Factory(:user, 
+                          email: Factory.next(:email),
+                          uid:   Factory.next(:uid),
+                          name:  Factory.next(:name),
+                         )
     @attr = {
       email: 'fake@phony.lie',
       provider: 'nobody',
@@ -52,6 +57,18 @@ describe DishonorableDischarge do
   it "should require a uid" do
     no_uid = DishonorableDischarge.new(@attr.merge(uid: ''))
     no_uid.should_not be_valid
+  end
+
+  it "should require an officer" do
+    no_officer = DishonorableDischarge.new(@attr.merge(officer: ''))
+    no_officer.should_not be_valid
+  end
+
+  it "should require the officer have officer rank" do
+    not_an_officer = DishonorableDischarge.new(
+      @attr.merge(officer: @other_user.id)
+    )
+    not_an_officer.should_not be_valid
   end
 
 end
