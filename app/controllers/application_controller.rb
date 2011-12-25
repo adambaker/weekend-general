@@ -1,5 +1,7 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
+
+  before_filter :check_discharge
   
   helper_method :current_user, :current_theme, :can_alter?, :theme, :officer?,
     :free?, :less?, :any_price?, :date?, :price?, :created?, :updated?
@@ -8,6 +10,24 @@ class ApplicationController < ActionController::Base
     @current_user ||= User.find(session[:user_id]) if session[:user_id]
   end
   
+  def check_discharge
+    self.current_user
+    uid   = (@current_user && @current_user.uid)
+    prov  = (@current_user && @current_user.provider)
+    email = (@current_user && @current_user.email)
+
+    discharge = 
+      DishonorableDischarge.find_by_email(email) ||
+      DishonorableDischarge.find_by_provider_and_uid(prov, uid)
+    if discharge
+      sign_out
+      flash[:notice] = "You've been dishonorably discharged. 
+        You may appeal to an officer be reinstated.\n
+        Reason for this discharge:\n#{discharge.reason}"
+      redirect_to '/users/officers'
+    end
+  end
+
   def sign_out
     @current_user = nil
     session[:user_id] = nil

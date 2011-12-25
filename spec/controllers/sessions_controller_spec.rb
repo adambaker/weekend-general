@@ -15,12 +15,12 @@ describe SessionsController do
                                uid: Factory.next(:uid) )
         test_sign_in @user
       end
-      
+
       it "should redirect to the user's show page." do
         post :create
         response.should redirect_to @user
       end
-      
+
       it "should have an appropriate flash message." do
         post :create
         flash[:notice].should =~ /I already know you're here, warrior./i
@@ -33,7 +33,7 @@ describe SessionsController do
         response.should redirect_to '/users/new?user[email]=user%40example.com&user[name]=user&user[provider]=google&user[uid]=foobar'
       end
     end
-    
+
     describe 'with an existing user' do
       before :each do
         @user = Factory(:user)
@@ -52,6 +52,37 @@ describe SessionsController do
       it "should have an appropriate flash message." do
         post :create
         flash[:notice].should =~ /fall in/i
+      end
+
+      describe 'with a dishonorably discharged user' do
+        before :each do
+          officer = Factory(:user, email: Factory.next(:email),
+                                  uid:   Factory.next(:uid),
+                          )
+          set_rank(officer, 4)
+          DishonorableDischarge.create!(
+            email:    'something@gmail.com',
+            provider: 'google',
+            uid:      'foobar',
+            officer:  officer.id,
+            reason:   'never again',
+          )
+        end
+
+        it "should not sign the user in" do
+          post :create
+          controller.current_user.should be_nil
+        end
+
+        it "should redirect to officers page" do
+          post :create
+          response.should redirect_to '/users/officers'
+        end
+        
+        it 'should put the reason in the flash' do
+          post :create
+          flash[:notice].should =~ /never again/
+        end
       end
     end
   end

@@ -1,10 +1,38 @@
 require 'spec_helper'
 
 describe "Users" do
-  describe "GET /users" do
-    it "works! (now write some real specs)" do
-      get users_path
-      response.status.should be(200)
-    end
+  before :each do
+    @officer = Factory :user
+    set_rank(@officer, 4)
+    @venue = Factory :venue
+    @event = Factory :event
+    @attr = 
+      {
+        name: 'Terrible deep', 
+        email: 'never@publish.me', 
+        provider: 'google',
+        uid: 'alwaysandfornever.fool',
+        description: 'I never want to die but always fear I will.'
+      }
+    integration_new_user @attr
+  end
+  
+  it "should log off a logged in user who is discharged." do
+    visit event_path(@event)
+    response.should be_success
+    response.should contain("Signed in as #{@attr[:name]}")
+    
+    puts @attr[:email]
+    DishonorableDischarge.create!(
+      email:    @attr[:email],
+      provider: @attr[:provider],
+      uid:      @attr[:uid],
+      officer:  @officer.id,
+      reason:   'never again',
+    )
+
+    visit venue_path(@venue)
+    #response.should redirect_to '/users/officers'
+    response.should_not contain("Signed in as #{@attr[:name]}")
   end
 end
