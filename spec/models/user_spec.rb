@@ -109,7 +109,9 @@ describe User do
     officer = Factory :user
     officer.rank = 4
     officer.save
-    DishonorableDischarge.create!(@attr.merge(officer: officer.id, reason: 'something'))
+    DishonorableDischarge.create!(
+      @attr.merge(officer: officer.id, reason: 'something')
+    )
     User.new(@attr).should_not be_valid
   end
 
@@ -399,6 +401,23 @@ describe User do
       target_rsvps.each do |rsvp|
         @rsvps.should include rsvp
       end
+    end
+  end
+
+  describe "discharge scopes" do
+    before :each do
+      @discharged = User.create!(@attr)
+      @discharged.discharged = true
+      @discharged.save!
+      @active = Factory :user
+    end
+
+    it "should have only discharged users in discharged" do
+      User.discharged.should == [@discharged]
+    end
+    
+    it "should not have discharged users in active" do
+      User.active.should == [@active]
     end
   end
 end

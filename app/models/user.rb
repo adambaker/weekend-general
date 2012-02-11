@@ -25,14 +25,18 @@ class User < ActiveRecord::Base
   validate :not_dishonorably_discharged
 
   def not_dishonorably_discharged
-    if(DishonorableDischarge.where(email: email).exists? ||
-      DishonorableDischarge.where(provider: provider, uid: uid).exists?
+    if(
+      DishonorableDischarge.where("(provider = ? AND uid = ?) OR email = ?",
+                                  provider, uid, email
+      ).exists?
     )
       errors.add(:base, "User has been dishonorably discharged.")
     end
   end
   
   scope :officers, where('rank > 2')
+  scope :discharged, where(discharged: true)
+  scope :active, where(discharged: false)
   
   def self.search(term) 
     where("users.name LIKE :term OR users.description LIKE :term", 
