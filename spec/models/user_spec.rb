@@ -112,6 +112,7 @@ describe User do
     DishonorableDischarge.create!(@attr.merge(officer: officer.id, reason: 'something'))
     User.new(@attr).should_not be_valid
   end
+
   
   describe "event attendance" do
     before :each do
@@ -329,10 +330,10 @@ describe User do
   
   describe "defaults" do
     {
-      attend_reminder: true, maybe_reminder: false, host_reminder: false,
-      track_host: true, track_attend: true, track_maybe: false,
-      host_rsvp: true, attend_rsvp: false, maybe_rsvp: false,
-      new_event: false, rank: 1
+      attend_reminder?: true, maybe_reminder?: false, host_reminder?: false,
+      track_host?: true, track_attend?: true, track_maybe?: false,
+      host_rsvp?: true, attend_rsvp?: false, maybe_rsvp?: false,
+      new_event?: false, rank: 1, discharged?: false,
     }.each do |name, value|
       it "should have #{name.to_s} default to #{value.to_s}." do
         User.create(@attr).send(name).should == value

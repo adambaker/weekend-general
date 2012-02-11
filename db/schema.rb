@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111209085641) do
+ActiveRecord::Schema.define(:version => 20120211211230) do
 
   create_table "dishonorable_discharges", :force => true do |t|
     t.string   "email"
@@ -93,6 +93,7 @@ ActiveRecord::Schema.define(:version => 20111209085641) do
     t.boolean  "attend_rsvp",     :default => false
     t.boolean  "maybe_rsvp",      :default => false
     t.boolean  "new_event",       :default => false
+    t.boolean  "discharged",      :default => false
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
