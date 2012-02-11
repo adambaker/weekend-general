@@ -22,7 +22,6 @@ describe "Users" do
     response.should be_success
     response.should contain("Signed in as #{@attr[:name]}")
     
-    puts @attr[:email]
     DishonorableDischarge.create!(
       email:    @attr[:email],
       provider: @attr[:provider],
@@ -32,7 +31,6 @@ describe "Users" do
     )
 
     visit venue_path(@venue)
-    #response.should redirect_to '/users/officers'
     response.should_not contain("Signed in as #{@attr[:name]}")
   end
 end
