@@ -12,8 +12,7 @@ class DishonorableDischarge < ActiveRecord::Base
   end
 
   after_save do |discharge|
-    discharge.user.discharged = true
-    discharge.user.save
+    discharge.user.discharge
   end
 
   belongs_to :user

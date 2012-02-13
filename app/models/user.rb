@@ -14,6 +14,8 @@ class User < ActiveRecord::Base
     dependent: :destroy
   has_many :trackers, through: :breadcrumbs
 
+  has_one :dishonorable_discharge
+
   email_regex = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i 
   validates :name,     presence:   true
   validates :email,    uniqueness: {case_sensitive: false},
@@ -26,6 +28,7 @@ class User < ActiveRecord::Base
   scope :officers, where('rank > 2')
   scope :discharged, where(discharged: true)
   scope :active, where(discharged: false)
+  default_scope where(discharged:false)
   
   def self.search(term) 
     where("users.name LIKE :term OR users.description LIKE :term", 
@@ -94,5 +97,10 @@ class User < ActiveRecord::Base
     targets.reduce([]) {
       |rsvps, target| rsvps << target.rsvps.recent.limit(3)
     }.flatten
+  end
+
+  def discharge
+    self.discharged = true
+    save!
   end
 end

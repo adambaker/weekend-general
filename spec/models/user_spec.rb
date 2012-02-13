@@ -408,5 +408,27 @@ describe User do
     it "should not have discharged users in active" do
       User.active.should == [@active]
     end
+
+    it "should have active be the default scope" do
+      User.all.should == [@active]
+    end
+  end
+
+  describe 'dishonorably discharged' do
+    before :each do
+      @discharged = User.create!(@attr)
+      @officer = Factory :user
+      @officer.rank = 3
+      @officer.save!
+      @discharge = DishonorableDischarge.new(
+        user_id: @discharged.id, reason: 'unspeakable'
+      )
+      @discharge.officer_id = @officer.id
+      @discharge.save!
+    end
+
+    it 'should have the discharge linked on the user' do
+      @discharged.dishonorable_discharge.should == @discharge
+    end
   end
 end
