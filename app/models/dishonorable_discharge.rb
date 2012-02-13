@@ -11,4 +11,11 @@ class DishonorableDischarge < ActiveRecord::Base
     end
   end
 
+  after_save do |discharge|
+    discharge.user.discharged = true
+    discharge.user.save
+  end
+
+  belongs_to :user
+  belongs_to :officer, class_name: 'User'
 end

@@ -46,4 +46,23 @@ describe DishonorableDischarge do
     @discharge.should_not be_valid
   end
 
+  describe 'relationships' do
+    before :each do
+      @discharge.save!
+    end
+
+    it 'should have the discharged user' do
+      @discharge.user.should == @user
+    end
+
+    it 'should mark the user as discharged' do
+      #find the user to ensure discharged status is saved in the db
+      User.find(@user.id).should be_discharged
+    end
+
+    it 'should have the discharging officer' do
+      @discharge.officer.should == @officer
+    end
+  end
+
 end
