@@ -54,36 +54,29 @@ describe SessionsController do
         flash[:notice].should =~ /fall in/i
       end
 
-      describe 'with a dishonorably discharged user' do
-        before :each do
-          officer = Factory(:user, email: Factory.next(:email),
-                                  uid:   Factory.next(:uid),
-                          )
-          set_rank(officer, 4)
-          DishonorableDischarge.create!(
-            email:    'something@gmail.com',
-            provider: 'google',
-            uid:      'foobar',
-            officer:  officer.id,
-            reason:   'never again',
-          )
-        end
+      #describe 'with a dishonorably discharged user' do
+      #  before :each do
+      #    officer = Factory(:user, email: Factory.next(:email),
+      #                            uid:   Factory.next(:uid),
+      #                    )
+      #    set_rank(officer, 4)
+      #  end
 
-        it "should not sign the user in" do
-          post :create
-          controller.current_user.should be_nil
-        end
+      #  it "should not sign the user in" do
+      #    post :create
+      #    controller.current_user.should be_nil
+      #  end
 
-        it "should redirect to officers page" do
-          post :create
-          response.should redirect_to '/users/officers'
-        end
-        
-        it 'should put the reason in the flash' do
-          post :create
-          flash[:notice].should =~ /never again/
-        end
-      end
+      #  it "should redirect to officers page" do
+      #    post :create
+      #    response.should redirect_to '/users/officers'
+      #  end
+      #  
+      #  it 'should put the reason in the flash' do
+      #    post :create
+      #    flash[:notice].should =~ /never again/
+      #  end
+      #end
     end
   end
   

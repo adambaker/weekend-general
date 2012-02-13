@@ -33,14 +33,14 @@ class SessionsController < ApplicationController
 
   def check_discharge
     @auth = request.env["omniauth.auth"]
-    discharge = 
-      DishonorableDischarge.find_by_email(@auth['info']['email']) ||
-      DishonorableDischarge.find_by_provider_and_uid(@auth['provider'], @auth['uid'])
-    if discharge
-      flash[:notice] = "You've been dishonorably discharged. 
-        You may appeal to an officer be reinstated.\n
-        Reason for this discharge:\n#{discharge.reason}"
-      redirect_to '/users/officers'
-    end
+    #discharge = 
+    #  DishonorableDischarge.find_by_email(@auth['info']['email']) ||
+    #  DishonorableDischarge.find_by_provider_and_uid(@auth['provider'], @auth['uid'])
+    #if discharge
+    #  flash[:notice] = "You've been dishonorably discharged. 
+    #    You may appeal to an officer be reinstated.\n
+    #    Reason for this discharge:\n#{discharge.reason}"
+    #  redirect_to '/users/officers'
+    #end
   end
 end

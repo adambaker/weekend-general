@@ -22,17 +22,6 @@ class User < ActiveRecord::Base
   validates :uid,      presence:   true,
                        uniqueness: {scope: :provider}
   validates_inclusion_of :theme, in: Themes::THEMES.keys
-  validate :not_dishonorably_discharged
-
-  def not_dishonorably_discharged
-    if(
-      DishonorableDischarge.where("(provider = ? AND uid = ?) OR email = ?",
-                                  provider, uid, email
-      ).exists?
-    )
-      errors.add(:base, "User has been dishonorably discharged.")
-    end
-  end
   
   scope :officers, where('rank > 2')
   scope :discharged, where(discharged: true)

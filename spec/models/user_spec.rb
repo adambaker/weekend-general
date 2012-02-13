@@ -105,17 +105,6 @@ describe User do
     end
   end
 
-  it "should reject the dishonorably discharged." do
-    officer = Factory :user
-    officer.rank = 4
-    officer.save
-    DishonorableDischarge.create!(
-      @attr.merge(officer: officer.id, reason: 'something')
-    )
-    User.new(@attr).should_not be_valid
-  end
-
-  
   describe "event attendance" do
     before :each do
       @user = User.create(@attr)
