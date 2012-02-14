@@ -11,8 +11,9 @@ describe SessionsController do
     
     describe 'with a user signed in' do
       before :each do
-        @user = Factory(:user, email: Factory.next(:email),
-                               uid: Factory.next(:uid) )
+        @user = Factory(
+          :user, email: Factory.next(:email), uid: Factory.next(:uid)
+        )
         test_sign_in @user
       end
 
@@ -54,29 +55,35 @@ describe SessionsController do
         flash[:notice].should =~ /fall in/i
       end
 
-      #describe 'with a dishonorably discharged user' do
-      #  before :each do
-      #    officer = Factory(:user, email: Factory.next(:email),
-      #                            uid:   Factory.next(:uid),
-      #                    )
-      #    set_rank(officer, 4)
-      #  end
+      describe 'with a dishonorably discharged user' do
+        before :each do
+          officer = Factory(
+            :user, email: Factory.next(:email), uid: Factory.next(:uid),
+          )
+          set_rank(officer, 4)
 
-      #  it "should not sign the user in" do
-      #    post :create
-      #    controller.current_user.should be_nil
-      #  end
+          discharge = DishonorableDischarge.new(
+            user_id: @user.id, reason: 'never again'
+          )
+          discharge.officer_id = officer.id
+          discharge.save!
+        end
 
-      #  it "should redirect to officers page" do
-      #    post :create
-      #    response.should redirect_to '/users/officers'
-      #  end
-      #  
-      #  it 'should put the reason in the flash' do
-      #    post :create
-      #    flash[:notice].should =~ /never again/
-      #  end
-      #end
+        it "should not sign the user in" do
+          post :create
+          controller.current_user.should be_nil
+        end
+
+        it "should redirect to officers page" do
+          post :create
+          response.should redirect_to '/users/officers'
+        end
+        
+        it 'should put the reason in the flash' do
+          post :create
+          flash[:notice].should =~ /never again/
+        end
+      end
     end
   end
   

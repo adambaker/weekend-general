@@ -1,18 +1,23 @@
 class SessionsController < ApplicationController  
-  before_filter :check_discharge, only: [:create]
 
   def create
-    user = User.find_by_provider_and_uid(@auth["provider"], @auth["uid"]) 
+    auth = request.env['omniauth.auth']
+    user = User.unscoped.find_by_provider_and_uid(auth["provider"], auth["uid"]) 
     if current_user
       flash[:notice] = current_theme 'sessions', 'already_signed_in'
       redirect_to current_user
     elsif user.nil?
       redirect_to controller: :users, action: :new, user: { 
-          provider: @auth['provider'],
-          name:     @auth['info']['name'], 
-          uid:      @auth['uid'], 
-          email:    @auth['info']['email'],
+          provider: auth['provider'],
+          name:     auth['info']['name'], 
+          uid:      auth['uid'], 
+          email:    auth['info']['email'],
       }                
+    elsif user.dishonorable_discharge
+      flash[:notice] = "You've been dishonorably discharged. 
+        You may appeal to an officer be reinstated.\n
+        Reason for this discharge:\n#{user.dishonorable_discharge.reason}"
+      redirect_to '/users/officers'
     else
       session[:user_id] = user.id
       flash[:notice] = current_theme 'sessions', 'sign_in'
@@ -31,16 +36,4 @@ class SessionsController < ApplicationController
     session[:user_id] = nil
   end
 
-  def check_discharge
-    @auth = request.env["omniauth.auth"]
-    #discharge = 
-    #  DishonorableDischarge.find_by_email(@auth['info']['email']) ||
-    #  DishonorableDischarge.find_by_provider_and_uid(@auth['provider'], @auth['uid'])
-    #if discharge
-    #  flash[:notice] = "You've been dishonorably discharged. 
-    #    You may appeal to an officer be reinstated.\n
-    #    Reason for this discharge:\n#{discharge.reason}"
-    #  redirect_to '/users/officers'
-    #end
-  end
 end
