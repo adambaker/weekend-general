@@ -14,7 +14,7 @@ class User < ActiveRecord::Base
     dependent: :destroy
   has_many :trackers, through: :breadcrumbs
 
-  has_one :dishonorable_discharge
+  has_one :dishonorable_discharge, dependent: :restrict
 
   email_regex = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i 
   validates :name,     presence:   true
@@ -24,7 +24,7 @@ class User < ActiveRecord::Base
   validates :uid,      presence:   true,
                        uniqueness: {scope: :provider}
   validates_inclusion_of :theme, in: Themes::THEMES.keys
-  
+
   scope :officers, where('rank > 2')
   scope :discharged, where(discharged: true)
   scope :active, where(discharged: false)

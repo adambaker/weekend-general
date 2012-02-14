@@ -57,7 +57,7 @@ describe DishonorableDischarge do
 
     it 'should mark the user as discharged' do
       #find the user to ensure discharged status is saved in the db
-      User.find(@user.id).should be_discharged
+      User.unscoped.find(@user.id).should be_discharged
     end
 
     it 'should have the discharging officer' do

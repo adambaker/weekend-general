@@ -430,5 +430,13 @@ describe User do
     it 'should have the discharge linked on the user' do
       @discharged.dishonorable_discharge.should == @discharge
     end
+
+    it 'should not allow the discharged user to be deleted' do
+      ->{ @discharged.destroy }.should raise_error(
+        ActiveRecord::DeleteRestrictionError
+      )
+      User.unscoped.find(@discharge.user_id).should_not be_nil
+      User.unscoped.find(@discharge.user_id).should == @discharged
+    end
   end
 end
