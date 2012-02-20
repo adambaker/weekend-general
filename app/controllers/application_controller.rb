@@ -5,6 +5,7 @@ class ApplicationController < ActionController::Base
     :free?, :less?, :any_price?, :date?, :price?, :created?, :updated?
 
   def current_user
+    return nil if DishonorableDischarge.find_by_user_id(session[:user_id])
     @current_user ||= User.find(session[:user_id]) if session[:user_id]
   end
   
