@@ -338,7 +338,7 @@ describe EventsController do
       
       it "should have a delete link." do
         get :edit, id: @event
-        response.should have_selector :a, content: 'Remove this event',
+        response.should have_selector :a, content: 'Remove this event'
       end
       
       it "should redirect rank 1 users." do
